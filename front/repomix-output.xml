@@ -1,0 +1,3145 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.gitignore
+eslint.config.js
+index.html
+package.json
+public/favicon.svg
+public/icons.svg
+README.md
+src/App.css
+src/App.jsx
+src/assets/hero.png
+src/assets/react.svg
+src/assets/vite.svg
+src/components/BookingForm/BookingForm.jsx
+src/components/Calculator/Calculator.jsx
+src/components/DishCard/DishCard.jsx
+src/components/EventForm/EventForm.jsx
+src/components/Footer/Footer.jsx
+src/components/Header/Header.jsx
+src/components/HeroSlider/HeroSlider.jsx
+src/components/LanguageSwitcher/LanguageSwitcher.jsx
+src/components/Layout/layout.jsx
+src/components/NewsCard/NewsCard.jsx
+src/components/RestaurantCard/RestaurantCard.jsx
+src/components/ReviewCard/ReviewCard.jsx
+src/data/menu.json
+src/data/news.json
+src/data/restaurants.json
+src/data/reviews.json
+src/i18n/index.js
+src/i18n/locales/en.json
+src/i18n/locales/ru.json
+src/index.css
+src/main.jsx
+src/pages/About/About.jsx
+src/pages/Booking/Booking.jsx
+src/pages/Contacts/Contacts.jsx
+src/pages/Events/Events.jsx
+src/pages/Home/Home.jsx
+src/pages/Menu/Menu.jsx
+src/pages/News/News.jsx
+src/pages/NewsDetail/NewsDetail.jsx
+src/styles/global.css
+vite.config.js
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+</file>
+
+<file path="eslint.config.js">
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{js,jsx}'],
+    extends: [
+      js.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+  },
+])
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>react</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="package.json">
+{
+  "name": "react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "i18next": "^26.2.0",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-i18next": "^17.0.8",
+    "react-router-dom": "^7.15.1",
+    "swiper": "^12.1.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "vite": "^8.0.12"
+  }
+}
+</file>
+
+<file path="public/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="public/icons.svg">
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="bluesky-icon" viewBox="0 0 16 17">
+    <g clip-path="url(#bluesky-clip)"><path fill="#08060d" d="M7.75 7.735c-.693-1.348-2.58-3.86-4.334-5.097-1.68-1.187-2.32-.981-2.74-.79C.188 2.065.1 2.812.1 3.251s.241 3.602.398 4.13c.52 1.744 2.367 2.333 4.07 2.145-2.495.37-4.71 1.278-1.805 4.512 3.196 3.309 4.38-.71 4.987-2.746.608 2.036 1.307 5.91 4.93 2.746 2.72-2.746.747-4.143-1.747-4.512 1.702.189 3.55-.4 4.07-2.145.156-.528.397-3.691.397-4.13s-.088-1.186-.575-1.406c-.42-.19-1.06-.395-2.741.79-1.755 1.24-3.64 3.752-4.334 5.099"/></g>
+    <defs><clipPath id="bluesky-clip"><path fill="#fff" d="M.1.85h15.3v15.3H.1z"/></clipPath></defs>
+  </symbol>
+  <symbol id="discord-icon" viewBox="0 0 20 19">
+    <path fill="#08060d" d="M16.224 3.768a14.5 14.5 0 0 0-3.67-1.153c-.158.286-.343.67-.47.976a13.5 13.5 0 0 0-4.067 0c-.128-.306-.317-.69-.476-.976A14.4 14.4 0 0 0 3.868 3.77C1.546 7.28.916 10.703 1.231 14.077a14.7 14.7 0 0 0 4.5 2.306q.545-.748.965-1.587a9.5 9.5 0 0 1-1.518-.74q.191-.14.372-.293c2.927 1.369 6.107 1.369 8.999 0q.183.152.372.294-.723.437-1.52.74.418.838.963 1.588a14.6 14.6 0 0 0 4.504-2.308c.37-3.911-.63-7.302-2.644-10.309m-9.13 8.234c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.894 0 1.614.82 1.599 1.82.001 1-.705 1.82-1.6 1.82m5.91 0c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.893 0 1.614.82 1.599 1.82 0 1-.706 1.82-1.6 1.82"/>
+  </symbol>
+  <symbol id="documentation-icon" viewBox="0 0 21 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="m15.5 13.333 1.533 1.322c.645.555.967.833.967 1.178s-.322.623-.967 1.179L15.5 18.333m-3.333-5-1.534 1.322c-.644.555-.966.833-.966 1.178s.322.623.966 1.179l1.534 1.321"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M17.167 10.836v-4.32c0-1.41 0-2.117-.224-2.68-.359-.906-1.118-1.621-2.08-1.96-.599-.21-1.349-.21-2.848-.21-2.623 0-3.935 0-4.983.369-1.684.591-3.013 1.842-3.641 3.428C3 6.449 3 7.684 3 10.154v2.122c0 2.558 0 3.838.706 4.726q.306.383.713.671c.76.536 1.79.64 3.581.66"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M3 10a2.78 2.78 0 0 1 2.778-2.778c.555 0 1.209.097 1.748-.047.48-.129.854-.503.982-.982.145-.54.048-1.194.048-1.749a2.78 2.78 0 0 1 2.777-2.777"/>
+  </symbol>
+  <symbol id="github-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clip-rule="evenodd"/>
+  </symbol>
+  <symbol id="social-icon" viewBox="0 0 20 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M12.5 6.667a4.167 4.167 0 1 0-8.334 0 4.167 4.167 0 0 0 8.334 0"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M2.5 16.667a5.833 5.833 0 0 1 8.75-5.053m3.837.474.513 1.035c.07.144.257.282.414.309l.93.155c.596.1.736.536.307.965l-.723.73a.64.64 0 0 0-.152.531l.207.903c.164.715-.213.991-.84.618l-.872-.52a.63.63 0 0 0-.577 0l-.872.52c-.624.373-1.003.094-.84-.618l.207-.903a.64.64 0 0 0-.152-.532l-.723-.729c-.426-.43-.289-.864.306-.964l.93-.156a.64.64 0 0 0 .412-.31l.513-1.034c.28-.562.735-.562 1.012 0"/>
+  </symbol>
+  <symbol id="x-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M1.893 1.98c.052.072 1.245 1.769 2.653 3.77l2.892 4.114c.183.261.333.48.333.486s-.068.089-.152.183l-.522.593-.765.867-3.597 4.087c-.375.426-.734.834-.798.905a1 1 0 0 0-.118.148c0 .01.236.017.664.017h.663l.729-.83c.4-.457.796-.906.879-.999a692 692 0 0 0 1.794-2.038c.034-.037.301-.34.594-.675l.551-.624.345-.392a7 7 0 0 1 .34-.374c.006 0 .93 1.306 2.052 2.903l2.084 2.965.045.063h2.275c1.87 0 2.273-.003 2.266-.021-.008-.02-1.098-1.572-3.894-5.547-2.013-2.862-2.28-3.246-2.273-3.266.008-.019.282-.332 2.085-2.38l2-2.274 1.567-1.782c.022-.028-.016-.03-.65-.03h-.674l-.3.342a871 871 0 0 1-1.782 2.025c-.067.075-.405.458-.75.852a100 100 0 0 1-.803.91c-.148.172-.299.344-.99 1.127-.304.343-.32.358-.345.327-.015-.019-.904-1.282-1.976-2.808L6.365 1.85H1.8zm1.782.91 8.078 11.294c.772 1.08 1.413 1.973 1.425 1.984.016.017.241.02 1.05.017l1.03-.004-2.694-3.766L7.796 5.75 5.722 2.852l-1.039-.004-1.039-.004z" clip-rule="evenodd"/>
+  </symbol>
+</svg>
+</file>
+
+<file path="README.md">
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+</file>
+
+<file path="src/App.css">
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.hero {
+  position: relative;
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 1;
+    top: 34px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+  }
+
+  .vite {
+    z-index: 0;
+    top: 107px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-h);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--social-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
+</file>
+
+<file path="src/App.jsx">
+import {useState} from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import heroImg from './assets/hero.png'
+import './App.css'
+
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Layout from './components/Layout/Layout'
+import Home from './pages/Home/Home'
+import About from './pages/About/About'
+import Menu from './pages/Menu/Menu'
+import News from './pages/News/News'
+import NewsDetail from './pages/NewsDetail/NewsDetail'
+import Events from './pages/Events/Events'
+import Contacts from './pages/Contacts/Contacts'
+import Booking from './pages/Booking/Booking'
+
+function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout/>}>
+                    <Route index element={<Home/>}/>
+                    <Route path="about" element={<About/>}/>
+                    <Route path="menu" element={<Menu/>}/>
+                    <Route path="news" element={<News/>}/>
+                    <Route path="news/:id" element={<NewsDetail/>}/>
+                    <Route path="events" element={<Events/>}/>
+                    <Route path="contacts" element={<Contacts/>}/>
+                    <Route path="booking" element={<Booking/>}/>
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    )
+}
+
+export default App
+</file>
+
+<file path="src/assets/react.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+</file>
+
+<file path="src/assets/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="77" height="47" fill="none" aria-labelledby="vite-logo-title" viewBox="0 0 77 47"><title id="vite-logo-title">Vite</title><style>.parenthesis{fill:#000}@media (prefers-color-scheme:dark){.parenthesis{fill:#fff}}</style><path fill="#9135ff" d="M40.151 45.71c-.663.844-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.493c-.92 0-1.457-1.04-.92-1.788l7.479-10.471c1.07-1.498 0-3.578-1.842-3.578H15.443c-.92 0-1.456-1.04-.92-1.788l9.696-13.576c.213-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.472c-1.07 1.497 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.087.89 1.83L40.153 45.712z"/><mask id="a" width="48" height="47" x="14" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M40.047 45.71c-.663.843-2.02.374-2.02-.699V34.708a2.26 2.26 0 0 0-2.262-2.262H24.389c-.92 0-1.457-1.04-.92-1.788l7.479-10.472c1.07-1.497 0-3.578-1.842-3.578H15.34c-.92 0-1.456-1.04-.92-1.788l9.696-13.575c.213-.297.556-.474.92-.474H53.93c.92 0 1.456 1.04.92 1.788L47.37 13.03c-1.07 1.498 0 3.578 1.842 3.578h11.376c.944 0 1.474 1.088.89 1.831L40.049 45.712z"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#eee6ff" rx="5.508" ry="14.704" transform="rotate(269.814 20.96 11.29)scale(-1 1)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#eee6ff" rx="10.399" ry="29.851" transform="rotate(89.814 -16.902 -8.275)scale(1 -1)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#8900ff" rx="5.508" ry="30.487" transform="rotate(89.814 -19.197 -7.127)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.928 4.177)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#8900ff" rx="5.508" ry="30.599" transform="rotate(89.814 -25.738 5.52)scale(1 -1)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#eee6ff" rx="14.072" ry="22.078" transform="rotate(93.35 31.245 55.578)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#8900ff" rx="3.47" ry="21.501" transform="rotate(89.009 35.419 55.202)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx="14.592" cy="9.743" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(39.51 14.592 9.743)"/></g><g filter="url(#k)"><ellipse cx="61.728" cy="-5.321" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 61.728 -5.32)"/></g><g filter="url(#l)"><ellipse cx="55.618" cy="7.104" fill="#00c2ff" rx="5.971" ry="9.665" transform="rotate(37.892 55.618 7.104)"/></g><g filter="url(#m)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#n)"><ellipse cx="12.326" cy="39.103" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 12.326 39.103)"/></g><g filter="url(#o)"><ellipse cx="49.857" cy="30.678" fill="#8900ff" rx="4.407" ry="29.108" transform="rotate(37.892 49.857 30.678)"/></g><g filter="url(#p)"><ellipse cx="52.623" cy="33.171" fill="#00c2ff" rx="5.971" ry="15.297" transform="rotate(37.892 52.623 33.17)"/></g></g><path d="M6.919 0c-9.198 13.166-9.252 33.575 0 46.789h6.215c-9.25-13.214-9.196-33.623 0-46.789zm62.424 0h-6.215c9.198 13.166 9.252 33.575 0 46.789h6.215c9.25-13.214 9.196-33.623 0-46.789" class="parenthesis"/><defs><filter id="b" width="60.045" height="41.654" x="-5.564" y="16.92" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-40.407" y="-6.762" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-35.435" y="2.801" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-30.84" y="20.8" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-29.307" y="21.949" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="29.961" y="-17.13" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="37.754" y="3.055" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-13.43" y="-22.082" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="34.321" y="-37.644" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="38.847" y="-10.552" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-15.081" y="6.78" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="22.45" y="-1.645" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="32.919" y="11.36" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17286" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="src/components/BookingForm/BookingForm.jsx">
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
+const today = new Date().toISOString().split('T')[0]
+
+export default function BookingForm() {
+    const { t } = useTranslation()
+    const [form, setForm] = useState({
+        name: '', phone: '', email: '', restaurant: '', date: '', time: '', guests: '', wishes: ''
+    })
+
+    const handleChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log('BookingForm submit:', form)
+        alert(t('booking.title') + ' — OK!')
+        setForm({ name: '', phone: '', email: '', restaurant: '', date: '', time: '', guests: '', wishes: '' })
+    }
+
+    return (
+        <form onSubmit={handleSubmit}>
+            {[
+                { label: t('booking.name'), name: 'name', type: 'text', placeholder: t('forms.name_placeholder') },
+                { label: t('booking.phone'), name: 'phone', type: 'tel', placeholder: t('forms.phone_placeholder') },
+                { label: t('booking.email'), name: 'email', type: 'email', placeholder: t('forms.email_placeholder') },
+            ].map(f => (
+                <div className="form-group" key={f.name}>
+                    <label className="form-label">{f.label}</label>
+                    <input type={f.type} name={f.name} value={form[f.name]} onChange={handleChange}
+                           className="form-control" placeholder={f.placeholder} required />
+                </div>
+            ))}
+
+            <div className="form-group">
+                <label className="form-label">{t('booking.restaurant')}</label>
+                <select name="restaurant" value={form.restaurant} onChange={handleChange} className="form-control" required>
+                    <option value="">{t('booking.choose_restaurant')}</option>
+                    <option value="tverskaya">{t('booking.choose_restaurant') === 'Choose a restaurant' ? 'Tverskaya Restaurant' : 'Ресторан на Тверской'}</option>
+                    <option value="patriarshiye">{t('booking.choose_restaurant') === 'Choose a restaurant' ? 'Patriarshiye Ponds' : 'Ресторан на Патриарших'}</option>
+                </select>
+            </div>
+
+            <div className="form-group">
+                <label className="form-label">{t('booking.date')}</label>
+                <input type="date" name="date" value={form.date} onChange={handleChange}
+                       className="form-control" min={today} required />
+            </div>
+            <div className="form-group">
+                <label className="form-label">{t('booking.time')}</label>
+                <input type="time" name="time" value={form.time} onChange={handleChange} className="form-control" required />
+            </div>
+            <div className="form-group">
+                <label className="form-label">{t('booking.guests')}</label>
+                <input type="number" name="guests" value={form.guests} onChange={handleChange}
+                       className="form-control" min={1} max={50} required />
+            </div>
+            <div className="form-group">
+                <label className="form-label">{t('booking.wishes')}</label>
+                <textarea name="wishes" value={form.wishes} onChange={handleChange}
+                          className="form-control" rows={3} placeholder={t('booking.wishes_placeholder')} />
+            </div>
+            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>{t('booking.submit')}</button>
+        </form>
+    )
+}
+</file>
+
+<file path="src/components/Calculator/Calculator.jsx">
+import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import menuData from '../../data/menu.json'
+
+export default function Calculator({ guestCount = 1, onSubmit }) {
+    const { t, i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+    const [quantities, setQuantities] = useState({})
+    const [search, setSearch] = useState('')
+
+    const update = (id, delta) => {
+        setQuantities(prev => {
+            const cur = prev[id] || 0
+            const next = Math.max(0, Math.min(100, cur + delta))
+            return { ...prev, [id]: next }
+        })
+    }
+
+    const totalPerPerson = useMemo(() =>
+            menuData.eventDishes.reduce((sum, d) => sum + (quantities[d.id] || 0) * d.price, 0),
+        [quantities]
+    )
+
+    const filtered = menuData.eventDishes.filter(d =>
+        d[`title_${lang}`].toLowerCase().includes(search.toLowerCase())
+    )
+
+    const handleSubmit = () => {
+        if (totalPerPerson === 0) { alert('Выберите хотя бы одно блюдо'); return }
+        if (guestCount < 10) { alert('Минимум 10 гостей'); return }
+        const summary = { quantities, totalPerPerson, guestCount, grandTotal: totalPerPerson * guestCount }
+        console.log('Calculator submit:', summary)
+        alert(`Заявка отправлена!\nСтоимость на гостя: ${totalPerPerson} ₽\nГостей: ${guestCount}\nИтого: ${totalPerPerson * guestCount} ₽`)
+        setQuantities({})
+        setSearch('')
+        onSubmit?.(summary)
+    }
+
+    return (
+        <div className="calculator-block">
+            <h2 className="h2-22">{t('events.calculator_title')}</h2>
+            <p className="caption-12" style={{ marginBottom: 'var(--spacing-md)' }}>{t('events.calculator_desc')}</p>
+
+            {/* Search */}
+            <div style={{ position: 'relative', marginBottom: 'var(--spacing-md)' }}>
+                <i className="fas fa-search" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: '#adb5bd' }} />
+                <input
+                    type="text"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    placeholder={t('events.search_placeholder')}
+                    style={{
+                        width: '100%', padding: '12px 16px 12px 48px', fontSize: 16,
+                        border: '1px solid #e0e0e0', borderRadius: 12, fontFamily: 'inherit'
+                    }}
+                />
+                {search && (
+                    <button onClick={() => setSearch('')}
+                            style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#adb5bd', fontSize: 18 }}>
+                        <i className="fas fa-times-circle" />
+                    </button>
+                )}
+            </div>
+
+            {/* Dishes */}
+            {filtered.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '40px 20px', color: '#6c757d', background: '#f8f9fa', borderRadius: 12 }}>
+                    <i className="fas fa-utensils" style={{ fontSize: 48, opacity: 0.5, display: 'block', marginBottom: 16 }} />
+                    <p>{t('events.no_results')}</p>
+                    <p style={{ fontSize: 14, marginTop: 8 }}>{t('events.no_results_hint')}</p>
+                </div>
+            ) : (
+                filtered.map(dish => (
+                    <div className="calculator-item" key={dish.id}>
+                        <div>
+                            <p className="h3-16-medium">{dish[`title_${lang}`]}</p>
+                            <p className="caption-12">{dish.price.toLocaleString()} ₽ {t('menu.per_portion')}</p>
+                        </div>
+                        <div className="quantity-control">
+                            <button onClick={() => update(dish.id, -1)}>-</button>
+                            <span>{quantities[dish.id] || 0}</span>
+                            <button onClick={() => update(dish.id, 1)}>+</button>
+                        </div>
+                    </div>
+                ))
+            )}
+
+            {search && filtered.length > 0 && (
+                <p style={{ fontSize: 13, color: '#6c757d', marginTop: 8 }}>
+                    {t('events.found')} {filtered.length}
+                </p>
+            )}
+
+            <div className="total-price">
+                {t('events.total_label')} <span>{totalPerPerson.toLocaleString()}</span> ₽
+            </div>
+            <p className="caption-12" style={{ marginTop: 'var(--spacing-sm)' }}>{t('events.total_note')}</p>
+
+            <button className="btn btn-primary" style={{ width: '100%', marginTop: 'var(--spacing-lg)' }} onClick={handleSubmit}>
+                {t('events.submit')}
+            </button>
+        </div>
+    )
+}
+</file>
+
+<file path="src/components/DishCard/DishCard.jsx">
+import { useTranslation } from 'react-i18next'
+
+export default function DishCard({ dish }) {
+    const { i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    return (
+        <div className="menu-item">
+            <img src={dish.image} alt={dish[`title_${lang}`]} className="menu-item-img" loading="lazy" />
+            <div className="menu-item-info">
+                <h3 className="h3-16-medium">{dish[`title_${lang}`]}</h3>
+                <p className="caption-12">{dish[`description_${lang}`]}</p>
+                <p className="price-20" style={{ marginTop: 'var(--spacing-xs)' }}>
+                    {dish.price.toLocaleString()} ₽
+                </p>
+            </div>
+        </div>
+    )
+}
+</file>
+
+<file path="src/components/EventForm/EventForm.jsx">
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
+const minDate = (() => {
+    const d = new Date(); d.setDate(d.getDate() + 3); return d.toISOString().split('T')[0]
+})()
+
+export default function EventForm({ onGuestsChange }) {
+    const { t } = useTranslation()
+    const [form, setForm] = useState({ name: '', phone: '', email: '', date: '', guests: '', restaurant: '', wishes: '' })
+
+    const handleChange = e => {
+        setForm(p => ({ ...p, [e.target.name]: e.target.value }))
+        if (e.target.name === 'guests') onGuestsChange?.(parseInt(e.target.value) || 0)
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log('EventForm submit:', form)
+    }
+
+    return (
+        <form id="eventForm" onSubmit={handleSubmit}>
+            {[
+                { label: t('booking.name'), name: 'name', type: 'text' },
+                { label: t('booking.phone'), name: 'phone', type: 'tel' },
+                { label: t('booking.email'), name: 'email', type: 'email' },
+            ].map(f => (
+                <div className="form-group" key={f.name}>
+                    <label className="form-label">{f.label}</label>
+                    <input type={f.type} name={f.name} value={form[f.name]} onChange={handleChange}
+                           className="form-control" required />
+                </div>
+            ))}
+            <div className="form-group">
+                <label className="form-label">{t('booking.date')}</label>
+                <input type="date" name="date" value={form.date} onChange={handleChange}
+                       className="form-control" min={minDate} required />
+            </div>
+            <div className="form-group">
+                <label className="form-label">{t('events.title')} — кол-во гостей (от 10)</label>
+                <input type="number" name="guests" value={form.guests} onChange={handleChange}
+                       className="form-control" min={10} required />
+            </div>
+            <div className="form-group">
+                <label className="form-label">{t('booking.restaurant')}</label>
+                <select name="restaurant" value={form.restaurant} onChange={handleChange} className="form-control" required>
+                    <option value="">{t('booking.choose_restaurant')}</option>
+                    <option value="tverskaya">Ресторан на Тверской</option>
+                    <option value="patriarshiye">Ресторан на Патриарших</option>
+                </select>
+            </div>
+            <div className="form-group">
+                <label className="form-label">{t('booking.wishes')}</label>
+                <textarea name="wishes" value={form.wishes} onChange={handleChange} className="form-control" rows={3} />
+            </div>
+        </form>
+    )
+}
+</file>
+
+<file path="src/components/Footer/Footer.jsx">
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+
+export default function Footer() {
+    const { t } = useTranslation()
+    return (
+        <footer className="main-footer">
+            <div className="container">
+                <div className="footer-grid">
+                    <div>
+                        <div className="logo-18" style={{ marginBottom: 'var(--spacing-md)' }}>La Belle Époque</div>
+                        <p className="small-14">{t('footer.description')}</p>
+                    </div>
+                    <div>
+                        <h3 className="h3-16-medium" style={{ color: 'white' }}>{t('footer.quick_links')}</h3>
+                        <ul className="footer-links">
+                            <li><Link to="/">{t('nav.home')}</Link></li>
+                            <li><Link to="/about">{t('nav.about')}</Link></li>
+                            <li><Link to="/news">{t('nav.news')}</Link></li>
+                            <li><Link to="/contacts">{t('footer.sitemap')}</Link></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 className="h3-16-medium" style={{ color: 'white' }}>{t('footer.contacts')}</h3>
+                        <ul className="footer-links">
+                            <li><i className="fas fa-phone" /> +7 (495) 123-45-67</li>
+                            <li><i className="fas fa-envelope" /> info@labelleepoque.ru</li>
+                            <li><i className="fas fa-map-marker-alt" /> г. Москва, ул. Тверская, 15</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 className="h3-16-medium" style={{ color: 'white' }}>{t('footer.social')}</h3>
+                        <div className="social-icons">
+                            <a href="#"><i className="fab fa-instagram" /></a>
+                            <a href="#"><i className="fab fa-telegram" /></a>
+                            <a href="#"><i className="fab fa-whatsapp" /></a>
+                        </div>
+                    </div>
+                </div>
+                <div className="footer-bottom">
+                    <p className="caption-12">{t('footer.rights')}</p>
+                </div>
+            </div>
+        </footer>
+    )
+}
+</file>
+
+<file path="src/components/Header/Header.jsx">
+import { Link, NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'
+
+export default function Header() {
+    const { t } = useTranslation()
+
+    return (
+        <header className="main-header">
+            <div className="container nav-container">
+                <div className="logo">
+                    <Link to="/" className="logo-18">La Belle Époque</Link>
+                </div>
+                <nav>
+                    <ul className="nav-menu">
+                        <li className="nav-item">
+                            <NavLink to="/" end className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+                                {t('nav.home')}
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/about" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+                                {t('nav.about')}
+                            </NavLink>
+                            <ul className="dropdown-menu">
+                                <li><Link to="/about#restaurants">{t('nav.restaurants')}</Link></li>
+                                <li><Link to="/about#service">{t('nav.service')}</Link></li>
+                                <li><Link to="/contacts">{t('nav.contacts')}</Link></li>
+                                <li><Link to="/about#awards">{t('nav.awards')}</Link></li>
+                                <li><Link to="/about#staff">{t('nav.staff')}</Link></li>
+                                <li><Link to="/about#reviews">{t('nav.reviews')}</Link></li>
+                            </ul>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/menu" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+                                {t('nav.menu')}
+                            </NavLink>
+                            <ul className="dropdown-menu">
+                                <li><Link to="/menu#breakfast">{t('nav.breakfast')}</Link></li>
+                                <li><Link to="/menu#lunch">{t('nav.lunch')}</Link></li>
+                                <li><Link to="/menu#dinner">{t('nav.dinner')}</Link></li>
+                                <li><Link to="/menu#wine">{t('nav.wine')}</Link></li>
+                            </ul>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/news" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+                                {t('nav.news')}
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/events" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+                                {t('nav.events')}
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/contacts" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+                                {t('nav.contacts')}
+                            </NavLink>
+                        </li>
+                    </ul>
+                </nav>
+                <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <LanguageSwitcher />
+                    <Link to="/booking" className="btn btn-primary" style={{ padding: '8px 16px' }}>
+                        {t('nav.booking')}
+                    </Link>
+                </div>
+            </div>
+        </header>
+    )
+}
+</file>
+
+<file path="src/components/HeroSlider/HeroSlider.jsx">
+import { useEffect, useRef } from 'react'
+import Swiper from 'swiper'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+
+export default function HeroSlider({ slides, height = '600px' }) {
+    const swiperRef = useRef(null)
+
+    useEffect(() => {
+        const swiper = new Swiper(swiperRef.current, {
+            modules: [Navigation, Pagination, Autoplay],
+            loop: true,
+            autoplay: { delay: 5000, disableOnInteraction: false },
+            pagination: { el: '.swiper-pagination', clickable: true },
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            speed: 1000,
+        })
+        return () => swiper.destroy()
+    }, [])
+
+    return (
+        <section className="hero-slider" style={{ height }}>
+            <div className="swiper" ref={swiperRef}>
+                <div className="swiper-wrapper">
+                    {slides.map((slide, i) => (
+                        <div className="swiper-slide" key={i}>
+                            <img src={slide.image} alt={slide.title} className="slide-bg" loading="lazy" />
+                            <div className="slide-content">
+                                <h2 className="h1-28">{slide.title}</h2>
+                                {slide.subtitle && <p className="body-16">{slide.subtitle}</p>}
+                                {slide.price && <p className="price-20">{slide.price} ₽</p>}
+                                {slide.link && (
+                                    <a href={slide.link.href} className="btn btn-primary" style={{ marginTop: 'var(--spacing-md)' }}>
+                                        {slide.link.label}
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="swiper-pagination" />
+                <div className="swiper-button-next" />
+                <div className="swiper-button-prev" />
+            </div>
+        </section>
+    )
+}
+</file>
+
+<file path="src/components/LanguageSwitcher/LanguageSwitcher.jsx">
+import { useTranslation } from 'react-i18next'
+
+export default function LanguageSwitcher() {
+    const { i18n } = useTranslation()
+    const current = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    const toggle = () => i18n.changeLanguage(current === 'ru' ? 'en' : 'ru')
+
+    return (
+        <button
+            onClick={toggle}
+            style={{
+                background: 'none',
+                border: '1px solid var(--gray-border)',
+                borderRadius: '20px',
+                padding: '4px 12px',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '13px',
+                fontWeight: 500,
+                color: 'var(--text-primary)',
+                transition: 'all 0.2s',
+            }}
+        >
+            {current === 'ru' ? 'EN' : 'RU'}
+        </button>
+    )
+}
+</file>
+
+<file path="src/components/Layout/layout.jsx">
+import { Outlet, useLocation } from 'react-router-dom'
+import Header from '../Header/Header'
+import Footer from '../Footer/Footer'
+
+export default function Layout() {
+    const { pathname } = useLocation()
+
+    return (
+        <>
+            <Header currentPath={pathname} />
+            <Outlet />
+            <Footer />
+        </>
+    )
+}
+</file>
+
+<file path="src/components/NewsCard/NewsCard.jsx">
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+
+export default function NewsCard({ news }) {
+    const { t, i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    return (
+        <div className="news-card">
+            <img src={news.image_thumb} alt={news[`title_${lang}`]} className="card-img" loading="lazy" />
+            <div className="card-content">
+                <div className="news-date">{news[`date_${lang}`]}</div>
+                <h2 className="h3-16-medium">{news[`title_${lang}`]}</h2>
+                <p className="small-14">{news[`excerpt_${lang}`]}</p>
+                <Link to={`/news/${news.id}`} className="btn-link" style={{ marginTop: 'var(--spacing-sm)', display: 'inline-block' }}>
+                    {t('news.read_more')}
+                </Link>
+            </div>
+        </div>
+    )
+}
+</file>
+
+<file path="src/components/RestaurantCard/RestaurantCard.jsx">
+import { useTranslation } from 'react-i18next'
+
+export default function RestaurantCard({ restaurant }) {
+    const { i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    return (
+        <div className="restaurant-card">
+            <img src={restaurant.image} alt={restaurant[`name_${lang}`]} style={{ width: '100%', borderRadius: '8px' }} loading="lazy" />
+            <div>
+                <h2 className="h2-22">{restaurant[`name_${lang}`]}</h2>
+                <p className="body-16" style={{ margin: 'var(--spacing-sm) 0' }}>{restaurant[`description_${lang}`]}</p>
+                <p className="small-14"><i className="fas fa-map-marker-alt" /> {restaurant[`address_${lang}`]}</p>
+                <p className="small-14"><i className="fas fa-phone" /> {restaurant.phone}</p>
+                <p className="small-14"><i className="fas fa-clock" /> {restaurant[`hours_${lang}`]}</p>
+            </div>
+        </div>
+    )
+}
+</file>
+
+<file path="src/components/ReviewCard/ReviewCard.jsx">
+import { useTranslation } from 'react-i18next'
+
+export default function ReviewCard({ review }) {
+    const { i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+    const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating)
+
+    return (
+        <div className="review-card">
+            <div className="rating">{stars}</div>
+            <p className="body-16" style={{ margin: 'var(--spacing-sm) 0' }}>{review[`text_${lang}`]}</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span className="small-14">{review.name}</span>
+                <span className="caption-12">{review[`date_${lang}`]}</span>
+            </div>
+        </div>
+    )
+}
+</file>
+
+<file path="src/data/menu.json">
+{
+  "recommended": [
+    {
+      "id": "r1",
+      "title_ru": "Утиное филе с ягодным соусом",
+      "title_en": "Duck Fillet with Berry Sauce",
+      "price": 2450,
+      "image": "https://picsum.photos/1920/500?random=80"
+    },
+    {
+      "id": "r2",
+      "title_ru": "Стейк из мраморной говядины",
+      "title_en": "Marbled Beef Steak",
+      "price": 3800,
+      "description_ru": "С соусом из трюфеля",
+      "description_en": "With truffle sauce",
+      "image": "https://picsum.photos/1920/500?random=81"
+    },
+    {
+      "id": "r3",
+      "title_ru": "Трюфельное ризотто",
+      "title_en": "Truffle Risotto",
+      "price": 2100,
+      "description_ru": "С белым трюфелем и пармезаном",
+      "description_en": "With white truffle and parmesan",
+      "image": "https://picsum.photos/1920/500?random=82"
+    }
+  ],
+  "categories": [
+    { "id": "breakfast", "title_ru": "Завтраки", "title_en": "Breakfast", "image": "https://picsum.photos/200/200?random=50" },
+    { "id": "salads", "title_ru": "Салаты", "title_en": "Salads", "image": "https://picsum.photos/200/200?random=51" },
+    { "id": "hot", "title_ru": "Горячие блюда", "title_en": "Hot Dishes", "image": "https://picsum.photos/200/200?random=52" },
+    { "id": "desserts", "title_ru": "Десерты", "title_en": "Desserts", "image": "https://picsum.photos/200/200?random=53" },
+    { "id": "wine", "title_ru": "Винная карта", "title_en": "Wine List", "image": "https://picsum.photos/200/200?random=54" }
+  ],
+  "items": {
+    "breakfast": [
+      {
+        "id": "b1",
+        "title_ru": "Классический английский завтрак",
+        "title_en": "Classic English Breakfast",
+        "description_ru": "Яйца пашот, бекон, сосиски, бобы, томаты, тосты",
+        "description_en": "Poached eggs, bacon, sausages, beans, tomatoes, toast",
+        "price": 890,
+        "image": "https://picsum.photos/100/100?random=90"
+      },
+      {
+        "id": "b2",
+        "title_ru": "Омлет с трюфелем",
+        "title_en": "Truffle Omelette",
+        "description_ru": "Нежный омлет с белым трюфелем и пармезаном",
+        "description_en": "Tender omelette with white truffle and parmesan",
+        "price": 750,
+        "image": "https://picsum.photos/100/100?random=91"
+      },
+      {
+        "id": "b3",
+        "title_ru": "Французские тосты с кленовым сиропом",
+        "title_en": "French Toast with Maple Syrup",
+        "description_ru": "Бриошь, кленовый сироп, ягоды, взбитые сливки",
+        "description_en": "Brioche, maple syrup, berries, whipped cream",
+        "price": 590,
+        "image": "https://picsum.photos/100/100?random=92"
+      }
+    ],
+    "salads": [
+      {
+        "id": "s1",
+        "title_ru": "Салат с креветками и авокадо",
+        "title_en": "Shrimp and Avocado Salad",
+        "description_ru": "Тигровые креветки, авокадо, руккола, соус цезарь",
+        "description_en": "Tiger shrimp, avocado, arugula, caesar dressing",
+        "price": 1650,
+        "image": "https://picsum.photos/100/100?random=93"
+      },
+      {
+        "id": "s2",
+        "title_ru": "Нисуаз с тунцом",
+        "title_en": "Tuna Niçoise",
+        "description_ru": "Тунец, яйцо, фасоль, помидоры, оливки",
+        "description_en": "Tuna, egg, beans, tomatoes, olives",
+        "price": 1250,
+        "image": "https://picsum.photos/100/100?random=94"
+      }
+    ],
+    "hot": [
+      {
+        "id": "h1",
+        "title_ru": "Утиное филе с ягодным соусом",
+        "title_en": "Duck Fillet with Berry Sauce",
+        "description_ru": "Нежное филе утки, соус из лесных ягод, запеченные овощи",
+        "description_en": "Tender duck fillet, forest berry sauce, roasted vegetables",
+        "price": 2450,
+        "image": "https://picsum.photos/100/100?random=60"
+      },
+      {
+        "id": "h2",
+        "title_ru": "Стейк из мраморной говядины",
+        "title_en": "Marbled Beef Steak",
+        "description_ru": "Мраморная говядина, соус из трюфеля, картофельное пюре",
+        "description_en": "Marbled beef, truffle sauce, mashed potatoes",
+        "price": 3800,
+        "image": "https://picsum.photos/100/100?random=61"
+      },
+      {
+        "id": "h3",
+        "title_ru": "Трюфельный ризотто",
+        "title_en": "Truffle Risotto",
+        "description_ru": "Рис арборио, белый трюфель, пармезан",
+        "description_en": "Arborio rice, white truffle, parmesan",
+        "price": 2100,
+        "image": "https://picsum.photos/100/100?random=63"
+      },
+      {
+        "id": "h4",
+        "title_ru": "Морепродукты на гриле",
+        "title_en": "Grilled Seafood",
+        "description_ru": "Креветки, мидии, кальмары, соус чили",
+        "description_en": "Shrimp, mussels, squid, chili sauce",
+        "price": 2900,
+        "image": "https://picsum.photos/100/100?random=64"
+      }
+    ],
+    "desserts": [
+      {
+        "id": "d1",
+        "title_ru": "Тирамису",
+        "title_en": "Tiramisu",
+        "description_ru": "Классический итальянский десерт с маскарпоне",
+        "description_en": "Classic Italian dessert with mascarpone",
+        "price": 550,
+        "image": "https://picsum.photos/100/100?random=95"
+      },
+      {
+        "id": "d2",
+        "title_ru": "Крем-брюле",
+        "title_en": "Crème Brûlée",
+        "description_ru": "Нежный заварной крем с карамельной корочкой",
+        "description_en": "Tender custard with caramel crust",
+        "price": 490,
+        "image": "https://picsum.photos/100/100?random=96"
+      },
+      {
+        "id": "d3",
+        "title_ru": "Шоколадный фондан",
+        "title_en": "Chocolate Fondant",
+        "description_ru": "С жидкой начинкой, с ванильным мороженым",
+        "description_en": "With liquid center, served with vanilla ice cream",
+        "price": 590,
+        "image": "https://picsum.photos/100/100?random=97"
+      }
+    ],
+    "wine": [
+      {
+        "id": "w1",
+        "title_ru": "Château Margaux 2015",
+        "title_en": "Château Margaux 2015",
+        "description_ru": "Франция, Бордо, красное сухое",
+        "description_en": "France, Bordeaux, dry red",
+        "price": 45000,
+        "image": "https://picsum.photos/100/100?random=98"
+      },
+      {
+        "id": "w2",
+        "title_ru": "Dom Pérignon 2012",
+        "title_en": "Dom Pérignon 2012",
+        "description_ru": "Франция, Шампань, игристое",
+        "description_en": "France, Champagne, sparkling",
+        "price": 32000,
+        "image": "https://picsum.photos/100/100?random=99"
+      }
+    ]
+  },
+  "eventDishes": [
+    { "id": "dish1", "title_ru": "Утиное филе с ягодным соусом", "title_en": "Duck Fillet with Berry Sauce", "price": 2450 },
+    { "id": "dish2", "title_ru": "Стейк из мраморной говядины", "title_en": "Marbled Beef Steak", "price": 3800 },
+    { "id": "dish3", "title_ru": "Салат с креветками и авокадо", "title_en": "Shrimp and Avocado Salad", "price": 1650 },
+    { "id": "dish4", "title_ru": "Трюфельный ризотто", "title_en": "Truffle Risotto", "price": 2100 }
+  ]
+}
+</file>
+
+<file path="src/data/news.json">
+[
+  {
+    "id": "1",
+    "title_ru": "Новое меню от шеф-повара",
+    "title_en": "New Chef's Menu",
+    "date_ru": "15 марта 2024",
+    "date_en": "March 15, 2024",
+    "excerpt_ru": "Представляем весеннее меню с акцентом на свежие сезонные продукты. Шеф-повар Жан-Пьер Дюбуа создал уникальные блюда, которые подчеркивают вкус весны.",
+    "excerpt_en": "We present the spring menu with an emphasis on fresh seasonal products. Chef Jean-Pierre Dubois has created unique dishes that highlight the taste of spring.",
+    "content_ru": "Мы рады представить вам новое весеннее меню, разработанное нашим шеф-поваром Жан-Пьером Дюбуа. Вдохновение для создания новых блюд пришло с приходом весны — свежие овощи, зелень и первые ягоды стали основой для обновленной карты.\n\nВ меню появились легкие салаты с креветками и авокадо, обновленная паста с морепродуктами и новый десерт — лимонный тарт с безе. Также шеф-повар подготовил специальное предложение — весенний сет из трех блюд по специальной цене.",
+    "content_en": "We are pleased to present the new spring menu developed by our chef Jean-Pierre Dubois. Inspiration for creating new dishes came with the arrival of spring — fresh vegetables, greens and the first berries became the basis for the updated menu.\n\nThe menu features light salads with shrimp and avocado, updated pasta with seafood and a new dessert — lemon tart with meringue.",
+    "tags": ["newmenu", "spring2024", "chef"],
+    "image": "https://picsum.photos/1200/600?random=20",
+    "image_thumb": "https://picsum.photos/400/250?random=20"
+  },
+  {
+    "id": "2",
+    "title_ru": "Гастрономический ужин",
+    "title_en": "Gastronomic Dinner",
+    "date_ru": "10 марта 2024",
+    "date_en": "March 10, 2024",
+    "excerpt_ru": "Приглашаем на уникальный гастрономический вечер с дегустацией вин. 25 марта в нашем ресторане на Тверской состоится специальный ужин от шеф-повара.",
+    "excerpt_en": "We invite you to a unique gastronomic evening with wine tasting. On March 25, a special chef's dinner will take place at our Tverskaya restaurant.",
+    "content_ru": "Приглашаем вас на дегустацию нового меню, которая состоится 25 марта в нашем ресторане на Тверской.",
+    "content_en": "We invite you to a tasting of the new menu on March 25 at our Tverskaya restaurant.",
+    "tags": ["dinner", "winetasting"],
+    "image": "https://picsum.photos/1200/600?random=21",
+    "image_thumb": "https://picsum.photos/400/250?random=21"
+  },
+  {
+    "id": "3",
+    "title_ru": "Скидка именинникам",
+    "title_en": "Birthday Discount",
+    "date_ru": "5 марта 2024",
+    "date_en": "March 5, 2024",
+    "excerpt_ru": "В день рождения — скидка 20% на всё меню при предъявлении паспорта. Празднуйте свой день рождения в La Belle Époque!",
+    "excerpt_en": "On your birthday — 20% discount on the entire menu upon presentation of passport. Celebrate your birthday at La Belle Époque!",
+    "content_ru": "В день рождения — скидка 20% на всё меню при предъявлении паспорта.",
+    "content_en": "On your birthday — 20% discount on the entire menu upon presentation of passport.",
+    "tags": ["discount", "birthday"],
+    "image": "https://picsum.photos/1200/600?random=22",
+    "image_thumb": "https://picsum.photos/400/250?random=22"
+  },
+  {
+    "id": "4",
+    "title_ru": "Новый ресторан — открытие",
+    "title_en": "New Restaurant Opening",
+    "date_ru": "28 февраля 2024",
+    "date_en": "February 28, 2024",
+    "excerpt_ru": "В апреле открывается наш третий ресторан в центре Москвы. Следите за новостями!",
+    "excerpt_en": "In April, our third restaurant opens in the center of Moscow. Stay tuned!",
+    "content_ru": "В апреле открывается наш третий ресторан в центре Москвы.",
+    "content_en": "In April, our third restaurant opens in the center of Moscow.",
+    "tags": ["opening", "newrestaurant"],
+    "image": "https://picsum.photos/1200/600?random=23",
+    "image_thumb": "https://picsum.photos/400/250?random=23"
+  },
+  {
+    "id": "5",
+    "title_ru": "Мастер-класс от шефа",
+    "title_en": "Chef's Masterclass",
+    "date_ru": "20 февраля 2024",
+    "date_en": "February 20, 2024",
+    "excerpt_ru": "Каждую субботу проводим кулинарные мастер-классы. Научитесь готовить французские круассаны!",
+    "excerpt_en": "Every Saturday we hold culinary master classes. Learn to make French croissants!",
+    "content_ru": "Каждую субботу проводим кулинарные мастер-классы.",
+    "content_en": "Every Saturday we hold culinary master classes.",
+    "tags": ["masterclass", "cooking"],
+    "image": "https://picsum.photos/1200/600?random=24",
+    "image_thumb": "https://picsum.photos/400/250?random=24"
+  },
+  {
+    "id": "6",
+    "title_ru": "Романтический ужин на День влюблённых",
+    "title_en": "Romantic Valentine's Day Dinner",
+    "date_ru": "14 февраля 2024",
+    "date_en": "February 14, 2024",
+    "excerpt_ru": "Специальное меню и живая музыка для вашего идеального вечера.",
+    "excerpt_en": "Special menu and live music for your perfect evening.",
+    "content_ru": "Специальное меню и живая музыка для вашего идеального вечера.",
+    "content_en": "Special menu and live music for your perfect evening.",
+    "tags": ["valentine", "romantic"],
+    "image": "https://picsum.photos/1200/600?random=25",
+    "image_thumb": "https://picsum.photos/400/250?random=25"
+  }
+]
+</file>
+
+<file path="src/data/restaurants.json">
+[
+  {
+    "id": "1",
+    "name_ru": "Ресторан на Тверской",
+    "name_en": "Tverskaya Restaurant",
+    "description_ru": "Изысканный ресторан французской кухни в самом сердце Москвы. Интерьеры в стиле Belle Époque, живая музыка по вечерам.",
+    "description_en": "An exquisite French cuisine restaurant in the heart of Moscow. Belle Époque style interiors, live music in the evenings.",
+    "address_ru": "ул. Тверская, 15",
+    "address_en": "Tverskaya St., 15",
+    "phone": "+7 (495) 123-45-67",
+    "hours_ru": "Пн-Вс: 12:00 - 00:00",
+    "hours_en": "Mon-Sun: 12:00 - 00:00",
+    "image": "https://picsum.photos/500/400?random=30"
+  },
+  {
+    "id": "2",
+    "name_ru": "Ресторан на Патриарших",
+    "name_en": "Patriarshiye Ponds Restaurant",
+    "description_ru": "Уютный ресторан с видом на Патриаршие пруды. Идеальное место для романтического ужина.",
+    "description_en": "A cozy restaurant overlooking the Patriarshiye Ponds. The perfect place for a romantic dinner.",
+    "address_ru": "Малый Патриарший пер., 5",
+    "address_en": "Maly Patriarshiy Ln., 5",
+    "phone": "+7 (495) 765-43-21",
+    "hours_ru": "Пн-Вс: 12:00 - 02:00",
+    "hours_en": "Mon-Sun: 12:00 - 02:00",
+    "image": "https://picsum.photos/500/400?random=31"
+  }
+]
+</file>
+
+<file path="src/data/reviews.json">
+[
+  {
+    "id": "1",
+    "name": "Анна Иванова",
+    "rating": 5,
+    "text_ru": "Потрясающий ресторан! Обслуживание на высшем уровне, блюда — настоящие шедевры.",
+    "text_en": "Amazing restaurant! Service at the highest level, dishes are real masterpieces.",
+    "date_ru": "15 марта 2024",
+    "date_en": "March 15, 2024"
+  },
+  {
+    "id": "2",
+    "name": "Михаил Петров",
+    "rating": 4,
+    "text_ru": "Отличное место для романтического ужина. Интерьеры шикарные, музыка приятная.",
+    "text_en": "Excellent place for a romantic dinner. Gorgeous interiors, pleasant music.",
+    "date_ru": "10 марта 2024",
+    "date_en": "March 10, 2024"
+  },
+  {
+    "id": "3",
+    "name": "Елена Сидорова",
+    "rating": 5,
+    "text_ru": "Лучший ресторан в городе! Обслуживание безупречное, еда восхитительная.",
+    "text_en": "Best restaurant in the city! Impeccable service, divine food.",
+    "date_ru": "5 марта 2024",
+    "date_en": "March 5, 2024"
+  }
+]
+</file>
+
+<file path="src/i18n/index.js">
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import ru from './locales/ru.json';
+import en from './locales/en.json';
+
+i18n
+    .use(LanguageDetector)
+    .use(initReactI18next)
+    .init({
+        resources: { ru: { translation: ru }, en: { translation: en } },
+        fallbackLng: 'ru',
+        interpolation: { escapeValue: false },
+    });
+
+export default i18n;
+</file>
+
+<file path="src/i18n/locales/en.json">
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "menu": "Menu",
+    "news": "News",
+    "events": "Events",
+    "contacts": "Contacts",
+    "booking": "Book a Table",
+    "restaurants": "Restaurants",
+    "service": "Service",
+    "awards": "Awards",
+    "staff": "Staff",
+    "reviews": "Reviews",
+    "breakfast": "Breakfast",
+    "lunch": "Business Lunch",
+    "dinner": "Dinner",
+    "wine": "Wine List"
+  },
+  "footer": {
+    "description": "A network of French cuisine restaurants in Moscow",
+    "quick_links": "Quick Links",
+    "contacts": "Contacts",
+    "social": "Follow Us",
+    "rights": "© 2024 La Belle Époque. All rights reserved.",
+    "sitemap": "Sitemap"
+  },
+  "home": {
+    "hero_title_1": "Exquisite Cuisine",
+    "hero_sub_1": "Discover the world of gastronomic pleasures",
+    "hero_title_2": "Cozy Atmosphere",
+    "hero_sub_2": "The perfect place for a romantic dinner",
+    "hero_title_3": "Author's Cuisine",
+    "hero_sub_3": "Chef with a world-renowned name",
+    "advantages_title": "Our Advantages",
+    "adv_1_title": "Chefs from France",
+    "adv_1_desc": "Dishes prepared from original recipes",
+    "adv_2_title": "Freshest Ingredients",
+    "adv_2_desc": "Only the finest farm products",
+    "adv_3_title": "Cozy Atmosphere",
+    "adv_3_desc": "Belle Époque style interiors",
+    "news_title": "News & Events",
+    "all_news": "All News →",
+    "about_title": "About the Restaurant",
+    "more": "More →",
+    "about_story_title": "A Story of Success",
+    "about_text_1": "La Belle Époque is a network of French cuisine restaurants where tradition meets modernity. Our chefs prepare dishes from original recipes, using only fresh farm products.",
+    "about_text_2": "A cozy atmosphere, live music and impeccable service await you in each of our restaurants.",
+    "our_restaurants": "Our Restaurants",
+    "categories_title": "Popular Categories",
+    "all_menu": "Full Menu →",
+    "cta_title": "Book Your Table Right Now",
+    "cta_sub": "Immerse yourself in exquisite cuisine and a unique atmosphere",
+    "book_table": "Book a Table",
+    "order_event": "Order an Event",
+    "see_menu": "View Menu",
+    "book_now": "Book a Table",
+    "read_more": "Read more →"
+  },
+  "about": {
+    "title": "Our Restaurants",
+    "service_title": "Service",
+    "awards_title": "Awards & Achievements",
+    "staff_title": "Our Team",
+    "reviews_title": "Guest Reviews",
+    "leave_review": "Leave a Review",
+    "service_1_title": "Premium Service",
+    "service_1_desc": "Professional waiters and sommeliers",
+    "service_2_title": "Live Music",
+    "service_2_desc": "Evening jazz performances",
+    "service_3_title": "Banquet Hall",
+    "service_3_desc": "Events for up to 100 guests"
+  },
+  "menu": {
+    "title": "Menu Categories",
+    "breakfast": "Breakfast",
+    "salads": "Salads",
+    "hot": "Hot Dishes",
+    "desserts": "Desserts",
+    "wine": "Wine List",
+    "recommended": "Chef's recommended dish",
+    "per_portion": "/ portion"
+  },
+  "news": {
+    "title": "News & Events",
+    "read_more": "Read more →",
+    "back": "← All News",
+    "book_table": "Book a Table"
+  },
+  "events": {
+    "title": "Order an Event",
+    "calculator_title": "Menu Cost Calculator",
+    "calculator_desc": "Select dishes for your event. Price is calculated per guest.",
+    "total_label": "Cost per guest:",
+    "total_note": "* The total cost is calculated as: dish price × number of portions.",
+    "submit": "Submit Request",
+    "search_placeholder": "Search dishes by name...",
+    "no_results": "Nothing found 😔",
+    "no_results_hint": "Try changing the search query",
+    "found": "Dishes found:"
+  },
+  "contacts": {
+    "title": "Contacts",
+    "reach_us": "Reach Us",
+    "hours": "Working Hours",
+    "write_us": "Write to Us",
+    "send": "Send Message",
+    "map_title": "Directions",
+    "map_desc": "Interactive map with restaurant markers",
+    "map_sub": "Moscow, Tverskaya St., 15 | Maly Patriarshiy Ln., 5",
+    "metro": "Metro stations: Tverskaya, Pushkinskaya, Chekhovskaya"
+  },
+  "booking": {
+    "title": "Book a Table",
+    "name": "Full Name *",
+    "phone": "Phone *",
+    "email": "Email *",
+    "restaurant": "Restaurant *",
+    "choose_restaurant": "Choose a restaurant",
+    "date": "Date *",
+    "time": "Time *",
+    "guests": "Number of Guests (1-50) *",
+    "wishes": "Additional Wishes",
+    "wishes_placeholder": "Special seating requests, allergies, special occasions, etc.",
+    "submit": "Book Now"
+  },
+  "forms": {
+    "name_placeholder": "John Doe",
+    "phone_placeholder": "+7 (___) ___-__-__",
+    "email_placeholder": "john@example.com",
+    "message_placeholder": "Message",
+    "your_name": "Your Name",
+    "rating": "Rating *",
+    "review_text": "Review Text *",
+    "cancel": "Cancel",
+    "send": "Send"
+  },
+  "breadcrumbs": {
+    "home": "Home"
+  }
+}
+</file>
+
+<file path="src/i18n/locales/ru.json">
+{
+  "nav": {
+    "home": "Главная",
+    "about": "О нас",
+    "menu": "Меню",
+    "news": "Новости",
+    "events": "Мероприятия",
+    "contacts": "Контакты",
+    "booking": "Бронировать",
+    "restaurants": "Рестораны",
+    "service": "Обслуживание",
+    "awards": "Награды",
+    "staff": "Персонал",
+    "reviews": "Отзывы",
+    "breakfast": "Завтраки",
+    "lunch": "Бизнес-ланчи",
+    "dinner": "Ужины",
+    "wine": "Винная карта"
+  },
+  "footer": {
+    "description": "Сеть ресторанов французской кухни в Москве",
+    "quick_links": "Быстрые ссылки",
+    "contacts": "Контакты",
+    "social": "Мы в соцсетях",
+    "rights": "© 2024 La Belle Époque. Все права защищены.",
+    "sitemap": "Карта сайта"
+  },
+  "home": {
+    "hero_title_1": "Изысканная кухня",
+    "hero_sub_1": "Откройте для себя мир гастрономических наслаждений",
+    "hero_title_2": "Уютная атмосфера",
+    "hero_sub_2": "Идеальное место для романтического ужина",
+    "hero_title_3": "Авторская кухня",
+    "hero_sub_3": "Шеф-повар с мировым именем",
+    "advantages_title": "Наши преимущества",
+    "adv_1_title": "Шеф-повара из Франции",
+    "adv_1_desc": "Приготовление блюд по оригинальным рецептам",
+    "adv_2_title": "Свежайшие продукты",
+    "adv_2_desc": "Только фермерские продукты высшего качества",
+    "adv_3_title": "Атмосфера уюта",
+    "adv_3_desc": "Интерьеры в стиле Belle Époque",
+    "news_title": "Новости и события",
+    "all_news": "Все новости →",
+    "about_title": "О ресторане",
+    "more": "Подробнее →",
+    "about_story_title": "История успеха",
+    "about_text_1": "La Belle Époque — это сеть ресторанов французской кухни, где традиции встречаются с современностью. Наши шеф-повара готовят блюда по авторским рецептам, используя только свежие фермерские продукты.",
+    "about_text_2": "Уютная атмосфера, живая музыка и безупречное обслуживание ждут вас в каждом нашем ресторане.",
+    "our_restaurants": "Наши рестораны",
+    "categories_title": "Популярные категории",
+    "all_menu": "Всё меню →",
+    "cta_title": "Забронируйте столик прямо сейчас",
+    "cta_sub": "Окунитесь в мир изысканной кухни и неповторимой атмосферы",
+    "book_table": "Забронировать стол",
+    "order_event": "Заказать мероприятие",
+    "see_menu": "Смотреть меню",
+    "book_now": "Забронировать стол",
+    "read_more": "Читать далее →"
+  },
+  "about": {
+    "title": "Наши рестораны",
+    "service_title": "Обслуживание",
+    "awards_title": "Награды и достижения",
+    "staff_title": "Наша команда",
+    "reviews_title": "Отзывы гостей",
+    "leave_review": "Оставить отзыв",
+    "service_1_title": "Высокий сервис",
+    "service_1_desc": "Профессиональные официанты и сомелье",
+    "service_2_title": "Живая музыка",
+    "service_2_desc": "Вечерние выступления джазовых коллективов",
+    "service_3_title": "Банкетный зал",
+    "service_3_desc": "Проведение мероприятий до 100 гостей"
+  },
+  "menu": {
+    "title": "Категории меню",
+    "breakfast": "Завтраки",
+    "salads": "Салаты",
+    "hot": "Горячие блюда",
+    "desserts": "Десерты",
+    "wine": "Винная карта",
+    "recommended": "Рекомендуемое блюдо шеф-повара",
+    "per_portion": "/ порция"
+  },
+  "news": {
+    "title": "Новости и события",
+    "read_more": "Читать подробнее →",
+    "back": "← Все новости",
+    "book_table": "Забронировать стол"
+  },
+  "events": {
+    "title": "Заказ мероприятия",
+    "calculator_title": "Калькулятор стоимости меню",
+    "calculator_desc": "Выберите блюда для вашего мероприятия. Стоимость рассчитана на одного гостя.",
+    "total_label": "Стоимость на одного гостя:",
+    "total_note": "* Итоговая стоимость рассчитывается как: цена блюда × количество порций.",
+    "submit": "Отправить заявку",
+    "search_placeholder": "Поиск блюд по названию...",
+    "no_results": "Ничего не найдено 😔",
+    "no_results_hint": "Попробуйте изменить поисковый запрос",
+    "found": "Найдено блюд:"
+  },
+  "contacts": {
+    "title": "Контакты",
+    "reach_us": "Свяжитесь с нами",
+    "hours": "Режим работы",
+    "write_us": "Напишите нам",
+    "send": "Отправить сообщение",
+    "map_title": "Схема проезда",
+    "map_desc": "Интерактивная карта с метками ресторанов",
+    "map_sub": "г. Москва, ул. Тверская, 15 | Малый Патриарший пер., 5",
+    "metro": "Станции метро: Тверская, Пушкинская, Чеховская"
+  },
+  "booking": {
+    "title": "Бронирование столика",
+    "name": "Имя и фамилия *",
+    "phone": "Телефон *",
+    "email": "Email *",
+    "restaurant": "Ресторан *",
+    "choose_restaurant": "Выберите ресторан",
+    "date": "Дата *",
+    "time": "Время *",
+    "guests": "Количество гостей (1-50) *",
+    "wishes": "Дополнительные пожелания",
+    "wishes_placeholder": "Особые пожелания по посадке, аллергии, особые случаи и т.д.",
+    "submit": "Забронировать"
+  },
+  "forms": {
+    "name_placeholder": "Иван Иванов",
+    "phone_placeholder": "+7 (___) ___-__-__",
+    "email_placeholder": "ivan@example.com",
+    "message_placeholder": "Сообщение",
+    "your_name": "Ваше имя",
+    "rating": "Оценка *",
+    "review_text": "Текст отзыва *",
+    "cancel": "Отмена",
+    "send": "Отправить"
+  },
+  "breadcrumbs": {
+    "home": "Главная"
+  }
+}
+</file>
+
+<file path="src/index.css">
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+</file>
+
+<file path="src/main.jsx">
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import './i18n/index.js'
+import './styles/global.css'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+</file>
+
+<file path="src/pages/About/About.jsx">
+import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
+import ReviewCard from '../../components/ReviewCard/ReviewCard'
+import restaurantsData from '../../data/restaurants.json'
+import reviewsData from '../../data/reviews.json'
+
+function ReviewModal({ onClose }) {
+    const { t } = useTranslation()
+    const [form, setForm] = useState({ name: '', email: '', rating: '5', text: '' })
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log('Review submit:', form)
+        alert('Спасибо за отзыв!')
+        onClose()
+    }
+
+    return (
+        <div className="modal active" onClick={e => e.target === e.currentTarget && onClose()}>
+            <div className="modal-content">
+                <h2 className="h2-22">Оставить отзыв</h2>
+                <form onSubmit={handleSubmit}>
+                    {['name', 'email'].map(f => (
+                        <div className="form-group" key={f}>
+                            <label className="form-label">{f === 'name' ? t('forms.your_name') : 'Email'}</label>
+                            <input type={f === 'email' ? 'email' : 'text'} className="form-control"
+                                   value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))} required />
+                        </div>
+                    ))}
+                    <div className="form-group">
+                        <label className="form-label">{t('forms.rating')}</label>
+                        <select className="form-control" value={form.rating} onChange={e => setForm(p => ({ ...p, rating: e.target.value }))}>
+                            {[5, 4, 3, 2, 1].map(r => <option key={r} value={r}>{'★'.repeat(r)} ({r})</option>)}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">{t('forms.review_text')}</label>
+                        <textarea className="form-control" rows={4} required value={form.text}
+                                  onChange={e => setForm(p => ({ ...p, text: e.target.value }))} />
+                    </div>
+                    <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
+                        <button type="submit" className="btn btn-primary">{t('forms.send')}</button>
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>{t('forms.cancel')}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    )
+}
+
+export default function About() {
+    const { t,i18n } = useTranslation()
+    const [showModal, setShowModal] = useState(false)
+
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    const services = [
+        { icon: 'fa-concierge-bell', title: t('about.service_1_title'), desc: t('about.service_1_desc') },
+        { icon: 'fa-music', title: t('about.service_2_title'), desc: t('about.service_2_desc') },
+        { icon: 'fa-glass-cheers', title: t('about.service_3_title'), desc: t('about.service_3_desc') },
+    ]
+
+    const staff = [
+        { img: 'https://picsum.photos/300/300?random=40', name: 'Жан-Пьер Дюбуа', role_ru: 'Шеф-повар', role_en: 'Head Chef', desc_ru: 'Обладатель звезды Мишлен', desc_en: 'Michelin Star holder' },
+        { img: 'https://picsum.photos/300/300?random=41', name: 'Мария Соколова', role_ru: 'Сомелье', role_en: 'Sommelier', desc_ru: 'Лучший сомелье России', desc_en: "Russia's best sommelier" },
+        { img: 'https://picsum.photos/300/300?random=42', name: 'Алексей Волков', role_ru: 'Шеф-кондитер', role_en: 'Pastry Chef', desc_ru: 'Стажировка в Париже', desc_en: 'Trained in Paris' },
+        { img: 'https://picsum.photos/300/300?random=43', name: 'Екатерина Морозова', role_ru: 'Управляющий', role_en: 'Manager', desc_ru: '20 лет в ресторанном бизнесе', desc_en: '20 years in the restaurant business' },
+    ]
+
+    const awards = [
+        { img: 'https://picsum.photos/300/200?random=70', title_ru: 'Звезда Мишлен', title_en: 'Michelin Star', year: '2023', desc_ru: 'Присуждена за выдающуюся кухню', desc_en: 'Awarded for outstanding cuisine' },
+        { img: 'https://picsum.photos/300/200?random=71', title_ru: 'Лучший ресторан Москвы', title_en: 'Best Moscow Restaurant', year: '2022', desc_ru: 'Премия "Пальмовая ветвь"', desc_en: '"Palm Branch" award' },
+        { img: 'https://picsum.photos/300/200?random=72', title_ru: 'Лучший сомелье', title_en: 'Best Sommelier', year: '2021', desc_ru: 'Мария Соколова', desc_en: 'Maria Sokolova' },
+    ]
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><a href="/">{t('breadcrumbs.home')}</a></li><li>{t('nav.about')}</li></ul></div></div>
+
+            {/* Restaurants */}
+            <section id="restaurants" className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('about.title')}</h1>
+                    {restaurantsData.map(r => <RestaurantCard key={r.id} restaurant={r} />)}
+                </div>
+            </section>
+
+            {/* Service */}
+            <section id="service" className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('about.service_title')}</h2>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--spacing-lg)' }}>
+                        {services.map((s, i) => (
+                            <div className="card" key={i}>
+                                <div className="card-content">
+                                    <i className={`fas ${s.icon}`} style={{ fontSize: 48, color: 'var(--brand-gold-default)' }} />
+                                    <h3 className="h3-16-medium" style={{ marginTop: 'var(--spacing-md)' }}>{s.title}</h3>
+                                    <p className="small-14">{s.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Awards */}
+            <section id="awards" className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('about.awards_title')}</h2>
+                    <div className="awards-grid">
+                        {awards.map((a, i) => (
+                            <div className="award-card card" key={i}>
+                                <img src={a.img} alt={a.title_ru} className="card-img" />
+                                <div className="card-content">
+                                    <h3 className="h3-16-medium">{a[`title_${lang}`] || a.title_ru}</h3>
+                                    <p className="label-11-uppercase">{a.year}</p>
+                                    <p className="small-14">{a[`desc_${lang}`] || a.desc_ru}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Staff */}
+            <section id="staff" className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('about.staff_title')}</h2>
+                    <div className="staff-grid">
+                        {staff.map((s, i) => (
+                            <div className="staff-card" key={i}>
+                                <img src={s.img} alt={s.name} className="staff-img" />
+                                <h3 className="h3-16-medium">{s.name}</h3>
+                                <p className="small-14">{s[`role_${lang}`]}</p>
+                                <p className="caption-12">{s[`desc_${lang}`]}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Reviews */}
+            <section id="reviews" className="page-section">
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+                        <h2 className="h1-28">{t('about.reviews_title')}</h2>
+                        <button className="btn btn-secondary" onClick={() => setShowModal(true)}>{t('about.leave_review')}</button>
+                    </div>
+                    {reviewsData.map(r => <ReviewCard key={r.id} review={r} />)}
+                </div>
+            </section>
+
+            {showModal && <ReviewModal onClose={() => setShowModal(false)} />}
+        </main>
+    )
+}
+</file>
+
+<file path="src/pages/Booking/Booking.jsx">
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import BookingForm from '../../components/BookingForm/BookingForm'
+
+export default function Booking() {
+    const { t } = useTranslation()
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('booking.title')}</li></ul></div></div>
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('booking.title')}</h1>
+                    <div style={{ maxWidth: 600, margin: '0 auto', background: 'var(--bg-white)', padding: 'var(--spacing-lg)', borderRadius: 8 }}>
+                        <BookingForm />
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="src/pages/Contacts/Contacts.jsx">
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+
+export default function Contacts() {
+    const { t } = useTranslation()
+    const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log('Contact form:', form)
+        alert(t('contacts.send') + ' — OK!')
+        setForm({ name: '', email: '', phone: '', message: '' })
+    }
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('nav.contacts')}</li></ul></div></div>
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('contacts.title')}</h1>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-xl)' }}>
+                        <div>
+                            <h2 className="h2-22" style={{ marginBottom: 'var(--spacing-md)' }}>{t('contacts.reach_us')}</h2>
+                            <p className="body-16" style={{ marginBottom: 'var(--spacing-sm)' }}><i className="fas fa-phone" style={{ color: 'var(--brand-red-default)', width: 30 }} /> +7 (495) 123-45-67</p>
+                            <p className="body-16" style={{ marginBottom: 'var(--spacing-sm)' }}><i className="fas fa-envelope" style={{ color: 'var(--brand-red-default)', width: 30 }} /> info@labelleepoque.ru</p>
+                            <p className="body-16" style={{ marginBottom: 'var(--spacing-lg)' }}><i className="fas fa-map-marker-alt" style={{ color: 'var(--brand-red-default)', width: 30 }} /> г. Москва, ул. Тверская, 15</p>
+                            <h2 className="h2-22" style={{ marginBottom: 'var(--spacing-md)' }}>{t('contacts.hours')}</h2>
+                            <p className="body-16"><strong>Ресторан на Тверской:</strong></p>
+                            <p className="small-14">Пн-Вс: 12:00 - 00:00</p>
+                            <p className="body-16" style={{ marginTop: 'var(--spacing-sm)' }}><strong>Ресторан на Патриарших:</strong></p>
+                            <p className="small-14">Пн-Вс: 12:00 - 02:00</p>
+                        </div>
+                        <div>
+                            <h2 className="h2-22" style={{ marginBottom: 'var(--spacing-md)' }}>{t('contacts.write_us')}</h2>
+                            <form onSubmit={handleSubmit}>
+                                {[
+                                    { name: 'name', type: 'text', placeholder: t('forms.name_placeholder') },
+                                    { name: 'email', type: 'email', placeholder: t('forms.email_placeholder') },
+                                    { name: 'phone', type: 'tel', placeholder: t('forms.phone_placeholder') },
+                                ].map(f => (
+                                    <div className="form-group" key={f.name}>
+                                        <input type={f.type} className="form-control" placeholder={f.placeholder}
+                                               value={form[f.name]} onChange={e => setForm(p => ({ ...p, [f.name]: e.target.value }))}
+                                               required={f.name !== 'phone'} />
+                                    </div>
+                                ))}
+                                <div className="form-group">
+                  <textarea className="form-control" rows={5} placeholder={t('forms.message_placeholder')} required
+                            value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} />
+                                </div>
+                                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>{t('contacts.send')}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('contacts.map_title')}</h2>
+                    <div className="map-placeholder">
+                        <div style={{ textAlign: 'center' }}>
+                            <i className="fas fa-map-marker-alt" style={{ fontSize: 48, marginBottom: 'var(--spacing-md)', color: 'var(--brand-red-default)' }} />
+                            <p className="body-16">{t('contacts.map_desc')}</p>
+                            <p className="caption-12" style={{ marginTop: 'var(--spacing-sm)' }}>{t('contacts.map_sub')}</p>
+                            <p className="small-14" style={{ marginTop: 'var(--spacing-md)' }}>{t('contacts.metro')}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="src/pages/Events/Events.jsx">
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import EventForm from '../../components/EventForm/EventForm'
+import Calculator from '../../components/Calculator/Calculator'
+
+export default function Events() {
+    const { t } = useTranslation()
+    const [guestCount, setGuestCount] = useState(1)
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('nav.events')}</li></ul></div></div>
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('events.title')}</h1>
+                    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+                        <EventForm onGuestsChange={setGuestCount} />
+                        <Calculator guestCount={guestCount} />
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="src/pages/Home/Home.jsx">
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import HeroSlider from '../../components/HeroSlider/HeroSlider'
+import NewsCard from '../../components/NewsCard/NewsCard'
+import newsData from '../../data/news.json'
+
+export default function Home() {
+    const { t } = useTranslation()
+
+    const slides = [
+        { image: 'https://picsum.photos/1920/600?random=1', title: t('home.hero_title_1'), subtitle: t('home.hero_sub_1'), link: { href: '/menu', label: t('home.see_menu') } },
+        { image: 'https://picsum.photos/1920/600?random=2', title: t('home.hero_title_2'), subtitle: t('home.hero_sub_2'), link: { href: '/booking', label: t('home.book_now') } },
+        { image: 'https://picsum.photos/1920/600?random=3', title: t('home.hero_title_3'), subtitle: t('home.hero_sub_3'), link: { href: '/menu', label: t('home.see_menu') } },
+    ]
+
+    const advantages = [
+        { img: 'https://picsum.photos/400/300?random=10', title: t('home.adv_1_title'), desc: t('home.adv_1_desc') },
+        { img: 'https://picsum.photos/400/300?random=11', title: t('home.adv_2_title'), desc: t('home.adv_2_desc') },
+        { img: 'https://picsum.photos/400/300?random=12', title: t('home.adv_3_title'), desc: t('home.adv_3_desc') },
+    ]
+
+    const categories = [
+        { img: 'https://picsum.photos/200/200?random=50', label: t('menu.breakfast'), anchor: '#breakfast' },
+        { img: 'https://picsum.photos/200/200?random=51', label: t('menu.salads'), anchor: '#salads' },
+        { img: 'https://picsum.photos/200/200?random=52', label: t('menu.hot'), anchor: '#hot' },
+        { img: 'https://picsum.photos/200/200?random=53', label: t('menu.desserts'), anchor: '#desserts' },
+    ]
+
+    return (
+        <main>
+            <HeroSlider slides={slides} />
+
+            {/* Advantages */}
+            <section className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('home.advantages_title')}</h2>
+                    <div className="grid-3">
+                        {advantages.map((a, i) => (
+                            <div className="card" key={i}>
+                                <img src={a.img} alt={a.title} className="card-img" loading="lazy" />
+                                <div className="card-content">
+                                    <h3 className="h3-16-medium">{a.title}</h3>
+                                    <p className="small-14">{a.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* News */}
+            <section className="page-section">
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+                        <h2 className="h1-28">{t('home.news_title')}</h2>
+                        <Link to="/news" className="btn btn-secondary">{t('home.all_news')}</Link>
+                    </div>
+                    <div className="news-grid">
+                        {newsData.slice(0, 3).map(n => <NewsCard key={n.id} news={n} />)}
+                    </div>
+                </div>
+            </section>
+
+            {/* About teaser */}
+            <section className="page-section">
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+                        <h2 className="h1-28">{t('home.about_title')}</h2>
+                        <Link to="/about" className="btn btn-secondary">{t('home.more')}</Link>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-lg)' }}>
+                        <img src="https://picsum.photos/600/400?random=30" alt="Interior" style={{ width: '100%', borderRadius: 8 }} loading="lazy" />
+                        <div>
+                            <h3 className="h2-22">{t('home.about_story_title')}</h3>
+                            <p className="body-16" style={{ margin: 'var(--spacing-md) 0' }}>{t('home.about_text_1')}</p>
+                            <p className="body-16">{t('home.about_text_2')}</p>
+                            <div style={{ marginTop: 'var(--spacing-lg)' }}>
+                                <Link to="/about#restaurants" className="btn btn-primary">{t('home.our_restaurants')}</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Categories */}
+            <section className="page-section">
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+                        <h2 className="h1-28">{t('home.categories_title')}</h2>
+                        <Link to="/menu" className="btn btn-secondary">{t('home.all_menu')}</Link>
+                    </div>
+                    <div className="categories-grid">
+                        {categories.map((c, i) => (
+                            <Link to={`/menu${c.anchor}`} key={i} className="category-card" style={{ textDecoration: 'none' }}>
+                                <img src={c.img} alt={c.label} className="category-img" loading="lazy" />
+                                <h3 className="h3-16-medium">{c.label}</h3>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA */}
+            <section className="page-section cta-section">
+                <div className="container" style={{ textAlign: 'center' }}>
+                    <h2 className="h1-28" style={{ color: 'white' }}>{t('home.cta_title')}</h2>
+                    <p className="body-16" style={{ margin: 'var(--spacing-md) 0', color: 'var(--text-tertiary)' }}>{t('home.cta_sub')}</p>
+                    <div style={{ display: 'flex', gap: 'var(--spacing-md)', justifyContent: 'center' }}>
+                        <Link to="/booking" className="btn btn-primary">{t('home.book_table')}</Link>
+                        <Link to="/events" className="btn btn-secondary" style={{ background: 'transparent', color: 'white', borderColor: 'white' }}>
+                            {t('home.order_event')}
+                        </Link>
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="src/pages/Menu/Menu.jsx">
+import { useTranslation } from 'react-i18next'
+import HeroSlider from '../../components/HeroSlider/HeroSlider'
+import DishCard from '../../components/DishCard/DishCard'
+import menuData from '../../data/menu.json'
+import { Link } from 'react-router-dom'
+
+export default function Menu() {
+    const { t, i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    const slides = menuData.recommended.map(d => ({
+        image: d.image,
+        title: d[`title_${lang}`],
+        subtitle: d[`description_${lang}`] || t('menu.recommended'),
+        price: d.price,
+    }))
+
+    const sections = [
+        { id: 'breakfast', label: t('menu.breakfast') },
+        { id: 'salads', label: t('menu.salads') },
+        { id: 'hot', label: t('menu.hot') },
+        { id: 'desserts', label: t('menu.desserts') },
+        { id: 'wine', label: t('menu.wine') },
+    ]
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('nav.menu')}</li></ul></div></div>
+
+            <HeroSlider slides={slides} height="500px" />
+
+            {/* Categories */}
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('menu.title')}</h1>
+                    <div className="categories-grid">
+                        {menuData.categories.map(c => (
+                            <a href={`#${c.id}`} key={c.id} className="category-card" style={{ textDecoration: 'none' }}>
+                                <img src={c.image} alt={c[`title_${lang}`]} className="category-img" />
+                                <h3 className="h3-16-medium">{c[`title_${lang}`]}</h3>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {sections.map(s => (
+                <section id={s.id} className="page-section" key={s.id}>
+                    <div className="container">
+                        <h2 className="h1-28 section-title">{s.label}</h2>
+                        <div className="menu-items-grid">
+                            {(menuData.items[s.id] || []).map(dish => <DishCard key={dish.id} dish={dish} />)}
+                        </div>
+                    </div>
+                </section>
+            ))}
+        </main>
+    )
+}
+</file>
+
+<file path="src/pages/News/News.jsx">
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import NewsCard from '../../components/NewsCard/NewsCard'
+import newsData from '../../data/news.json'
+
+export default function News() {
+    const { t } = useTranslation()
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('nav.news')}</li></ul></div></div>
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('news.title')}</h1>
+                    <div className="news-grid">
+                        {newsData.map(n => <NewsCard key={n.id} news={n} />)}
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="src/pages/NewsDetail/NewsDetail.jsx">
+import { useParams, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import newsData from '../../data/news.json'
+
+export default function NewsDetail() {
+    const { id } = useParams()
+    const { t, i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+    const news = newsData.find(n => n.id === id)
+
+    if (!news) return <main><div className="container" style={{ padding: '64px 0' }}><p>Новость не найдена</p></div></main>
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list">
+                <li><Link to="/">{t('breadcrumbs.home')}</Link></li>
+                <li><Link to="/news">{t('nav.news')}</Link></li>
+                <li>{news[`title_${lang}`]}</li>
+            </ul></div></div>
+
+            <article className="page-section">
+                <div className="container">
+                    <div className="news-date" style={{ marginBottom: 'var(--spacing-sm)' }}>{news[`date_${lang}`]}</div>
+                    <h1 className="display-36" style={{ marginBottom: 'var(--spacing-lg)' }}>{news[`title_${lang}`]}</h1>
+                    <img src={news.image} alt={news[`title_${lang}`]} style={{ width: '100%', borderRadius: 8, marginBottom: 'var(--spacing-lg)' }} />
+                    <div className="body-16" style={{ maxWidth: 800, margin: '0 auto' }}>
+                        {news[`content_${lang}`].split('\n\n').map((para, i) => (
+                            <p key={i} style={{ marginBottom: 'var(--spacing-md)' }}>{para}</p>
+                        ))}
+                        <p className="small-14" style={{ color: 'var(--text-tertiary)', marginTop: 'var(--spacing-lg)' }}>
+                            {news.tags.map(tag => `#${tag}`).join(' ')}
+                        </p>
+                    </div>
+                    <div style={{ marginTop: 'var(--spacing-xl)', textAlign: 'center' }}>
+                        <Link to="/news" className="btn btn-secondary">{t('news.back')}</Link>
+                        <Link to="/booking" className="btn btn-primary" style={{ marginLeft: 'var(--spacing-sm)' }}>{t('news.book_table')}</Link>
+                    </div>
+                </div>
+            </article>
+        </main>
+    )
+}
+</file>
+
+<file path="src/styles/global.css">
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
+/* ===== CSS Variables ===== */
+:root {
+    /* Brand Colors */
+    --brand-red-default: #C0392B;
+    --brand-red-hover: #A93226;
+    --brand-red-active: #6D1C1C;
+    --brand-burgundy-default: #6D1C1C;
+    --brand-burgundy-dark: #4A1212;
+    --brand-gold-default: #C9A84C;
+    --brand-gold-hover: #B5923F;
+    --brand-gold-active: #9E7E35;
+
+    /* Background */
+    --bg-light: #FAF8F5;
+    --bg-white: #FFFFFF;
+
+    /* Text */
+    --text-primary: #1A1212;
+    --text-secondary: #5A4A42;
+    --text-tertiary: #8A8278;
+
+    /* State */
+    --state-success: #397339;
+    --state-info: #2468AA;
+    --state-error: #A93226;
+
+    /* Gray */
+    --gray-border: #D1CBC3;
+    --gray-disabled-bg: #E8E4DD;
+    --gray-placeholder: #8A8278;
+
+    /* Typography */
+    --font-serif: Georgia, 'Times New Roman', Times, serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Spacing */
+    --container-width: min(1200px, 90%);
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-2xl: 4rem;
+}
+
+/* ===== Reset & Base ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    background-color: var(--bg-light);
+    line-height: 1.6;
+}
+
+/* ===== Typography ===== */
+.display-36 {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0;
+    color: var(--brand-burgundy-default);
+}
+
+.h1-28 {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+
+.h2-22 {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--text-primary);
+}
+
+.h3-16-medium {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    color: var(--text-primary);
+}
+
+.body-16 {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--text-primary);
+}
+
+.small-14 {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.caption-12 {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--text-tertiary);
+}
+
+.label-11-uppercase {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand-gold-default);
+}
+
+.price-20 {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--brand-red-default);
+}
+
+.nav-14-medium {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+}
+
+.logo-18 {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--brand-gold-default);
+}
+
+/* ===== Layout ===== */
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-sm);
+}
+
+/* ===== Header & Navigation ===== */
+.main-header {
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--gray-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+.logo a {
+    text-decoration: none;
+}
+
+/* Mega Menu */
+.nav-menu {
+    display: flex;
+    gap: var(--spacing-lg);
+    list-style: none;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    text-decoration: none;
+    padding: var(--spacing-sm) 0;
+    display: inline-block;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--brand-red-default);
+}
+
+.nav-link.active {
+    color: var(--brand-red-default);
+    border-bottom: 2px solid var(--brand-red-default);
+}
+
+/* Dropdown */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--bg-white);
+    border: 1px solid var(--gray-border);
+    border-radius: 4px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s;
+    list-style: none;
+    padding: var(--spacing-sm) 0;
+    z-index: 101;
+}
+
+.nav-item:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: var(--spacing-xs) var(--spacing-md);
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.dropdown-menu li a:hover {
+    color: var(--brand-red-default);
+    background: var(--bg-light);
+}
+
+/* ===== Breadcrumbs ===== */
+.breadcrumbs {
+    padding: var(--spacing-md) 0;
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--gray-border);
+}
+
+.breadcrumbs-list {
+    display: flex;
+    gap: var(--spacing-xs);
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.breadcrumbs-list li:not(:last-child):after {
+    content: "/";
+    margin-left: var(--spacing-xs);
+    color: var(--text-tertiary);
+}
+
+.breadcrumbs-list a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.breadcrumbs-list a:hover {
+    color: var(--brand-red-default);
+}
+
+/* ===== Buttons ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+    gap: var(--spacing-xs);
+}
+
+.btn-primary {
+    background: var(--brand-red-default);
+    color: white;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: var(--brand-red-hover);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    background: var(--brand-red-active);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--brand-red-default);
+    border: 1px solid var(--brand-red-default);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background: var(--brand-red-default);
+    color: white;
+}
+
+.btn-gold {
+    background: var(--brand-gold-default);
+    color: var(--text-primary);
+}
+
+.btn-gold:hover,
+.btn-gold:focus {
+    background: var(--brand-gold-hover);
+}
+
+.btn-link {
+    color: var(--brand-red-default);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.btn-link:hover {
+    color: var(--brand-red-hover);
+}
+
+/* ===== Hero Slider ===== */
+.hero-slider {
+    height: 600px;
+    position: relative;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    position: relative;
+}
+
+.slide-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slide-content {
+    position: absolute;
+    bottom: 20%;
+    left: 10%;
+    background: rgba(255, 255, 255, 0.9);
+    padding: var(--spacing-lg);
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+/* ===== Cards Grid ===== */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+}
+
+.card {
+    background: var(--bg-white);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: var(--spacing-md);
+}
+
+/* ===== Footer ===== */
+.main-footer {
+    background: var(--text-primary);
+    color: white;
+    padding: var(--spacing-xl) 0 var(--spacing-md);
+    margin-top: var(--spacing-2xl);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.footer-links a {
+    color: var(--text-tertiary);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--brand-gold-default);
+}
+
+.social-icons {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.social-icons a {
+    color: white;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: var(--brand-gold-default);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--text-tertiary);
+}
+
+/* ===== Forms ===== */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-border);
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--brand-red-default);
+}
+
+.form-control.error {
+    border-color: var(--state-error);
+}
+
+.error-message {
+    color: var(--state-error);
+    font-size: 12px;
+    margin-top: var(--spacing-xs);
+}
+
+/* ===== Restaurant Cards ===== */
+.restaurant-card {
+    background: var(--bg-white);
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+/* ===== Reviews ===== */
+.review-card {
+    background: var(--bg-white);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-md);
+}
+
+.rating {
+    color: var(--brand-gold-default);
+    font-size: 18px;
+}
+
+/* ===== Staff Grid ===== */
+.staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.staff-card {
+    text-align: center;
+}
+
+.staff-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: var(--spacing-md);
+}
+
+/* ===== Page Sections ===== */
+.page-section {
+    padding: var(--spacing-xl) 0;
+    border-bottom: 1px solid var(--gray-border);
+}
+
+.section-title {
+    margin-bottom: var(--spacing-lg);
+}
+
+.cta-section {
+    background: var(--brand-burgundy-default);
+    color: white;
+}
+
+/* ===== Menu Categories ===== */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+}
+
+.category-card {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+.category-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* ===== Menu Items ===== */
+.menu-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.menu-item {
+    display: flex;
+    gap: var(--spacing-md);
+    background: var(--bg-white);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+}
+
+.menu-item-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.menu-item-info {
+    flex: 1;
+}
+
+/* ===== Calculator ===== */
+.calculator-block {
+    background: var(--bg-white);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    margin-top: var(--spacing-lg);
+}
+
+.calculator-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--gray-border);
+}
+
+.quantity-control {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.quantity-control button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--gray-border);
+    background: var(--bg-white);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.quantity-control button:hover {
+    background: var(--brand-red-default);
+    color: white;
+    border-color: var(--brand-red-default);
+}
+
+.total-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--brand-red-default);
+    margin-top: var(--spacing-lg);
+    text-align: right;
+}
+
+/* ===== Map Placeholder ===== */
+.map-placeholder {
+    width: 100%;
+    height: 400px;
+    background: var(--gray-disabled-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: var(--text-tertiary);
+}
+
+/* ===== Sitemap ===== */
+.sitemap {
+    columns: 3;
+    column-gap: var(--spacing-xl);
+}
+
+.sitemap-section {
+    break-inside: avoid;
+    margin-bottom: var(--spacing-lg);
+}
+
+.sitemap-section ul {
+    list-style: none;
+    margin-top: var(--spacing-sm);
+}
+
+.sitemap-section li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.sitemap-section a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.sitemap-section a:hover {
+    color: var(--brand-red-default);
+}
+
+/* ===== News Grid ===== */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.news-card {
+    background: var(--bg-white);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.news-date {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    margin: var(--spacing-sm) 0;
+}
+
+/* ===== Awards Grid ===== */
+.awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.award-card {
+    background: var(--bg-white);
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* ===== Modal ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    max-width: 500px;
+    margin: 20px;
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+    }
+
+    .restaurant-card {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-slider {
+        height: 400px;
+    }
+
+    .slide-content {
+        left: 5%;
+        right: 5%;
+        bottom: 10%;
+        padding: var(--spacing-md);
+    }
+
+    .sitemap {
+        columns: 1;
+    }
+
+    .menu-items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .news-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</file>
+
+<file path="vite.config.js">
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+})
+</file>
+
+</files>
