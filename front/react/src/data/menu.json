@@ -1,0 +1,180 @@
+{
+  "recommended": [
+    {
+      "id": "r1",
+      "title_ru": "Утиное филе с ягодным соусом",
+      "title_en": "Duck Fillet with Berry Sauce",
+      "price": 2450,
+      "image": "https://picsum.photos/1920/500?random=80"
+    },
+    {
+      "id": "r2",
+      "title_ru": "Стейк из мраморной говядины",
+      "title_en": "Marbled Beef Steak",
+      "price": 3800,
+      "description_ru": "С соусом из трюфеля",
+      "description_en": "With truffle sauce",
+      "image": "https://picsum.photos/1920/500?random=81"
+    },
+    {
+      "id": "r3",
+      "title_ru": "Трюфельное ризотто",
+      "title_en": "Truffle Risotto",
+      "price": 2100,
+      "description_ru": "С белым трюфелем и пармезаном",
+      "description_en": "With white truffle and parmesan",
+      "image": "https://picsum.photos/1920/500?random=82"
+    }
+  ],
+  "categories": [
+    { "id": "breakfast", "title_ru": "Завтраки", "title_en": "Breakfast", "image": "https://picsum.photos/200/200?random=50" },
+    { "id": "salads", "title_ru": "Салаты", "title_en": "Salads", "image": "https://picsum.photos/200/200?random=51" },
+    { "id": "hot", "title_ru": "Горячие блюда", "title_en": "Hot Dishes", "image": "https://picsum.photos/200/200?random=52" },
+    { "id": "desserts", "title_ru": "Десерты", "title_en": "Desserts", "image": "https://picsum.photos/200/200?random=53" },
+    { "id": "wine", "title_ru": "Винная карта", "title_en": "Wine List", "image": "https://picsum.photos/200/200?random=54" }
+  ],
+  "items": {
+    "breakfast": [
+      {
+        "id": "b1",
+        "title_ru": "Классический английский завтрак",
+        "title_en": "Classic English Breakfast",
+        "description_ru": "Яйца пашот, бекон, сосиски, бобы, томаты, тосты",
+        "description_en": "Poached eggs, bacon, sausages, beans, tomatoes, toast",
+        "price": 890,
+        "image": "https://picsum.photos/100/100?random=90"
+      },
+      {
+        "id": "b2",
+        "title_ru": "Омлет с трюфелем",
+        "title_en": "Truffle Omelette",
+        "description_ru": "Нежный омлет с белым трюфелем и пармезаном",
+        "description_en": "Tender omelette with white truffle and parmesan",
+        "price": 750,
+        "image": "https://picsum.photos/100/100?random=91"
+      },
+      {
+        "id": "b3",
+        "title_ru": "Французские тосты с кленовым сиропом",
+        "title_en": "French Toast with Maple Syrup",
+        "description_ru": "Бриошь, кленовый сироп, ягоды, взбитые сливки",
+        "description_en": "Brioche, maple syrup, berries, whipped cream",
+        "price": 590,
+        "image": "https://picsum.photos/100/100?random=92"
+      }
+    ],
+    "salads": [
+      {
+        "id": "s1",
+        "title_ru": "Салат с креветками и авокадо",
+        "title_en": "Shrimp and Avocado Salad",
+        "description_ru": "Тигровые креветки, авокадо, руккола, соус цезарь",
+        "description_en": "Tiger shrimp, avocado, arugula, caesar dressing",
+        "price": 1650,
+        "image": "https://picsum.photos/100/100?random=93"
+      },
+      {
+        "id": "s2",
+        "title_ru": "Нисуаз с тунцом",
+        "title_en": "Tuna Niçoise",
+        "description_ru": "Тунец, яйцо, фасоль, помидоры, оливки",
+        "description_en": "Tuna, egg, beans, tomatoes, olives",
+        "price": 1250,
+        "image": "https://picsum.photos/100/100?random=94"
+      }
+    ],
+    "hot": [
+      {
+        "id": "h1",
+        "title_ru": "Утиное филе с ягодным соусом",
+        "title_en": "Duck Fillet with Berry Sauce",
+        "description_ru": "Нежное филе утки, соус из лесных ягод, запеченные овощи",
+        "description_en": "Tender duck fillet, forest berry sauce, roasted vegetables",
+        "price": 2450,
+        "image": "https://picsum.photos/100/100?random=60"
+      },
+      {
+        "id": "h2",
+        "title_ru": "Стейк из мраморной говядины",
+        "title_en": "Marbled Beef Steak",
+        "description_ru": "Мраморная говядина, соус из трюфеля, картофельное пюре",
+        "description_en": "Marbled beef, truffle sauce, mashed potatoes",
+        "price": 3800,
+        "image": "https://picsum.photos/100/100?random=61"
+      },
+      {
+        "id": "h3",
+        "title_ru": "Трюфельный ризотто",
+        "title_en": "Truffle Risotto",
+        "description_ru": "Рис арборио, белый трюфель, пармезан",
+        "description_en": "Arborio rice, white truffle, parmesan",
+        "price": 2100,
+        "image": "https://picsum.photos/100/100?random=63"
+      },
+      {
+        "id": "h4",
+        "title_ru": "Морепродукты на гриле",
+        "title_en": "Grilled Seafood",
+        "description_ru": "Креветки, мидии, кальмары, соус чили",
+        "description_en": "Shrimp, mussels, squid, chili sauce",
+        "price": 2900,
+        "image": "https://picsum.photos/100/100?random=64"
+      }
+    ],
+    "desserts": [
+      {
+        "id": "d1",
+        "title_ru": "Тирамису",
+        "title_en": "Tiramisu",
+        "description_ru": "Классический итальянский десерт с маскарпоне",
+        "description_en": "Classic Italian dessert with mascarpone",
+        "price": 550,
+        "image": "https://picsum.photos/100/100?random=95"
+      },
+      {
+        "id": "d2",
+        "title_ru": "Крем-брюле",
+        "title_en": "Crème Brûlée",
+        "description_ru": "Нежный заварной крем с карамельной корочкой",
+        "description_en": "Tender custard with caramel crust",
+        "price": 490,
+        "image": "https://picsum.photos/100/100?random=96"
+      },
+      {
+        "id": "d3",
+        "title_ru": "Шоколадный фондан",
+        "title_en": "Chocolate Fondant",
+        "description_ru": "С жидкой начинкой, с ванильным мороженым",
+        "description_en": "With liquid center, served with vanilla ice cream",
+        "price": 590,
+        "image": "https://picsum.photos/100/100?random=97"
+      }
+    ],
+    "wine": [
+      {
+        "id": "w1",
+        "title_ru": "Château Margaux 2015",
+        "title_en": "Château Margaux 2015",
+        "description_ru": "Франция, Бордо, красное сухое",
+        "description_en": "France, Bordeaux, dry red",
+        "price": 45000,
+        "image": "https://picsum.photos/100/100?random=98"
+      },
+      {
+        "id": "w2",
+        "title_ru": "Dom Pérignon 2012",
+        "title_en": "Dom Pérignon 2012",
+        "description_ru": "Франция, Шампань, игристое",
+        "description_en": "France, Champagne, sparkling",
+        "price": 32000,
+        "image": "https://picsum.photos/100/100?random=99"
+      }
+    ]
+  },
+  "eventDishes": [
+    { "id": "dish1", "title_ru": "Утиное филе с ягодным соусом", "title_en": "Duck Fillet with Berry Sauce", "price": 2450 },
+    { "id": "dish2", "title_ru": "Стейк из мраморной говядины", "title_en": "Marbled Beef Steak", "price": 3800 },
+    { "id": "dish3", "title_ru": "Салат с креветками и авокадо", "title_en": "Shrimp and Avocado Salad", "price": 1650 },
+    { "id": "dish4", "title_ru": "Трюфельный ризотто", "title_en": "Truffle Risotto", "price": 2100 }
+  ]
+}

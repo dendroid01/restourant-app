@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1",
+    "name_ru": "Ресторан на Тверской",
+    "name_en": "Tverskaya Restaurant",
+    "description_ru": "Изысканный ресторан французской кухни в самом сердце Москвы. Интерьеры в стиле Belle Époque, живая музыка по вечерам.",
+    "description_en": "An exquisite French cuisine restaurant in the heart of Moscow. Belle Époque style interiors, live music in the evenings.",
+    "address_ru": "ул. Тверская, 15",
+    "address_en": "Tverskaya St., 15",
+    "phone": "+7 (495) 123-45-67",
+    "hours_ru": "Пн-Вс: 12:00 - 00:00",
+    "hours_en": "Mon-Sun: 12:00 - 00:00",
+    "image": "https://picsum.photos/500/400?random=30"
+  },
+  {
+    "id": "2",
+    "name_ru": "Ресторан на Патриарших",
+    "name_en": "Patriarshiye Ponds Restaurant",
+    "description_ru": "Уютный ресторан с видом на Патриаршие пруды. Идеальное место для романтического ужина.",
+    "description_en": "A cozy restaurant overlooking the Patriarshiye Ponds. The perfect place for a romantic dinner.",
+    "address_ru": "Малый Патриарший пер., 5",
+    "address_en": "Maly Patriarshiy Ln., 5",
+    "phone": "+7 (495) 765-43-21",
+    "hours_ru": "Пн-Вс: 12:00 - 02:00",
+    "hours_en": "Mon-Sun: 12:00 - 02:00",
+    "image": "https://picsum.photos/500/400?random=31"
+  }
+]

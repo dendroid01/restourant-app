@@ -1,0 +1,29 @@
+[
+  {
+    "id": "1",
+    "name": "Анна Иванова",
+    "rating": 5,
+    "text_ru": "Потрясающий ресторан! Обслуживание на высшем уровне, блюда — настоящие шедевры.",
+    "text_en": "Amazing restaurant! Service at the highest level, dishes are real masterpieces.",
+    "date_ru": "15 марта 2024",
+    "date_en": "March 15, 2024"
+  },
+  {
+    "id": "2",
+    "name": "Михаил Петров",
+    "rating": 4,
+    "text_ru": "Отличное место для романтического ужина. Интерьеры шикарные, музыка приятная.",
+    "text_en": "Excellent place for a romantic dinner. Gorgeous interiors, pleasant music.",
+    "date_ru": "10 марта 2024",
+    "date_en": "March 10, 2024"
+  },
+  {
+    "id": "3",
+    "name": "Елена Сидорова",
+    "rating": 5,
+    "text_ru": "Лучший ресторан в городе! Обслуживание безупречное, еда восхитительная.",
+    "text_en": "Best restaurant in the city! Impeccable service, divine food.",
+    "date_ru": "5 марта 2024",
+    "date_en": "March 5, 2024"
+  }
+]
