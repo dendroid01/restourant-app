@@ -16,6 +16,7 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/lexer" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/dragonmantank/cron-expression" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/egulias/email-validator" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/ezyang/htmlpurifier" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/fakerphp/faker" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/filp/whoops" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/fruitcake/php-cors" />
