@@ -88,6 +88,20 @@
     "back": "← All News",
     "book_table": "Book a Table"
   },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address (e.g., name@domain.com)",
+    "phone": "Please enter a valid phone number (+7 9XX XXX-XX-XX)",
+    "minLength": "Minimum {{min}} characters required",
+    "maxLength": "Maximum {{max}} characters allowed",
+    "min": "Minimum value: {{min}}",
+    "max": "Maximum value: {{max}}",
+    "fullName": {
+      "two_words": "Please enter both first and last name (minimum 2 words)",
+      "min_chars": "Each name must contain at least 2 characters",
+      "invalid_chars": "Use only letters, spaces, hyphens and dots"
+    }
+  },
   "toast": {
     "booking_success": "Booking submitted!",
     "contact_success": "Message sent!",
@@ -112,7 +126,6 @@
     "cost_per_guest": "Cost per guest",
     "guests": "Guests",
     "total": "Total"
-
   },
   "contacts": {
     "title": "Contacts",

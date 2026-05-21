@@ -23,7 +23,7 @@ const INITIAL = {
 }
 
 const SCHEMA = {
-    name: [RULES.required, RULES.minLength(2)],
+    name: [RULES.required, RULES.fullName],
     phone: [RULES.required, RULES.phone],
     email: [RULES.required, RULES.email],
     restaurant: [RULES.required],

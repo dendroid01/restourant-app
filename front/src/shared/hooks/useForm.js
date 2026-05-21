@@ -1,45 +1,73 @@
-import { useState, useCallback } from 'react'
+import {useState, useCallback} from 'react'
+import i18n from 'i18next'
+
+const getTranslation = (key, params = {}) => {
+    return i18n.t(`validation.${key}`, params)
+}
 
 // ─── Правила валидации ───────────────────────────────────────────────
 export const RULES = {
-    required: (v) =>
-        String(v ?? '').trim().length > 0 ? null : 'Поле обязательно для заполнения',
+    required: (v) => {
+        const isValid = String(v ?? '').trim().length > 0
+        return isValid ? null : getTranslation('required')
+    },
 
     email: (v) => {
         if (!v) return null
-        // RFC-совместимая проверка
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
         return re.test(String(v).trim())
             ? null
-            : 'Введите корректный email (например, name@domain.ru)'
+            : getTranslation('email')
     },
 
-    // Российский номер: +7 (9XX) XXX-XX-XX или 8 9XX XXX XX XX и т.д.
     phone: (v) => {
         if (!v) return null
-        // Убираем всё кроме цифр и +
-        const digits = String(v).replace(/\D/g, '')
-        // Допустимые форматы: 11 цифр начиная с 7 или 8
-        const valid =
-            /^(\+7|8|7)\d{10}$/.test(String(v).replace(/[\s\-\(\)]/g, ''))
-        return valid ? null : 'Введите корректный номер телефона (+7 9XX XXX-XX-XX)'
+        const valid = /^(\+7|8|7)\d{10}$/.test(String(v).replace(/[\s\-\(\)]/g, ''))
+        return valid ? null : getTranslation('phone')
     },
 
-    minLength: (min) => (v) =>
-        String(v ?? '').length >= min
-            ? null
-            : `Минимум ${min} символов`,
+    minLength: (min) => (v) => {
+        const isValid = String(v ?? '').length >= min
+        return isValid ? null : getTranslation('minLength', {min})
+    },
 
-    maxLength: (max) => (v) =>
-        String(v ?? '').length <= max
-            ? null
-            : `Максимум ${max} символов`,
+    maxLength: (max) => (v) => {
+        const isValid = String(v ?? '').length <= max
+        return isValid ? null : getTranslation('maxLength', {max})
+    },
 
-    min: (minVal) => (v) =>
-        Number(v) >= minVal ? null : `Минимальное значение: ${minVal}`,
+    min: (minVal) => (v) => {
+        const isValid = Number(v) >= minVal
+        return isValid ? null : getTranslation('min', {min: minVal})
+    },
 
-    max: (maxVal) => (v) =>
-        Number(v) <= maxVal ? null : `Максимальное значение: ${maxVal}`,
+    max: (maxVal) => (v) => {
+        const isValid = Number(v) <= maxVal
+        return isValid ? null : getTranslation('max', {max: maxVal})
+    },
+
+    fullName: (v) => {
+        if (!v) return getTranslation('required')
+        const trimmed = String(v).trim()
+        const words = trimmed.split(/\s+/).filter(w => w.length > 0)
+
+        // Проверяем: минимум 2 слова, каждое минимум 2 символа
+        if (words.length < 2) {
+            return getTranslation('fullName.two_words')
+        }
+
+        if (words.some(word => word.length < 2)) {
+            return getTranslation('fullName.min_chars')
+        }
+
+        // Проверка на допустимые символы (буквы, пробелы, дефисы, точки)
+        const validPattern = /^[a-zA-Zа-яА-ЯёЁ\s\-\.]+$/
+        if (!validPattern.test(trimmed)) {
+            return getTranslation('fullName.invalid_chars')
+        }
+
+        return null
+    },
 }
 
 // ─── Маска телефона ──────────────────────────────────────────────────
@@ -61,8 +89,8 @@ export function applyPhoneMask(raw) {
     // Форматируем
     const d = digits
     let result = ''
-    if (d.length > 0)  result = '+' + d[0]
-    if (d.length > 1)  result += ' (' + d.slice(1, 4)
+    if (d.length > 0) result = '+' + d[0]
+    if (d.length > 1) result += ' (' + d.slice(1, 4)
     if (d.length >= 4) result += ') ' + d.slice(4, 7)
     if (d.length >= 7) result += '-' + d.slice(7, 9)
     if (d.length >= 9) result += '-' + d.slice(9, 11)
@@ -110,7 +138,7 @@ export function useForm(initialValues, validationSchema = {}) {
     // onChange с маской для телефона и live-валидацией тронутых полей
     const handleChange = useCallback(
         (e) => {
-            const { name, value, type, checked } = e.target
+            const {name, value, type, checked} = e.target
             let nextValue = type === 'checkbox' ? checked : value
 
             // Автоматическая маска для полей с именем phone/телефон
@@ -118,12 +146,12 @@ export function useForm(initialValues, validationSchema = {}) {
                 nextValue = applyPhoneMask(value)
             }
 
-            setValues((prev) => ({ ...prev, [name]: nextValue }))
+            setValues((prev) => ({...prev, [name]: nextValue}))
 
             // Перевалидируем, только если поле уже было тронуто или форма сабмитилась
             if (touched[name] || submitted) {
                 const error = validateField(name, nextValue)
-                setErrors((prev) => ({ ...prev, [name]: error }))
+                setErrors((prev) => ({...prev, [name]: error}))
             }
         },
         [touched, submitted, validateField]
@@ -132,20 +160,20 @@ export function useForm(initialValues, validationSchema = {}) {
     // onBlur — помечаем поле тронутым и сразу валидируем
     const handleBlur = useCallback(
         (e) => {
-            const { name, value } = e.target
-            setTouched((prev) => ({ ...prev, [name]: true }))
+            const {name, value} = e.target
+            setTouched((prev) => ({...prev, [name]: true}))
             const error = validateField(name, value)
-            setErrors((prev) => ({ ...prev, [name]: error }))
+            setErrors((prev) => ({...prev, [name]: error}))
         },
         [validateField]
     )
 
     // Для чекбоксов и select — ручная установка значения
     const setValue = useCallback((name, value) => {
-        setValues((prev) => ({ ...prev, [name]: value }))
+        setValues((prev) => ({...prev, [name]: value}))
         if (touched[name] || submitted) {
             const error = validateField(name, value)
-            setErrors((prev) => ({ ...prev, [name]: error }))
+            setErrors((prev) => ({...prev, [name]: error}))
         }
     }, [touched, submitted, validateField])
 
@@ -158,7 +186,7 @@ export function useForm(initialValues, validationSchema = {}) {
             const allErrors = validateAll()
             // Помечаем все поля тронутыми
             const allTouched = Object.keys(validationSchema).reduce(
-                (acc, k) => ({ ...acc, [k]: true }),
+                (acc, k) => ({...acc, [k]: true}),
                 {}
             )
             setTouched(allTouched)

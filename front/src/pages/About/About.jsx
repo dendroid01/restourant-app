@@ -13,6 +13,13 @@ function ReviewModal({ onClose }) {
 
     const handleSubmit = e => {
         e.preventDefault()
+
+        const nameWords = form.name.trim().split(/\s+/)
+        if (nameWords.length < 2 || nameWords.some(w => w.length < 2)) {
+            toast.error(t('validation.fullName.two_words'))
+            return
+        }
+
         console.log('Review submit:', form)
         toast.success(t('about.review_sent') || 'Спасибо за отзыв!')
         onClose()

@@ -7,7 +7,7 @@ import { useToast } from '../../shared/hooks/useToast'
 const INITIAL = { name: '', email: '', phone: '', message: '' }
 
 const SCHEMA = {
-    name:    [RULES.required, RULES.minLength(2)],
+    name:    [RULES.required, RULES.fullName],
     email:   [RULES.required, RULES.email],
     phone:   [RULES.phone],            // телефон необязателен, но если введён — валидируем
     message: [RULES.required, RULES.minLength(10)],
