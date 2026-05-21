@@ -5,6 +5,7 @@ import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
 import RichTextEditor from '../../../shared/components/RichTextEditor/RichTextEditor'
 import { useToast } from '../../../shared/hooks/useToast'
 import menuData from '../../../data/menu.json'
+import SafeHtml from '../../../shared/components/SafeHtml/SafeHtml'
 
 const ALL_CATEGORIES = [
     { id: 'breakfast', label: '🥐 Завтраки' },
@@ -112,8 +113,9 @@ export default function AdminMenu() {
                                         <td>
                                             <div style={{ fontWeight: 500 }}>{dish.title_ru}</div>
                                             {/* Показываем plain-текст описания в таблице */}
-                                            <div style={{ fontSize: 12, color: 'var(--text-tertiary)' }}
-                                                 dangerouslySetInnerHTML={{ __html: dish.description_ru }} />
+                                            <div style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>
+                                                <SafeHtml html={dish.description_ru} as="div" />
+                                            </div>
                                         </td>
                                         <td style={{ fontFamily: 'Georgia,serif', color: 'var(--red-default)' }}>{dish.price?.toLocaleString()} ₽</td>
                                         <td>{dish.featured && <span className="badge badge-gold">★ Рек.</span>}</td>
