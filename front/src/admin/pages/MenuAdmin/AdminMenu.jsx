@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useAdminStore } from '../../hooks/useAdminStore'
 import Modal from '../../components/Modal/Modal'
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
+import RichTextEditor from '../../../shared/components/RichTextEditor/RichTextEditor'
+import { useToast } from '../../../shared/hooks/useToast'
 import menuData from '../../../data/menu.json'
 
 const ALL_CATEGORIES = [
@@ -28,10 +30,11 @@ const EMPTY_DISH = {
 
 export default function AdminMenu() {
     const { items, create, update, remove } = useAdminStore('admin_menu', flattenMenu(menuData))
+    const toast = useToast()
     const [activeCategory, setActiveCategory] = useState('hot')
-    const [modal, setModal] = useState(false)
+    const [modal, setModal]   = useState(false)
     const [editing, setEditing] = useState(null)
-    const [form, setForm] = useState(EMPTY_DISH)
+    const [form, setForm]     = useState(EMPTY_DISH)
     const [confirm, setConfirm] = useState(null)
 
     const filtered = items.filter(d => d.category === activeCategory)
@@ -42,8 +45,20 @@ export default function AdminMenu() {
     const handleSave = e => {
         e.preventDefault()
         const data = { ...form, price: Number(form.price) }
-        editing ? update(editing, data) : create(data)
+        if (editing) {
+            update(editing, data)
+            toast.success('Блюдо обновлено')
+        } else {
+            create(data)
+            toast.success('Блюдо добавлено')
+        }
         setModal(false)
+    }
+
+    const handleRemove = (id) => {
+        remove(id)
+        setConfirm(null)
+        toast.success('Блюдо удалено')
     }
 
     const f = field => ({
@@ -70,8 +85,8 @@ export default function AdminMenu() {
                         >
                             <span>{cat.label}</span>
                             <span style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>
-                {items.filter(d => d.category === cat.id).length}
-              </span>
+                                {items.filter(d => d.category === cat.id).length}
+                            </span>
                         </div>
                     ))}
                 </div>
@@ -96,7 +111,9 @@ export default function AdminMenu() {
                                         <td><img src={dish.image} alt={dish.title_ru} className="dish-img-thumb" /></td>
                                         <td>
                                             <div style={{ fontWeight: 500 }}>{dish.title_ru}</div>
-                                            <div style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>{dish.description_ru}</div>
+                                            {/* Показываем plain-текст описания в таблице */}
+                                            <div style={{ fontSize: 12, color: 'var(--text-tertiary)' }}
+                                                 dangerouslySetInnerHTML={{ __html: dish.description_ru }} />
                                         </td>
                                         <td style={{ fontFamily: 'Georgia,serif', color: 'var(--red-default)' }}>{dish.price?.toLocaleString()} ₽</td>
                                         <td>{dish.featured && <span className="badge badge-gold">★ Рек.</span>}</td>
@@ -120,10 +137,31 @@ export default function AdminMenu() {
                             <div className="admin-form-group"><label>Название (RU) *</label><input {...f('title_ru')} required /></div>
                             <div className="admin-form-group"><label>Название (EN)</label><input {...f('title_en')} /></div>
                         </div>
-                        <div className="admin-form-row-2">
-                            <div className="admin-form-group"><label>Описание (RU)</label><input {...f('description_ru')} /></div>
-                            <div className="admin-form-group"><label>Описание (EN)</label><input {...f('description_en')} /></div>
+
+                        {/* Описание RU */}
+                        <div className="admin-form-group">
+                            <label>Описание (RU)</label>
+                            <RichTextEditor
+                                value={form.description_ru}
+                                onChange={val => setForm(p => ({ ...p, description_ru: val }))}
+                                placeholder="Описание блюда (RU)..."
+                                adminStyle
+                                minHeight={100}
+                            />
                         </div>
+
+                        {/* Описание EN */}
+                        <div className="admin-form-group">
+                            <label>Описание (EN)</label>
+                            <RichTextEditor
+                                value={form.description_en}
+                                onChange={val => setForm(p => ({ ...p, description_en: val }))}
+                                placeholder="Dish description (EN)..."
+                                adminStyle
+                                minHeight={100}
+                            />
+                        </div>
+
                         <div className="admin-form-row-2">
                             <div className="admin-form-group"><label>Цена (₽) *</label><input {...f('price')} type="number" min="0" required /></div>
                             <div className="admin-form-group"><label>Категория</label>
@@ -136,7 +174,7 @@ export default function AdminMenu() {
                         <div className="admin-form-group" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                             <input type="checkbox" id="featured" checked={!!form.featured}
                                    onChange={e => setForm(p => ({ ...p, featured: e.target.checked }))} />
-                            <label htmlFor="featured" style={{ marginBottom: 0, cursor: 'pointer' }}>⭐ Рекомендуемое блюдо (показывать в слайдере)</label>
+                            <label htmlFor="featured" style={{ marginBottom: 0, cursor: 'pointer' }}>⭐ Рекомендуемое блюдо</label>
                         </div>
                         <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 12 }}>
                             <button type="button" className="btn-admin btn-admin-secondary" onClick={() => setModal(false)}>Отмена</button>
@@ -147,7 +185,7 @@ export default function AdminMenu() {
             )}
 
             {confirm && (
-                <ConfirmDialog message="Удалить блюдо?" onConfirm={() => { remove(confirm); setConfirm(null) }} onCancel={() => setConfirm(null)} />
+                <ConfirmDialog message="Удалить блюдо?" onConfirm={() => handleRemove(confirm)} onCancel={() => setConfirm(null)} />
             )}
         </div>
     )

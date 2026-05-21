@@ -3,6 +3,8 @@ import { useAdminStore } from '../../hooks/useAdminStore'
 import Modal from '../../components/Modal/Modal'
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
 import StatusBadge from '../../components/StatusBadge/StatusBadge'
+import RichTextEditor from '../../../shared/components/RichTextEditor/RichTextEditor'
+import { useToast } from '../../../shared/hooks/useToast'
 import newsInitial from '../../../data/news.json'
 
 const EMPTY_FORM = {
@@ -16,28 +18,31 @@ const EMPTY_FORM = {
 
 export default function AdminNews() {
     const { items, create, update, remove } = useAdminStore('admin_news', newsInitial)
-    const [modal, setModal] = useState(null)   // null | 'create' | 'edit'
+    const toast = useToast()
+    const [modal, setModal] = useState(null)
     const [editing, setEditing] = useState(null)
     const [form, setForm] = useState(EMPTY_FORM)
     const [confirm, setConfirm] = useState(null)
 
-    const openCreate = () => {
-        setForm(EMPTY_FORM)
-        setEditing(null)
-        setModal('form')
-    }
-
-    const openEdit = item => {
-        setForm({ ...EMPTY_FORM, ...item })
-        setEditing(item.id)
-        setModal('form')
-    }
+    const openCreate = () => { setForm(EMPTY_FORM); setEditing(null); setModal('form') }
+    const openEdit   = item => { setForm({ ...EMPTY_FORM, ...item }); setEditing(item.id); setModal('form') }
 
     const handleSave = e => {
         e.preventDefault()
-        if (editing) update(editing, form)
-        else create(form)
+        if (editing) {
+            update(editing, form)
+            toast.success('Новость обновлена')
+        } else {
+            create(form)
+            toast.success('Новость создана')
+        }
         setModal(null)
+    }
+
+    const handleRemove = (id) => {
+        remove(id)
+        setConfirm(null)
+        toast.success('Новость удалена')
     }
 
     const f = (field) => ({
@@ -78,7 +83,7 @@ export default function AdminNews() {
             )}
 
             {modal === 'form' && (
-                <Modal title={editing ? 'Редактировать новость' : 'Новая новость'} onClose={() => setModal(null)} maxWidth={680}>
+                <Modal title={editing ? 'Редактировать новость' : 'Новая новость'} onClose={() => setModal(null)} maxWidth={720}>
                     <form onSubmit={handleSave}>
                         <div className="admin-form-row-2">
                             <div className="admin-form-group">
@@ -100,22 +105,55 @@ export default function AdminNews() {
                                 <input {...f('date_en')} placeholder="March 15, 2024" />
                             </div>
                         </div>
+
+                        {/* Анонс RU */}
                         <div className="admin-form-group">
                             <label>Анонс (RU)</label>
-                            <textarea {...f('excerpt_ru')} rows={2} className="admin-input" />
+                            <RichTextEditor
+                                value={form.excerpt_ru}
+                                onChange={val => setForm(p => ({ ...p, excerpt_ru: val }))}
+                                placeholder="Краткое описание новости (RU)..."
+                                adminStyle
+                                minHeight={80}
+                            />
                         </div>
+
+                        {/* Анонс EN */}
                         <div className="admin-form-group">
                             <label>Анонс (EN)</label>
-                            <textarea {...f('excerpt_en')} rows={2} className="admin-input" />
+                            <RichTextEditor
+                                value={form.excerpt_en}
+                                onChange={val => setForm(p => ({ ...p, excerpt_en: val }))}
+                                placeholder="Short news description (EN)..."
+                                adminStyle
+                                minHeight={80}
+                            />
                         </div>
+
+                        {/* Контент RU */}
                         <div className="admin-form-group">
                             <label>Текст (RU)</label>
-                            <textarea {...f('content_ru')} rows={4} className="admin-input" />
+                            <RichTextEditor
+                                value={form.content_ru}
+                                onChange={val => setForm(p => ({ ...p, content_ru: val }))}
+                                placeholder="Полный текст новости (RU)..."
+                                adminStyle
+                                minHeight={180}
+                            />
                         </div>
+
+                        {/* Контент EN */}
                         <div className="admin-form-group">
                             <label>Текст (EN)</label>
-                            <textarea {...f('content_en')} rows={4} className="admin-input" />
+                            <RichTextEditor
+                                value={form.content_en}
+                                onChange={val => setForm(p => ({ ...p, content_en: val }))}
+                                placeholder="Full news text (EN)..."
+                                adminStyle
+                                minHeight={180}
+                            />
                         </div>
+
                         <div className="admin-form-row-2">
                             <div className="admin-form-group">
                                 <label>Статус</label>
@@ -140,7 +178,7 @@ export default function AdminNews() {
             {confirm && (
                 <ConfirmDialog
                     message="Удалить новость? Это действие нельзя отменить."
-                    onConfirm={() => { remove(confirm); setConfirm(null) }}
+                    onConfirm={() => handleRemove(confirm)}
                     onCancel={() => setConfirm(null)}
                 />
             )}

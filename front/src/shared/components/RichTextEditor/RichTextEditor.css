@@ -1,0 +1,119 @@
+/* ===== Rich Text Editor ===== */
+.rte-wrapper {
+    border: 1px solid var(--gray-border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    background: var(--bg-white, #fff);
+}
+
+.rte-wrapper:focus-within {
+    border-color: var(--brand-red-default, #C0392B);
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
+}
+
+/* Toolbar */
+.rte-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    align-items: center;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--gray-border, #D1CBC3);
+    background: var(--gray-disabled-bg, #F5F3F0);
+}
+
+.rte-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary, #5A4A42);
+    transition: background 0.15s, color 0.15s;
+    font-family: inherit;
+}
+
+.rte-btn:hover:not(:disabled) {
+    background: var(--bg-white, #fff);
+    color: var(--text-primary, #1A1212);
+}
+
+.rte-btn.active {
+    background: var(--brand-red-default, #C0392B);
+    color: #fff;
+}
+
+.rte-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.rte-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--gray-border, #D1CBC3);
+    margin: 0 4px;
+}
+
+/* Editor content area */
+.rte-content {
+    padding: 12px 14px;
+}
+
+.rte-content .tiptap {
+    outline: none;
+    font-family: var(--font-sans, 'Inter', sans-serif);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-primary, #1A1212);
+    min-height: inherit;
+}
+
+/* Placeholder */
+.rte-content .tiptap p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: var(--gray-placeholder, #8A8278);
+    pointer-events: none;
+    float: left;
+    height: 0;
+}
+
+/* Типографика внутри редактора и при рендере */
+.rte-content .tiptap h1,
+.rich-html h1 { font-family: Georgia, serif; font-size: 28px; font-weight: 400; margin: 1em 0 0.5em; }
+
+.rte-content .tiptap h2,
+.rich-html h2 { font-family: Georgia, serif; font-size: 22px; font-weight: 400; margin: 1em 0 0.5em; }
+
+.rte-content .tiptap h3,
+.rich-html h3 { font-size: 18px; font-weight: 500; margin: 0.8em 0 0.4em; }
+
+.rte-content .tiptap p,
+.rich-html p  { margin-bottom: 0.9em; }
+
+.rte-content .tiptap ul,
+.rte-content .tiptap ol,
+.rich-html ul,
+.rich-html ol  { padding-left: 1.4em; margin-bottom: 0.9em; }
+
+.rte-content .tiptap blockquote,
+.rich-html blockquote {
+    border-left: 3px solid var(--brand-gold-default, #C9A84C);
+    padding-left: 1em;
+    color: var(--text-secondary, #5A4A42);
+    font-style: italic;
+    margin: 1em 0;
+}
+
+.rte-content .tiptap strong,
+.rich-html strong { font-weight: 600; }
+
+.rte-content .tiptap em,
+.rich-html em { font-style: italic; }

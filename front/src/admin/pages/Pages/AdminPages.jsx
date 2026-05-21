@@ -3,35 +3,50 @@ import Modal from '../../components/Modal/Modal'
 import StatusBadge from '../../components/StatusBadge/StatusBadge'
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
 import { useAdminStore } from '../../hooks/useAdminStore'
+import RichTextEditor from '../../../shared/components/RichTextEditor/RichTextEditor'
+import { useToast } from '../../../shared/hooks/useToast'
 
 const SYSTEM_PAGES = [
-    { id: 'home',    title: 'Главная', slug: 'home',  status: 'published', system: true },
-    { id: 'about',   title: 'О нас',   slug: 'about', status: 'published', system: true },
-    { id: 'menu',    title: 'Меню',    slug: 'menu',  status: 'published', system: true },
+    { id: 'home',  title: 'Главная', slug: 'home',  status: 'published', system: true },
+    { id: 'about', title: 'О нас',   slug: 'about', status: 'published', system: true },
+    { id: 'menu',  title: 'Меню',    slug: 'menu',  status: 'published', system: true },
 ]
 
 const EMPTY = { title: '', slug: '', metaTitle: '', metaDesc: '', status: 'draft', content: '' }
 
 export default function AdminPages() {
     const { items, create, update, remove } = useAdminStore('admin_custom_pages', [
-        { id: 'p1', title: 'Акция: Новогодний банкет', slug: 'newyear-banquet', status: 'draft', content: '', system: false },
-        { id: 'p2', title: 'Правила посещения', slug: 'rules', status: 'published', content: '', system: false },
+        { id: 'p1', title: 'Акция: Новогодний банкет', slug: 'newyear-banquet', status: 'draft',     content: '', system: false },
+        { id: 'p2', title: 'Правила посещения',        slug: 'rules',          status: 'published', content: '', system: false },
     ])
-    const [modal, setModal] = useState(false)
+    const toast = useToast()
+    const [modal, setModal]   = useState(false)
     const [editing, setEditing] = useState(null)
-    const [form, setForm] = useState(EMPTY)
+    const [form, setForm]     = useState(EMPTY)
     const [confirm, setConfirm] = useState(null)
 
     const allPages = [...SYSTEM_PAGES, ...items]
 
     const openCreate = () => { setForm(EMPTY); setEditing(null); setModal(true) }
-    const openEdit = page => { setForm({ ...EMPTY, ...page }); setEditing(page.id ?? null); setModal(true) }
+    const openEdit   = page => { setForm({ ...EMPTY, ...page }); setEditing(page.id ?? null); setModal(true) }
 
     const handleSave = e => {
         e.preventDefault()
-        if (editing && !SYSTEM_PAGES.find(p => p.id === editing)) update(editing, form)
-        else if (!editing) create({ ...form, system: false })
+        const isSystem = SYSTEM_PAGES.find(p => p.id === editing)
+        if (editing && !isSystem) {
+            update(editing, form)
+            toast.success('Страница обновлена')
+        } else if (!editing) {
+            create({ ...form, system: false })
+            toast.success('Страница создана')
+        }
         setModal(false)
+    }
+
+    const handleRemove = (id) => {
+        remove(id)
+        setConfirm(null)
+        toast.success('Страница удалена')
     }
 
     const f = field => ({
@@ -72,16 +87,25 @@ export default function AdminPages() {
             <p style={{ marginTop: 12, fontSize: 12, color: 'var(--text-tertiary)' }}>* системные страницы нельзя удалить</p>
 
             {modal && (
-                <Modal title={editing ? 'Редактировать страницу' : 'Новая страница'} onClose={() => setModal(false)} maxWidth={720}>
+                <Modal title={editing ? 'Редактировать страницу' : 'Новая страница'} onClose={() => setModal(false)} maxWidth={760}>
                     <form onSubmit={handleSave}>
                         <div className="admin-form-row-2">
                             <div className="admin-form-group"><label>Заголовок *</label><input {...f('title')} required /></div>
                             <div className="admin-form-group"><label>Slug</label><input {...f('slug')} placeholder="my-page" /></div>
                         </div>
+
+                        {/* Контент через Tiptap */}
                         <div className="admin-form-group">
                             <label>Содержимое</label>
-                            <textarea {...f('content')} rows={5} className="admin-input" placeholder="Текст страницы..." />
+                            <RichTextEditor
+                                value={form.content}
+                                onChange={val => setForm(p => ({ ...p, content: val }))}
+                                placeholder="Текст страницы..."
+                                adminStyle
+                                minHeight={200}
+                            />
                         </div>
+
                         <div className="admin-form-row-2">
                             <div className="admin-form-group"><label>Meta Title</label><input {...f('metaTitle')} /></div>
                             <div className="admin-form-group"><label>Meta Description</label><input {...f('metaDesc')} /></div>
@@ -102,7 +126,7 @@ export default function AdminPages() {
             )}
 
             {confirm && (
-                <ConfirmDialog message="Удалить страницу?" onConfirm={() => { remove(confirm); setConfirm(null) }} onCancel={() => setConfirm(null)} />
+                <ConfirmDialog message="Удалить страницу?" onConfirm={() => handleRemove(confirm)} onCancel={() => setConfirm(null)} />
             )}
         </div>
     )
