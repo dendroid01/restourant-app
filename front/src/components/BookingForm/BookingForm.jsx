@@ -1,66 +1,121 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useForm, RULES } from '../../shared/hooks/useForm'
+import FormField from '../../shared/components/FormField/FormField'
+
+const RESTAURANTS_RU = [
+    { value: '', label: 'Выберите ресторан' },
+    { value: 'tverskaya', label: 'Ресторан на Тверской' },
+    { value: 'patriarshiye', label: 'Ресторан на Патриарших' },
+]
+const RESTAURANTS_EN = [
+    { value: '', label: 'Choose a restaurant' },
+    { value: 'tverskaya', label: 'Tverskaya Restaurant' },
+    { value: 'patriarshiye', label: 'Patriarshiye Ponds' },
+]
 
 const today = new Date().toISOString().split('T')[0]
 
+const INITIAL = {
+    name: '', phone: '', email: '',
+    restaurant: '', date: '', time: '',
+    guests: '', wishes: '',
+}
+
+const SCHEMA = {
+    name:       [RULES.required, RULES.minLength(2)],
+    phone:      [RULES.required, RULES.phone],
+    email:      [RULES.required, RULES.email],
+    restaurant: [RULES.required],
+    date:       [RULES.required],
+    time:       [RULES.required],
+    guests:     [RULES.required, RULES.min(1), RULES.max(50)],
+}
+
 export default function BookingForm() {
-    const { t } = useTranslation()
-    const [form, setForm] = useState({
-        name: '', phone: '', email: '', restaurant: '', date: '', time: '', guests: '', wishes: ''
-    })
+    const { t, i18n } = useTranslation()
+    const isRu = i18n.language?.startsWith('ru')
 
-    const handleChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, reset } =
+        useForm(INITIAL, SCHEMA)
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        console.log('BookingForm submit:', form)
-        alert(t('booking.title') + ' — OK!')
-        setForm({ name: '', phone: '', email: '', restaurant: '', date: '', time: '', guests: '', wishes: '' })
+    const onValid = (data) => {
+        console.log('BookingForm ✅', data)
+        alert(isRu ? 'Бронирование отправлено!' : 'Booking submitted!')
+        reset()
     }
 
+    const field = (name, extra = {}) => ({
+        name,
+        value: values[name],
+        error: errors[name],
+        touched: touched[name],
+        onChange: handleChange,
+        onBlur: handleBlur,
+        ...extra,
+    })
+
+    const restaurants = isRu ? RESTAURANTS_RU : RESTAURANTS_EN
+
     return (
-        <form onSubmit={handleSubmit}>
-            {[
-                { label: t('booking.name'), name: 'name', type: 'text', placeholder: t('forms.name_placeholder') },
-                { label: t('booking.phone'), name: 'phone', type: 'tel', placeholder: t('forms.phone_placeholder') },
-                { label: t('booking.email'), name: 'email', type: 'email', placeholder: t('forms.email_placeholder') },
-            ].map(f => (
-                <div className="form-group" key={f.name}>
-                    <label className="form-label">{f.label}</label>
-                    <input type={f.type} name={f.name} value={form[f.name]} onChange={handleChange}
-                           className="form-control" placeholder={f.placeholder} required />
-                </div>
-            ))}
-
-            <div className="form-group">
-                <label className="form-label">{t('booking.restaurant')}</label>
-                <select name="restaurant" value={form.restaurant} onChange={handleChange} className="form-control" required>
-                    <option value="">{t('booking.choose_restaurant')}</option>
-                    <option value="tverskaya">{t('booking.choose_restaurant') === 'Choose a restaurant' ? 'Tverskaya Restaurant' : 'Ресторан на Тверской'}</option>
-                    <option value="patriarshiye">{t('booking.choose_restaurant') === 'Choose a restaurant' ? 'Patriarshiye Ponds' : 'Ресторан на Патриарших'}</option>
-                </select>
-            </div>
-
-            <div className="form-group">
-                <label className="form-label">{t('booking.date')}</label>
-                <input type="date" name="date" value={form.date} onChange={handleChange}
-                       className="form-control" min={today} required />
-            </div>
-            <div className="form-group">
-                <label className="form-label">{t('booking.time')}</label>
-                <input type="time" name="time" value={form.time} onChange={handleChange} className="form-control" required />
-            </div>
-            <div className="form-group">
-                <label className="form-label">{t('booking.guests')}</label>
-                <input type="number" name="guests" value={form.guests} onChange={handleChange}
-                       className="form-control" min={1} max={50} required />
-            </div>
-            <div className="form-group">
-                <label className="form-label">{t('booking.wishes')}</label>
-                <textarea name="wishes" value={form.wishes} onChange={handleChange}
-                          className="form-control" rows={3} placeholder={t('booking.wishes_placeholder')} />
-            </div>
-            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>{t('booking.submit')}</button>
+        <form onSubmit={handleSubmit(onValid)} noValidate>
+            <FormField
+                {...field('name')}
+                label={t('booking.name')}
+                type="text"
+                placeholder={t('forms.name_placeholder')}
+                required
+            />
+            <FormField
+                {...field('phone')}
+                label={t('booking.phone')}
+                type="tel"
+                placeholder="+7 (9XX) XXX-XX-XX"
+                required
+            />
+            <FormField
+                {...field('email')}
+                label={t('booking.email')}
+                type="email"
+                placeholder={t('forms.email_placeholder')}
+                required
+            />
+            <FormField
+                {...field('restaurant')}
+                label={t('booking.restaurant')}
+                type="select"
+                options={restaurants}
+                required
+            />
+            <FormField
+                {...field('date')}
+                label={t('booking.date')}
+                type="date"
+                required
+                inputProps={{ min: today }}
+            />
+            <FormField
+                {...field('time')}
+                label={t('booking.time')}
+                type="time"
+                required
+            />
+            <FormField
+                {...field('guests')}
+                label={t('booking.guests')}
+                type="number"
+                required
+                inputProps={{ min: 1, max: 50 }}
+            />
+            <FormField
+                {...field('wishes')}
+                label={t('booking.wishes')}
+                type="textarea"
+                placeholder={t('booking.wishes_placeholder')}
+                rows={3}
+            />
+            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                {t('booking.submit')}
+            </button>
         </form>
     )
 }

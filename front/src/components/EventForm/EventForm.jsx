@@ -1,59 +1,100 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useForm, RULES } from '../../shared/hooks/useForm'
+import FormField from '../../shared/components/FormField/FormField'
 
 const minDate = (() => {
-    const d = new Date(); d.setDate(d.getDate() + 3); return d.toISOString().split('T')[0]
+    const d = new Date()
+    d.setDate(d.getDate() + 3)
+    return d.toISOString().split('T')[0]
 })()
 
+const INITIAL = {
+    name: '', phone: '', email: '',
+    date: '', guests: '', restaurant: '', wishes: '',
+}
+
+const SCHEMA = {
+    name:       [RULES.required, RULES.minLength(2)],
+    phone:      [RULES.required, RULES.phone],
+    email:      [RULES.required, RULES.email],
+    date:       [RULES.required],
+    guests:     [RULES.required, RULES.min(10)],
+    restaurant: [RULES.required],
+}
+
 export default function EventForm({ onGuestsChange }) {
-    const { t } = useTranslation()
-    const [form, setForm] = useState({ name: '', phone: '', email: '', date: '', guests: '', restaurant: '', wishes: '' })
+    const { t, i18n } = useTranslation()
+    const isRu = i18n.language?.startsWith('ru')
 
-    const handleChange = e => {
-        setForm(p => ({ ...p, [e.target.name]: e.target.value }))
-        if (e.target.name === 'guests') onGuestsChange?.(parseInt(e.target.value) || 0)
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, reset } =
+        useForm(INITIAL, SCHEMA)
+
+    // Пробрасываем кол-во гостей наружу (для калькулятора)
+    const handleChangeWrapped = (e) => {
+        handleChange(e)
+        if (e.target.name === 'guests') {
+            onGuestsChange?.(parseInt(e.target.value) || 0)
+        }
     }
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        console.log('EventForm submit:', form)
+    const onValid = (data) => {
+        console.log('EventForm ✅', data)
     }
+
+    const field = (name, extra = {}) => ({
+        name,
+        value: values[name],
+        error: errors[name],
+        touched: touched[name],
+        onChange: handleChangeWrapped,
+        onBlur: handleBlur,
+        ...extra,
+    })
+
+    const restaurants = [
+        { value: '', label: isRu ? 'Выберите ресторан' : 'Choose a restaurant' },
+        { value: 'tverskaya', label: isRu ? 'Ресторан на Тверской' : 'Tverskaya Restaurant' },
+        { value: 'patriarshiye', label: isRu ? 'Ресторан на Патриарших' : 'Patriarshiye Ponds' },
+    ]
 
     return (
-        <form id="eventForm" onSubmit={handleSubmit}>
-            {[
-                { label: t('booking.name'), name: 'name', type: 'text' },
-                { label: t('booking.phone'), name: 'phone', type: 'tel' },
-                { label: t('booking.email'), name: 'email', type: 'email' },
-            ].map(f => (
-                <div className="form-group" key={f.name}>
-                    <label className="form-label">{f.label}</label>
-                    <input type={f.type} name={f.name} value={form[f.name]} onChange={handleChange}
-                           className="form-control" required />
-                </div>
-            ))}
-            <div className="form-group">
-                <label className="form-label">{t('booking.date')}</label>
-                <input type="date" name="date" value={form.date} onChange={handleChange}
-                       className="form-control" min={minDate} required />
-            </div>
-            <div className="form-group">
-                <label className="form-label">{t('events.title')} — кол-во гостей (от 10)</label>
-                <input type="number" name="guests" value={form.guests} onChange={handleChange}
-                       className="form-control" min={10} required />
-            </div>
-            <div className="form-group">
-                <label className="form-label">{t('booking.restaurant')}</label>
-                <select name="restaurant" value={form.restaurant} onChange={handleChange} className="form-control" required>
-                    <option value="">{t('booking.choose_restaurant')}</option>
-                    <option value="tverskaya">Ресторан на Тверской</option>
-                    <option value="patriarshiye">Ресторан на Патриарших</option>
-                </select>
-            </div>
-            <div className="form-group">
-                <label className="form-label">{t('booking.wishes')}</label>
-                <textarea name="wishes" value={form.wishes} onChange={handleChange} className="form-control" rows={3} />
-            </div>
+        <form id="eventForm" onSubmit={handleSubmit(onValid)} noValidate>
+            <FormField {...field('name')} label={t('booking.name')} type="text" required />
+            <FormField
+                {...field('phone')}
+                label={t('booking.phone')}
+                type="tel"
+                placeholder="+7 (9XX) XXX-XX-XX"
+                required
+            />
+            <FormField {...field('email')} label={t('booking.email')} type="email" required />
+            <FormField
+                {...field('date')}
+                label={t('booking.date')}
+                type="date"
+                required
+                inputProps={{ min: minDate }}
+            />
+            <FormField
+                {...field('guests')}
+                label={isRu ? 'Количество гостей (от 10)' : 'Number of guests (min 10)'}
+                type="number"
+                required
+                inputProps={{ min: 10 }}
+            />
+            <FormField
+                {...field('restaurant')}
+                label={t('booking.restaurant')}
+                type="select"
+                options={restaurants}
+                required
+            />
+            <FormField
+                {...field('wishes')}
+                label={t('booking.wishes')}
+                type="textarea"
+                rows={3}
+            />
         </form>
     )
 }

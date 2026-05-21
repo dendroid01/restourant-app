@@ -761,6 +761,22 @@ body {
     overflow-y: auto;
 }
 
+/* ===== Validation error styles ===== */
+
+/* Красная обводка невалидного поля */
+.form-control[aria-invalid="true"],
+.admin-input[aria-invalid="true"] {
+    border-color: var(--state-error) !important;
+    box-shadow: 0 0 0 3px rgba(169, 50, 38, 0.1) !important;
+}
+
+/* Зелёная обводка валидного тронутого поля */
+.form-control:not([aria-invalid]):focus:not(:placeholder-shown),
+.admin-input:not([aria-invalid]):focus:not(:placeholder-shown) {
+    border-color: var(--state-success);
+    box-shadow: 0 0 0 3px rgba(57, 115, 57, 0.1);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
     .nav-menu {

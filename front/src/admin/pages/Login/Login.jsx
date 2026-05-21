@@ -1,7 +1,16 @@
-import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useForm, RULES } from '../../../shared/hooks/useForm'
+import FormField from '../../../shared/components/FormField/FormField'
+import { useState } from 'react'
 import '../../styles/admin.css'
+
+const INITIAL = { email: 'admin@example.com', password: 'qwerty123!' }
+
+const SCHEMA = {
+    email:    [RULES.required, RULES.email],
+    password: [RULES.required, RULES.minLength(6)],
+}
 
 export default function Login() {
     const { login } = useAuth()
@@ -9,25 +18,36 @@ export default function Login() {
     const location = useLocation()
     const from = location.state?.from?.pathname ?? '/admin'
 
-    const [email, setEmail] = useState('admin@example.com')
-    const [password, setPassword] = useState('qwerty123!')
-    const [error, setError] = useState('')
+    const [serverError, setServerError] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const handleSubmit = async e => {
-        e.preventDefault()
-        setError('')
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
+        useForm(INITIAL, SCHEMA)
+
+    const onValid = async (data) => {
+        setServerError('')
         setLoading(true)
         try {
-            await new Promise(r => setTimeout(r, 400)) // имитация запроса
-            login(email, password)
+            await new Promise((r) => setTimeout(r, 400))
+            login(data.email, data.password)
             navigate(from, { replace: true })
         } catch (err) {
-            setError(err.message)
+            setServerError(err.message)
         } finally {
             setLoading(false)
         }
     }
+
+    const field = (name, extra = {}) => ({
+        name,
+        value: values[name],
+        error: errors[name],
+        touched: touched[name],
+        onChange: handleChange,
+        onBlur: handleBlur,
+        adminStyle: true,
+        ...extra,
+    })
 
     return (
         <div className="admin-root admin-login-page">
@@ -40,30 +60,24 @@ export default function Login() {
                     Введите email и пароль
                 </p>
 
-                {error && <div className="login-error">⚠️ {error}</div>}
+                {serverError && <div className="login-error">⚠️ {serverError}</div>}
 
-                <form onSubmit={handleSubmit}>
-                    <div className="admin-form-group">
-                        <label>Email</label>
-                        <input
-                            type="email"
-                            className="admin-input"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            required
-                            autoFocus
-                        />
-                    </div>
-                    <div className="admin-form-group">
-                        <label>Пароль</label>
-                        <input
-                            type="password"
-                            className="admin-input"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+                <form onSubmit={handleSubmit(onValid)} noValidate>
+                    <FormField
+                        {...field('email')}
+                        label="Email"
+                        type="email"
+                        placeholder="admin@example.com"
+                        required
+                        autoFocus
+                    />
+                    <FormField
+                        {...field('password')}
+                        label="Пароль"
+                        type="password"
+                        placeholder="••••••"
+                        required
+                    />
                     <button
                         type="submit"
                         className="btn-admin btn-admin-primary"
@@ -74,9 +88,9 @@ export default function Login() {
                     </button>
                 </form>
 
-                <div style={{ marginTop: 24, padding: '14px', background: 'var(--bg-light)', borderRadius: 10, fontSize: 13, color: 'var(--text-secondary)' }}>
+                <div style={{ marginTop: 24, padding: 14, background: 'var(--bg-light)', borderRadius: 10, fontSize: 13, color: 'var(--text-secondary)' }}>
                     <strong>Тестовые данные:</strong><br />
-                    admin@example.com / qwerty123!<br />
+                    admin@example.com / qwerty123!
                     manager@example.com / qwerty123!
                 </div>
             </div>
