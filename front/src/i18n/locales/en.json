@@ -69,7 +69,8 @@
     "service_2_title": "Live Music",
     "service_2_desc": "Evening jazz performances",
     "service_3_title": "Banquet Hall",
-    "service_3_desc": "Events for up to 100 guests"
+    "service_3_desc": "Events for up to 100 guests",
+    "review_sent": "Thank you for your review!"
   },
   "menu": {
     "title": "Menu Categories",
@@ -87,6 +88,15 @@
     "back": "← All News",
     "book_table": "Book a Table"
   },
+  "toast": {
+    "booking_success": "Booking submitted!",
+    "contact_success": "Message sent!",
+    "review_success": "Thank you for your review!",
+    "event_success": "Event request submitted!",
+    "select_dish": "Please select at least one dish",
+    "min_guests": "Minimum 10 guests required",
+    "fill_required": "Please fill in required fields"
+  },
   "events": {
     "title": "Order an Event",
     "calculator_title": "Menu Cost Calculator",
@@ -97,7 +107,12 @@
     "search_placeholder": "Search dishes by name...",
     "no_results": "Nothing found 😔",
     "no_results_hint": "Try changing the search query",
-    "found": "Dishes found:"
+    "found": "Dishes found:",
+    "request_sent": "Request sent!",
+    "cost_per_guest": "Cost per guest",
+    "guests": "Guests",
+    "total": "Total"
+
   },
   "contacts": {
     "title": "Contacts",
@@ -108,7 +123,8 @@
     "map_title": "Directions",
     "map_desc": "Interactive map with restaurant markers",
     "map_sub": "Moscow, Tverskaya St., 15 | Maly Patriarshiy Ln., 5",
-    "metro": "Metro stations: Tverskaya, Pushkinskaya, Chekhovskaya"
+    "metro": "Metro stations: Tverskaya, Pushkinskaya, Chekhovskaya",
+    "message_sent": "Message sent!"
   },
   "booking": {
     "title": "Book a Table",

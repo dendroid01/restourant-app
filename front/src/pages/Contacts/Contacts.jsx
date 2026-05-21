@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useForm, RULES } from '../../shared/hooks/useForm'
 import FormField from '../../shared/components/FormField/FormField'
+import { useToast } from '../../shared/hooks/useToast'
 
 const INITIAL = { name: '', email: '', phone: '', message: '' }
 
@@ -16,10 +17,11 @@ export default function Contacts() {
     const { t } = useTranslation()
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, reset } =
         useForm(INITIAL, SCHEMA)
+    const toast = useToast()
 
     const onValid = (data) => {
         console.log('ContactForm ✅', data)
-        alert('Сообщение отправлено!')
+        toast.success(t('contacts.message_sent') || 'Сообщение отправлено!')  // заменить alert
         reset()
     }
 

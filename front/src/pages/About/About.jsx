@@ -4,15 +4,17 @@ import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import ReviewCard from '../../components/ReviewCard/ReviewCard'
 import restaurantsData from '../../data/restaurants.json'
 import reviewsData from '../../data/reviews.json'
+import { useToast } from '../../shared/hooks/useToast'
 
 function ReviewModal({ onClose }) {
     const { t } = useTranslation()
     const [form, setForm] = useState({ name: '', email: '', rating: '5', text: '' })
+    const toast = useToast()
 
     const handleSubmit = e => {
         e.preventDefault()
         console.log('Review submit:', form)
-        alert('Спасибо за отзыв!')
+        toast.success(t('about.review_sent') || 'Спасибо за отзыв!')
         onClose()
     }
 

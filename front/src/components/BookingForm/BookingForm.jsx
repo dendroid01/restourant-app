@@ -1,16 +1,17 @@
-import { useTranslation } from 'react-i18next'
-import { useForm, RULES } from '../../shared/hooks/useForm'
+import {useTranslation} from 'react-i18next'
+import {useForm, RULES} from '../../shared/hooks/useForm'
 import FormField from '../../shared/components/FormField/FormField'
+import {useToast} from '../../shared/hooks/useToast'
 
 const RESTAURANTS_RU = [
-    { value: '', label: 'Выберите ресторан' },
-    { value: 'tverskaya', label: 'Ресторан на Тверской' },
-    { value: 'patriarshiye', label: 'Ресторан на Патриарших' },
+    {value: '', label: 'Выберите ресторан'},
+    {value: 'tverskaya', label: 'Ресторан на Тверской'},
+    {value: 'patriarshiye', label: 'Ресторан на Патриарших'},
 ]
 const RESTAURANTS_EN = [
-    { value: '', label: 'Choose a restaurant' },
-    { value: 'tverskaya', label: 'Tverskaya Restaurant' },
-    { value: 'patriarshiye', label: 'Patriarshiye Ponds' },
+    {value: '', label: 'Choose a restaurant'},
+    {value: 'tverskaya', label: 'Tverskaya Restaurant'},
+    {value: 'patriarshiye', label: 'Patriarshiye Ponds'},
 ]
 
 const today = new Date().toISOString().split('T')[0]
@@ -22,25 +23,26 @@ const INITIAL = {
 }
 
 const SCHEMA = {
-    name:       [RULES.required, RULES.minLength(2)],
-    phone:      [RULES.required, RULES.phone],
-    email:      [RULES.required, RULES.email],
+    name: [RULES.required, RULES.minLength(2)],
+    phone: [RULES.required, RULES.phone],
+    email: [RULES.required, RULES.email],
     restaurant: [RULES.required],
-    date:       [RULES.required],
-    time:       [RULES.required],
-    guests:     [RULES.required, RULES.min(1), RULES.max(50)],
+    date: [RULES.required],
+    time: [RULES.required],
+    guests: [RULES.required, RULES.min(1), RULES.max(50)],
 }
 
 export default function BookingForm() {
-    const { t, i18n } = useTranslation()
+    const {t, i18n} = useTranslation()
     const isRu = i18n.language?.startsWith('ru')
+    const toast = useToast()
 
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, reset } =
+    const {values, errors, touched, handleChange, handleBlur, handleSubmit, reset} =
         useForm(INITIAL, SCHEMA)
 
     const onValid = (data) => {
         console.log('BookingForm ✅', data)
-        alert(isRu ? 'Бронирование отправлено!' : 'Booking submitted!')
+        toast.success(isRu ? 'Бронирование отправлено!' : 'Booking submitted!')
         reset()
     }
 
@@ -91,7 +93,7 @@ export default function BookingForm() {
                 label={t('booking.date')}
                 type="date"
                 required
-                inputProps={{ min: today }}
+                inputProps={{min: today}}
             />
             <FormField
                 {...field('time')}
@@ -104,7 +106,7 @@ export default function BookingForm() {
                 label={t('booking.guests')}
                 type="number"
                 required
-                inputProps={{ min: 1, max: 50 }}
+                inputProps={{min: 1, max: 50}}
             />
             <FormField
                 {...field('wishes')}
@@ -113,7 +115,7 @@ export default function BookingForm() {
                 placeholder={t('booking.wishes_placeholder')}
                 rows={3}
             />
-            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+            <button type="submit" className="btn btn-primary" style={{width: '100%'}}>
                 {t('booking.submit')}
             </button>
         </form>

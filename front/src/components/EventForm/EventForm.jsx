@@ -1,6 +1,7 @@
-import { useTranslation } from 'react-i18next'
-import { useForm, RULES } from '../../shared/hooks/useForm'
+import {useTranslation} from 'react-i18next'
+import {useForm, RULES} from '../../shared/hooks/useForm'
 import FormField from '../../shared/components/FormField/FormField'
+import {useToast} from '../../shared/hooks/useToast'
 
 const minDate = (() => {
     const d = new Date()
@@ -14,19 +15,20 @@ const INITIAL = {
 }
 
 const SCHEMA = {
-    name:       [RULES.required, RULES.minLength(2)],
-    phone:      [RULES.required, RULES.phone],
-    email:      [RULES.required, RULES.email],
-    date:       [RULES.required],
-    guests:     [RULES.required, RULES.min(10)],
+    name: [RULES.required, RULES.minLength(2)],
+    phone: [RULES.required, RULES.phone],
+    email: [RULES.required, RULES.email],
+    date: [RULES.required],
+    guests: [RULES.required, RULES.min(10)],
     restaurant: [RULES.required],
 }
 
-export default function EventForm({ onGuestsChange }) {
-    const { t, i18n } = useTranslation()
+export default function EventForm({onGuestsChange}) {
+    const {t, i18n} = useTranslation()
     const isRu = i18n.language?.startsWith('ru')
+    const toast = useToast()
 
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, reset } =
+    const {values, errors, touched, handleChange, handleBlur, handleSubmit, reset} =
         useForm(INITIAL, SCHEMA)
 
     // Пробрасываем кол-во гостей наружу (для калькулятора)
@@ -39,6 +41,7 @@ export default function EventForm({ onGuestsChange }) {
 
     const onValid = (data) => {
         console.log('EventForm ✅', data)
+        toast.success(t('events.request_sent') || 'Заявка на мероприятие отправлена!')
     }
 
     const field = (name, extra = {}) => ({
@@ -52,14 +55,14 @@ export default function EventForm({ onGuestsChange }) {
     })
 
     const restaurants = [
-        { value: '', label: isRu ? 'Выберите ресторан' : 'Choose a restaurant' },
-        { value: 'tverskaya', label: isRu ? 'Ресторан на Тверской' : 'Tverskaya Restaurant' },
-        { value: 'patriarshiye', label: isRu ? 'Ресторан на Патриарших' : 'Patriarshiye Ponds' },
+        {value: '', label: isRu ? 'Выберите ресторан' : 'Choose a restaurant'},
+        {value: 'tverskaya', label: isRu ? 'Ресторан на Тверской' : 'Tverskaya Restaurant'},
+        {value: 'patriarshiye', label: isRu ? 'Ресторан на Патриарших' : 'Patriarshiye Ponds'},
     ]
 
     return (
         <form id="eventForm" onSubmit={handleSubmit(onValid)} noValidate>
-            <FormField {...field('name')} label={t('booking.name')} type="text" required />
+            <FormField {...field('name')} label={t('booking.name')} type="text" required/>
             <FormField
                 {...field('phone')}
                 label={t('booking.phone')}
@@ -67,20 +70,20 @@ export default function EventForm({ onGuestsChange }) {
                 placeholder="+7 (9XX) XXX-XX-XX"
                 required
             />
-            <FormField {...field('email')} label={t('booking.email')} type="email" required />
+            <FormField {...field('email')} label={t('booking.email')} type="email" required/>
             <FormField
                 {...field('date')}
                 label={t('booking.date')}
                 type="date"
                 required
-                inputProps={{ min: minDate }}
+                inputProps={{min: minDate}}
             />
             <FormField
                 {...field('guests')}
                 label={isRu ? 'Количество гостей (от 10)' : 'Number of guests (min 10)'}
                 type="number"
                 required
-                inputProps={{ min: 10 }}
+                inputProps={{min: 10}}
             />
             <FormField
                 {...field('restaurant')}
