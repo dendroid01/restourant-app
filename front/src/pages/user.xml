@@ -1,0 +1,693 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+About/About.jsx
+Booking/Booking.jsx
+Contacts/Contacts.jsx
+Events/Events.jsx
+Home/Home.jsx
+Menu/Menu.jsx
+News/News.jsx
+NewsDetail/NewsDetail.jsx
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="About/About.jsx">
+import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
+import ReviewCard from '../../components/ReviewCard/ReviewCard'
+import restaurantsData from '../../data/restaurants.json'
+import reviewsData from '../../data/reviews.json'
+import { useToast } from '../../shared/hooks/useToast'
+
+function ReviewModal({ onClose }) {
+    const { t } = useTranslation()
+    const [form, setForm] = useState({ name: '', email: '', rating: '5', text: '' })
+    const toast = useToast()
+
+    const handleSubmit = e => {
+        e.preventDefault()
+
+        const nameWords = form.name.trim().split(/\s+/)
+        if (nameWords.length < 2 || nameWords.some(w => w.length < 2)) {
+            toast.error(t('validation.fullName.two_words'))
+            return
+        }
+
+        console.log('Review submit:', form)
+        toast.success(t('about.review_sent') || 'Спасибо за отзыв!')
+        onClose()
+    }
+
+    return (
+        <div className="modal active" onClick={e => e.target === e.currentTarget && onClose()}>
+            <div className="modal-content">
+                <h2 className="h2-22">Оставить отзыв</h2>
+                <form onSubmit={handleSubmit}>
+                    {['name', 'email'].map(f => (
+                        <div className="form-group" key={f}>
+                            <label className="form-label">{f === 'name' ? t('forms.your_name') : 'Email'}</label>
+                            <input type={f === 'email' ? 'email' : 'text'} className="form-control"
+                                   value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))} required />
+                        </div>
+                    ))}
+                    <div className="form-group">
+                        <label className="form-label">{t('forms.rating')}</label>
+                        <select className="form-control" value={form.rating} onChange={e => setForm(p => ({ ...p, rating: e.target.value }))}>
+                            {[5, 4, 3, 2, 1].map(r => <option key={r} value={r}>{'★'.repeat(r)} ({r})</option>)}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">{t('forms.review_text')}</label>
+                        <textarea className="form-control" rows={4} required value={form.text}
+                                  onChange={e => setForm(p => ({ ...p, text: e.target.value }))} />
+                    </div>
+                    <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
+                        <button type="submit" className="btn btn-primary">{t('forms.send')}</button>
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>{t('forms.cancel')}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    )
+}
+
+export default function About() {
+    const { t,i18n } = useTranslation()
+    const [showModal, setShowModal] = useState(false)
+
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    const services = [
+        { icon: 'fa-concierge-bell', title: t('about.service_1_title'), desc: t('about.service_1_desc') },
+        { icon: 'fa-music', title: t('about.service_2_title'), desc: t('about.service_2_desc') },
+        { icon: 'fa-glass-cheers', title: t('about.service_3_title'), desc: t('about.service_3_desc') },
+    ]
+
+    const staff = [
+        { img: 'https://picsum.photos/300/300?random=40', name: 'Жан-Пьер Дюбуа', role_ru: 'Шеф-повар', role_en: 'Head Chef', desc_ru: 'Обладатель звезды Мишлен', desc_en: 'Michelin Star holder' },
+        { img: 'https://picsum.photos/300/300?random=41', name: 'Мария Соколова', role_ru: 'Сомелье', role_en: 'Sommelier', desc_ru: 'Лучший сомелье России', desc_en: "Russia's best sommelier" },
+        { img: 'https://picsum.photos/300/300?random=42', name: 'Алексей Волков', role_ru: 'Шеф-кондитер', role_en: 'Pastry Chef', desc_ru: 'Стажировка в Париже', desc_en: 'Trained in Paris' },
+        { img: 'https://picsum.photos/300/300?random=43', name: 'Екатерина Морозова', role_ru: 'Управляющий', role_en: 'Manager', desc_ru: '20 лет в ресторанном бизнесе', desc_en: '20 years in the restaurant business' },
+    ]
+
+    const awards = [
+        { img: 'https://picsum.photos/300/200?random=70', title_ru: 'Звезда Мишлен', title_en: 'Michelin Star', year: '2023', desc_ru: 'Присуждена за выдающуюся кухню', desc_en: 'Awarded for outstanding cuisine' },
+        { img: 'https://picsum.photos/300/200?random=71', title_ru: 'Лучший ресторан Москвы', title_en: 'Best Moscow Restaurant', year: '2022', desc_ru: 'Премия "Пальмовая ветвь"', desc_en: '"Palm Branch" award' },
+        { img: 'https://picsum.photos/300/200?random=72', title_ru: 'Лучший сомелье', title_en: 'Best Sommelier', year: '2021', desc_ru: 'Мария Соколова', desc_en: 'Maria Sokolova' },
+    ]
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><a href="/">{t('breadcrumbs.home')}</a></li><li>{t('nav.about')}</li></ul></div></div>
+
+            {/* Restaurants */}
+            <section id="restaurants" className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('about.title')}</h1>
+                    {restaurantsData.map(r => <RestaurantCard key={r.id} restaurant={r} />)}
+                </div>
+            </section>
+
+            {/* Service */}
+            <section id="service" className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('about.service_title')}</h2>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--spacing-lg)' }}>
+                        {services.map((s, i) => (
+                            <div className="card" key={i}>
+                                <div className="card-content">
+                                    <i className={`fas ${s.icon}`} style={{ fontSize: 48, color: 'var(--brand-gold-default)' }} />
+                                    <h3 className="h3-16-medium" style={{ marginTop: 'var(--spacing-md)' }}>{s.title}</h3>
+                                    <p className="small-14">{s.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Awards */}
+            <section id="awards" className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('about.awards_title')}</h2>
+                    <div className="awards-grid">
+                        {awards.map((a, i) => (
+                            <div className="award-card card" key={i}>
+                                <img src={a.img} alt={a.title_ru} className="card-img" />
+                                <div className="card-content">
+                                    <h3 className="h3-16-medium">{a[`title_${lang}`] || a.title_ru}</h3>
+                                    <p className="label-11-uppercase">{a.year}</p>
+                                    <p className="small-14">{a[`desc_${lang}`] || a.desc_ru}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Staff */}
+            <section id="staff" className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('about.staff_title')}</h2>
+                    <div className="staff-grid">
+                        {staff.map((s, i) => (
+                            <div className="staff-card" key={i}>
+                                <img src={s.img} alt={s.name} className="staff-img" />
+                                <h3 className="h3-16-medium">{s.name}</h3>
+                                <p className="small-14">{s[`role_${lang}`]}</p>
+                                <p className="caption-12">{s[`desc_${lang}`]}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Reviews */}
+            <section id="reviews" className="page-section">
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+                        <h2 className="h1-28">{t('about.reviews_title')}</h2>
+                        <button className="btn btn-secondary" onClick={() => setShowModal(true)}>{t('about.leave_review')}</button>
+                    </div>
+                    {reviewsData.map(r => <ReviewCard key={r.id} review={r} />)}
+                </div>
+            </section>
+
+            {showModal && <ReviewModal onClose={() => setShowModal(false)} />}
+        </main>
+    )
+}
+</file>
+
+<file path="Booking/Booking.jsx">
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import BookingForm from '../../components/BookingForm/BookingForm'
+
+export default function Booking() {
+    const { t } = useTranslation()
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('booking.title')}</li></ul></div></div>
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('booking.title')}</h1>
+                    <div style={{ maxWidth: 600, margin: '0 auto', background: 'var(--bg-white)', padding: 'var(--spacing-lg)', borderRadius: 8 }}>
+                        <BookingForm />
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="Contacts/Contacts.jsx">
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import { useForm, RULES } from '../../shared/hooks/useForm'
+import FormField from '../../shared/components/FormField/FormField'
+import { useToast } from '../../shared/hooks/useToast'
+
+const INITIAL = { name: '', email: '', phone: '', message: '' }
+
+const SCHEMA = {
+    name:    [RULES.required, RULES.fullName],
+    email:   [RULES.required, RULES.email],
+    phone:   [RULES.phone],            // телефон необязателен, но если введён — валидируем
+    message: [RULES.required, RULES.minLength(10)],
+}
+
+export default function Contacts() {
+    const { t } = useTranslation()
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, reset } =
+        useForm(INITIAL, SCHEMA)
+    const toast = useToast()
+
+    const onValid = (data) => {
+        console.log('ContactForm ✅', data)
+        toast.success(t('contacts.message_sent') || 'Сообщение отправлено!')  // заменить alert
+        reset()
+    }
+
+    const field = (name, extra = {}) => ({
+        name,
+        value: values[name],
+        error: errors[name],
+        touched: touched[name],
+        onChange: handleChange,
+        onBlur: handleBlur,
+        ...extra,
+    })
+
+    return (
+        <main>
+            <div className="breadcrumbs">
+                <div className="container">
+                    <ul className="breadcrumbs-list">
+                        <li><Link to="/">{t('breadcrumbs.home')}</Link></li>
+                        <li>{t('nav.contacts')}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('contacts.title')}</h1>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-xl)' }}>
+
+                        {/* Контактная информация */}
+                        <div>
+                            <h2 className="h2-22" style={{ marginBottom: 'var(--spacing-md)' }}>
+                                {t('contacts.reach_us')}
+                            </h2>
+                            <p className="body-16" style={{ marginBottom: 'var(--spacing-sm)' }}>
+                                <i className="fas fa-phone" style={{ color: 'var(--brand-red-default)', width: 30 }} />
+                                +7 (495) 123-45-67
+                            </p>
+                            <p className="body-16" style={{ marginBottom: 'var(--spacing-sm)' }}>
+                                <i className="fas fa-envelope" style={{ color: 'var(--brand-red-default)', width: 30 }} />
+                                info@labelleepoque.ru
+                            </p>
+                            <p className="body-16" style={{ marginBottom: 'var(--spacing-lg)' }}>
+                                <i className="fas fa-map-marker-alt" style={{ color: 'var(--brand-red-default)', width: 30 }} />
+                                г. Москва, ул. Тверская, 15
+                            </p>
+
+                            <h2 className="h2-22" style={{ marginBottom: 'var(--spacing-md)' }}>
+                                {t('contacts.hours')}
+                            </h2>
+                            <p className="body-16"><strong>Ресторан на Тверской:</strong></p>
+                            <p className="small-14">Пн-Вс: 12:00 — 00:00</p>
+                            <p className="body-16" style={{ marginTop: 'var(--spacing-sm)' }}>
+                                <strong>Ресторан на Патриарших:</strong>
+                            </p>
+                            <p className="small-14">Пн-Вс: 12:00 — 02:00</p>
+                        </div>
+
+                        {/* Форма */}
+                        <div>
+                            <h2 className="h2-22" style={{ marginBottom: 'var(--spacing-md)' }}>
+                                {t('contacts.write_us')}
+                            </h2>
+                            <form onSubmit={handleSubmit(onValid)} noValidate>
+                                <FormField
+                                    {...field('name')}
+                                    label="Имя"
+                                    type="text"
+                                    placeholder={t('forms.name_placeholder')}
+                                    required
+                                />
+                                <FormField
+                                    {...field('email')}
+                                    label="Email"
+                                    type="email"
+                                    placeholder={t('forms.email_placeholder')}
+                                    required
+                                />
+                                <FormField
+                                    {...field('phone')}
+                                    label="Телефон"
+                                    type="tel"
+                                    placeholder="+7 (9XX) XXX-XX-XX"
+                                />
+                                <FormField
+                                    {...field('message')}
+                                    label="Сообщение"
+                                    type="textarea"
+                                    placeholder={t('forms.message_placeholder')}
+                                    rows={5}
+                                    required
+                                />
+                                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                                    {t('contacts.send')}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Карта */}
+            <section className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('contacts.map_title')}</h2>
+                    <div className="map-placeholder">
+                        <div style={{ textAlign: 'center' }}>
+                            <i className="fas fa-map-marker-alt"
+                               style={{ fontSize: 48, marginBottom: 'var(--spacing-md)', color: 'var(--brand-red-default)' }} />
+                            <p className="body-16">{t('contacts.map_desc')}</p>
+                            <p className="caption-12" style={{ marginTop: 'var(--spacing-sm)' }}>{t('contacts.map_sub')}</p>
+                            <p className="small-14" style={{ marginTop: 'var(--spacing-md)' }}>{t('contacts.metro')}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="Events/Events.jsx">
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import EventForm from '../../components/EventForm/EventForm'
+import Calculator from '../../components/Calculator/Calculator'
+
+export default function Events() {
+    const { t } = useTranslation()
+    const [guestCount, setGuestCount] = useState(1)
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('nav.events')}</li></ul></div></div>
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('events.title')}</h1>
+                    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+                        <EventForm onGuestsChange={setGuestCount} />
+                        <Calculator guestCount={guestCount} />
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="Home/Home.jsx">
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import HeroSlider from '../../components/HeroSlider/HeroSlider'
+import NewsCard from '../../components/NewsCard/NewsCard'
+import newsData from '../../data/news.json'
+
+export default function Home() {
+    const { t } = useTranslation()
+
+    const slides = [
+        { image: 'https://picsum.photos/1920/600?random=1', title: t('home.hero_title_1'), subtitle: t('home.hero_sub_1'), link: { href: '/menu', label: t('home.see_menu') } },
+        { image: 'https://picsum.photos/1920/600?random=2', title: t('home.hero_title_2'), subtitle: t('home.hero_sub_2'), link: { href: '/booking', label: t('home.book_now') } },
+        { image: 'https://picsum.photos/1920/600?random=3', title: t('home.hero_title_3'), subtitle: t('home.hero_sub_3'), link: { href: '/menu', label: t('home.see_menu') } },
+    ]
+
+    const advantages = [
+        { img: 'https://picsum.photos/400/300?random=10', title: t('home.adv_1_title'), desc: t('home.adv_1_desc') },
+        { img: 'https://picsum.photos/400/300?random=11', title: t('home.adv_2_title'), desc: t('home.adv_2_desc') },
+        { img: 'https://picsum.photos/400/300?random=12', title: t('home.adv_3_title'), desc: t('home.adv_3_desc') },
+    ]
+
+    const categories = [
+        { img: 'https://picsum.photos/200/200?random=50', label: t('menu.breakfast'), anchor: '#breakfast' },
+        { img: 'https://picsum.photos/200/200?random=51', label: t('menu.salads'), anchor: '#salads' },
+        { img: 'https://picsum.photos/200/200?random=52', label: t('menu.hot'), anchor: '#hot' },
+        { img: 'https://picsum.photos/200/200?random=53', label: t('menu.desserts'), anchor: '#desserts' },
+    ]
+
+    return (
+        <main>
+            <HeroSlider slides={slides} />
+
+            {/* Advantages */}
+            <section className="page-section">
+                <div className="container">
+                    <h2 className="h1-28 section-title">{t('home.advantages_title')}</h2>
+                    <div className="grid-3">
+                        {advantages.map((a, i) => (
+                            <div className="card" key={i}>
+                                <img src={a.img} alt={a.title} className="card-img" loading="lazy" />
+                                <div className="card-content">
+                                    <h3 className="h3-16-medium">{a.title}</h3>
+                                    <p className="small-14">{a.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* News */}
+            <section className="page-section">
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+                        <h2 className="h1-28">{t('home.news_title')}</h2>
+                        <Link to="/news" className="btn btn-secondary">{t('home.all_news')}</Link>
+                    </div>
+                    <div className="news-grid">
+                        {newsData.slice(0, 3).map(n => <NewsCard key={n.id} news={n} />)}
+                    </div>
+                </div>
+            </section>
+
+            {/* About teaser */}
+            <section className="page-section">
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+                        <h2 className="h1-28">{t('home.about_title')}</h2>
+                        <Link to="/about" className="btn btn-secondary">{t('home.more')}</Link>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-lg)' }}>
+                        <img src="https://picsum.photos/600/400?random=30" alt="Interior" style={{ width: '100%', borderRadius: 8 }} loading="lazy" />
+                        <div>
+                            <h3 className="h2-22">{t('home.about_story_title')}</h3>
+                            <p className="body-16" style={{ margin: 'var(--spacing-md) 0' }}>{t('home.about_text_1')}</p>
+                            <p className="body-16">{t('home.about_text_2')}</p>
+                            <div style={{ marginTop: 'var(--spacing-lg)' }}>
+                                <Link to="/about#restaurants" className="btn btn-primary">{t('home.our_restaurants')}</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Categories */}
+            <section className="page-section">
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
+                        <h2 className="h1-28">{t('home.categories_title')}</h2>
+                        <Link to="/menu" className="btn btn-secondary">{t('home.all_menu')}</Link>
+                    </div>
+                    <div className="categories-grid">
+                        {categories.map((c, i) => (
+                            <Link to={`/menu${c.anchor}`} key={i} className="category-card" style={{ textDecoration: 'none' }}>
+                                <img src={c.img} alt={c.label} className="category-img" loading="lazy" />
+                                <h3 className="h3-16-medium">{c.label}</h3>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA */}
+            <section className="page-section cta-section">
+                <div className="container" style={{ textAlign: 'center' }}>
+                    <h2 className="h1-28" style={{ color: 'white' }}>{t('home.cta_title')}</h2>
+                    <p className="body-16" style={{ margin: 'var(--spacing-md) 0', color: 'var(--text-tertiary)' }}>{t('home.cta_sub')}</p>
+                    <div style={{ display: 'flex', gap: 'var(--spacing-md)', justifyContent: 'center' }}>
+                        <Link to="/booking" className="btn btn-primary">{t('home.book_table')}</Link>
+                        <Link to="/events" className="btn btn-secondary" style={{ background: 'transparent', color: 'white', borderColor: 'white' }}>
+                            {t('home.order_event')}
+                        </Link>
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="Menu/Menu.jsx">
+import { useTranslation } from 'react-i18next'
+import HeroSlider from '../../components/HeroSlider/HeroSlider'
+import DishCard from '../../components/DishCard/DishCard'
+import menuData from '../../data/menu.json'
+import { Link } from 'react-router-dom'
+
+export default function Menu() {
+    const { t, i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    const slides = menuData.recommended.map(d => ({
+        image: d.image,
+        title: d[`title_${lang}`],
+        subtitle: d[`description_${lang}`] || t('menu.recommended'),
+        price: d.price,
+    }))
+
+    const sections = [
+        { id: 'breakfast', label: t('menu.breakfast') },
+        { id: 'salads', label: t('menu.salads') },
+        { id: 'hot', label: t('menu.hot') },
+        { id: 'desserts', label: t('menu.desserts') },
+        { id: 'wine', label: t('menu.wine') },
+    ]
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('nav.menu')}</li></ul></div></div>
+
+            <HeroSlider slides={slides} height="500px" />
+
+            {/* Categories */}
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('menu.title')}</h1>
+                    <div className="categories-grid">
+                        {menuData.categories.map(c => (
+                            <a href={`#${c.id}`} key={c.id} className="category-card" style={{ textDecoration: 'none' }}>
+                                <img src={c.image} alt={c[`title_${lang}`]} className="category-img" />
+                                <h3 className="h3-16-medium">{c[`title_${lang}`]}</h3>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {sections.map(s => (
+                <section id={s.id} className="page-section" key={s.id}>
+                    <div className="container">
+                        <h2 className="h1-28 section-title">{s.label}</h2>
+                        <div className="menu-items-grid">
+                            {(menuData.items[s.id] || []).map(dish => <DishCard key={dish.id} dish={dish} />)}
+                        </div>
+                    </div>
+                </section>
+            ))}
+        </main>
+    )
+}
+</file>
+
+<file path="News/News.jsx">
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import NewsCard from '../../components/NewsCard/NewsCard'
+import newsData from '../../data/news.json'
+
+export default function News() {
+    const { t } = useTranslation()
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><Link to="/">{t('breadcrumbs.home')}</Link></li><li>{t('nav.news')}</li></ul></div></div>
+            <section className="page-section">
+                <div className="container">
+                    <h1 className="h1-28 section-title">{t('news.title')}</h1>
+                    <div className="news-grid">
+                        {newsData.map(n => <NewsCard key={n.id} news={n} />)}
+                    </div>
+                </div>
+            </section>
+        </main>
+    )
+}
+</file>
+
+<file path="NewsDetail/NewsDetail.jsx">
+import { useParams, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import newsData from '../../data/news.json'
+import SafeHtml from '../../shared/components/SafeHtml/SafeHtml'
+
+export default function NewsDetail() {
+    const { id } = useParams()
+    const { t, i18n } = useTranslation()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+    const news = newsData.find(n => n.id === id)
+
+    if (!news) return (
+        <main><div className="container" style={{ padding: '64px 0' }}><p>Новость не найдена</p></div></main>
+    )
+
+    const content = news[`content_${lang}`]
+
+    // Поддержка обоих форматов: plain text (старые данные) и HTML (из Tiptap)
+    const isHtml = content?.trim().startsWith('<')
+
+    return (
+        <main>
+            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list">
+                <li><Link to="/">{t('breadcrumbs.home')}</Link></li>
+                <li><Link to="/news">{t('nav.news')}</Link></li>
+                <li>{news[`title_${lang}`]}</li>
+            </ul></div></div>
+
+            <article className="page-section">
+                <div className="container">
+                    <div className="news-date" style={{ marginBottom: 'var(--spacing-sm)' }}>{news[`date_${lang}`]}</div>
+                    <h1 className="display-36" style={{ marginBottom: 'var(--spacing-lg)' }}>{news[`title_${lang}`]}</h1>
+                    <img src={news.image} alt={news[`title_${lang}`]}
+                         style={{ width: '100%', borderRadius: 8, marginBottom: 'var(--spacing-lg)' }} />
+
+                    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+                        {isHtml ? (
+                            <SafeHtml html={content} />
+                        ) : (
+                            // Fallback для старых plain-text данных
+                            content?.split('\n\n').map((para, i) => (
+                                <p key={i} className="body-16" style={{ marginBottom: 'var(--spacing-md)' }}>{para}</p>
+                            ))
+                        )}
+
+                        <p className="small-14" style={{ color: 'var(--text-tertiary)', marginTop: 'var(--spacing-lg)' }}>
+                            {news.tags.map(tag => `#${tag}`).join(' ')}
+                        </p>
+                    </div>
+
+                    <div style={{ marginTop: 'var(--spacing-xl)', textAlign: 'center' }}>
+                        <Link to="/news" className="btn btn-secondary">{t('news.back')}</Link>
+                        <Link to="/booking" className="btn btn-primary" style={{ marginLeft: 'var(--spacing-sm)' }}>
+                            {t('news.book_table')}
+                        </Link>
+                    </div>
+                </div>
+            </article>
+        </main>
+    )
+}
+</file>
+
+</files>

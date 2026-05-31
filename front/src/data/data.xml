@@ -1,0 +1,387 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+menu.json
+news.json
+restaurants.json
+reviews.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="menu.json">
+{
+  "recommended": [
+    {
+      "id": "r1",
+      "title_ru": "Утиное филе с ягодным соусом",
+      "title_en": "Duck Fillet with Berry Sauce",
+      "price": 2450,
+      "image": "https://picsum.photos/1920/500?random=80"
+    },
+    {
+      "id": "r2",
+      "title_ru": "Стейк из мраморной говядины",
+      "title_en": "Marbled Beef Steak",
+      "price": 3800,
+      "description_ru": "С соусом из трюфеля",
+      "description_en": "With truffle sauce",
+      "image": "https://picsum.photos/1920/500?random=81"
+    },
+    {
+      "id": "r3",
+      "title_ru": "Трюфельное ризотто",
+      "title_en": "Truffle Risotto",
+      "price": 2100,
+      "description_ru": "С белым трюфелем и пармезаном",
+      "description_en": "With white truffle and parmesan",
+      "image": "https://picsum.photos/1920/500?random=82"
+    }
+  ],
+  "categories": [
+    { "id": "breakfast", "title_ru": "Завтраки", "title_en": "Breakfast", "image": "https://picsum.photos/200/200?random=50" },
+    { "id": "salads", "title_ru": "Салаты", "title_en": "Salads", "image": "https://picsum.photos/200/200?random=51" },
+    { "id": "hot", "title_ru": "Горячие блюда", "title_en": "Hot Dishes", "image": "https://picsum.photos/200/200?random=52" },
+    { "id": "desserts", "title_ru": "Десерты", "title_en": "Desserts", "image": "https://picsum.photos/200/200?random=53" },
+    { "id": "wine", "title_ru": "Винная карта", "title_en": "Wine List", "image": "https://picsum.photos/200/200?random=54" }
+  ],
+  "items": {
+    "breakfast": [
+      {
+        "id": "b1",
+        "title_ru": "Классический английский завтрак",
+        "title_en": "Classic English Breakfast",
+        "description_ru": "Яйца пашот, бекон, сосиски, бобы, томаты, тосты",
+        "description_en": "Poached eggs, bacon, sausages, beans, tomatoes, toast",
+        "price": 890,
+        "image": "https://picsum.photos/100/100?random=90"
+      },
+      {
+        "id": "b2",
+        "title_ru": "Омлет с трюфелем",
+        "title_en": "Truffle Omelette",
+        "description_ru": "Нежный омлет с белым трюфелем и пармезаном",
+        "description_en": "Tender omelette with white truffle and parmesan",
+        "price": 750,
+        "image": "https://picsum.photos/100/100?random=91"
+      },
+      {
+        "id": "b3",
+        "title_ru": "Французские тосты с кленовым сиропом",
+        "title_en": "French Toast with Maple Syrup",
+        "description_ru": "Бриошь, кленовый сироп, ягоды, взбитые сливки",
+        "description_en": "Brioche, maple syrup, berries, whipped cream",
+        "price": 590,
+        "image": "https://picsum.photos/100/100?random=92"
+      }
+    ],
+    "salads": [
+      {
+        "id": "s1",
+        "title_ru": "Салат с креветками и авокадо",
+        "title_en": "Shrimp and Avocado Salad",
+        "description_ru": "Тигровые креветки, авокадо, руккола, соус цезарь",
+        "description_en": "Tiger shrimp, avocado, arugula, caesar dressing",
+        "price": 1650,
+        "image": "https://picsum.photos/100/100?random=93"
+      },
+      {
+        "id": "s2",
+        "title_ru": "Нисуаз с тунцом",
+        "title_en": "Tuna Niçoise",
+        "description_ru": "Тунец, яйцо, фасоль, помидоры, оливки",
+        "description_en": "Tuna, egg, beans, tomatoes, olives",
+        "price": 1250,
+        "image": "https://picsum.photos/100/100?random=94"
+      }
+    ],
+    "hot": [
+      {
+        "id": "h1",
+        "title_ru": "Утиное филе с ягодным соусом",
+        "title_en": "Duck Fillet with Berry Sauce",
+        "description_ru": "Нежное филе утки, соус из лесных ягод, запеченные овощи",
+        "description_en": "Tender duck fillet, forest berry sauce, roasted vegetables",
+        "price": 2450,
+        "image": "https://picsum.photos/100/100?random=60"
+      },
+      {
+        "id": "h2",
+        "title_ru": "Стейк из мраморной говядины",
+        "title_en": "Marbled Beef Steak",
+        "description_ru": "Мраморная говядина, соус из трюфеля, картофельное пюре",
+        "description_en": "Marbled beef, truffle sauce, mashed potatoes",
+        "price": 3800,
+        "image": "https://picsum.photos/100/100?random=61"
+      },
+      {
+        "id": "h3",
+        "title_ru": "Трюфельный ризотто",
+        "title_en": "Truffle Risotto",
+        "description_ru": "Рис арборио, белый трюфель, пармезан",
+        "description_en": "Arborio rice, white truffle, parmesan",
+        "price": 2100,
+        "image": "https://picsum.photos/100/100?random=63"
+      },
+      {
+        "id": "h4",
+        "title_ru": "Морепродукты на гриле",
+        "title_en": "Grilled Seafood",
+        "description_ru": "Креветки, мидии, кальмары, соус чили",
+        "description_en": "Shrimp, mussels, squid, chili sauce",
+        "price": 2900,
+        "image": "https://picsum.photos/100/100?random=64"
+      }
+    ],
+    "desserts": [
+      {
+        "id": "d1",
+        "title_ru": "Тирамису",
+        "title_en": "Tiramisu",
+        "description_ru": "Классический итальянский десерт с маскарпоне",
+        "description_en": "Classic Italian dessert with mascarpone",
+        "price": 550,
+        "image": "https://picsum.photos/100/100?random=95"
+      },
+      {
+        "id": "d2",
+        "title_ru": "Крем-брюле",
+        "title_en": "Crème Brûlée",
+        "description_ru": "Нежный заварной крем с карамельной корочкой",
+        "description_en": "Tender custard with caramel crust",
+        "price": 490,
+        "image": "https://picsum.photos/100/100?random=96"
+      },
+      {
+        "id": "d3",
+        "title_ru": "Шоколадный фондан",
+        "title_en": "Chocolate Fondant",
+        "description_ru": "С жидкой начинкой, с ванильным мороженым",
+        "description_en": "With liquid center, served with vanilla ice cream",
+        "price": 590,
+        "image": "https://picsum.photos/100/100?random=97"
+      }
+    ],
+    "wine": [
+      {
+        "id": "w1",
+        "title_ru": "Château Margaux 2015",
+        "title_en": "Château Margaux 2015",
+        "description_ru": "Франция, Бордо, красное сухое",
+        "description_en": "France, Bordeaux, dry red",
+        "price": 45000,
+        "image": "https://picsum.photos/100/100?random=98"
+      },
+      {
+        "id": "w2",
+        "title_ru": "Dom Pérignon 2012",
+        "title_en": "Dom Pérignon 2012",
+        "description_ru": "Франция, Шампань, игристое",
+        "description_en": "France, Champagne, sparkling",
+        "price": 32000,
+        "image": "https://picsum.photos/100/100?random=99"
+      }
+    ]
+  },
+  "eventDishes": [
+    { "id": "dish1", "title_ru": "Утиное филе с ягодным соусом", "title_en": "Duck Fillet with Berry Sauce", "price": 2450 },
+    { "id": "dish2", "title_ru": "Стейк из мраморной говядины", "title_en": "Marbled Beef Steak", "price": 3800 },
+    { "id": "dish3", "title_ru": "Салат с креветками и авокадо", "title_en": "Shrimp and Avocado Salad", "price": 1650 },
+    { "id": "dish4", "title_ru": "Трюфельный ризотто", "title_en": "Truffle Risotto", "price": 2100 }
+  ]
+}
+</file>
+
+<file path="news.json">
+[
+  {
+    "id": "1",
+    "title_ru": "Новое меню от шеф-повара",
+    "title_en": "New Chef's Menu",
+    "date_ru": "15 марта 2024",
+    "date_en": "March 15, 2024",
+    "excerpt_ru": "Представляем весеннее меню с акцентом на свежие сезонные продукты. Шеф-повар Жан-Пьер Дюбуа создал уникальные блюда, которые подчеркивают вкус весны.",
+    "excerpt_en": "We present the spring menu with an emphasis on fresh seasonal products. Chef Jean-Pierre Dubois has created unique dishes that highlight the taste of spring.",
+    "content_ru": "Мы рады представить вам новое весеннее меню, разработанное нашим шеф-поваром Жан-Пьером Дюбуа. Вдохновение для создания новых блюд пришло с приходом весны — свежие овощи, зелень и первые ягоды стали основой для обновленной карты.\n\nВ меню появились легкие салаты с креветками и авокадо, обновленная паста с морепродуктами и новый десерт — лимонный тарт с безе. Также шеф-повар подготовил специальное предложение — весенний сет из трех блюд по специальной цене.",
+    "content_en": "We are pleased to present the new spring menu developed by our chef Jean-Pierre Dubois. Inspiration for creating new dishes came with the arrival of spring — fresh vegetables, greens and the first berries became the basis for the updated menu.\n\nThe menu features light salads with shrimp and avocado, updated pasta with seafood and a new dessert — lemon tart with meringue.",
+    "tags": ["newmenu", "spring2024", "chef"],
+    "image": "https://picsum.photos/1200/600?random=20",
+    "image_thumb": "https://picsum.photos/400/250?random=20"
+  },
+  {
+    "id": "2",
+    "title_ru": "Гастрономический ужин",
+    "title_en": "Gastronomic Dinner",
+    "date_ru": "10 марта 2024",
+    "date_en": "March 10, 2024",
+    "excerpt_ru": "Приглашаем на уникальный гастрономический вечер с дегустацией вин. 25 марта в нашем ресторане на Тверской состоится специальный ужин от шеф-повара.",
+    "excerpt_en": "We invite you to a unique gastronomic evening with wine tasting. On March 25, a special chef's dinner will take place at our Tverskaya restaurant.",
+    "content_ru": "Приглашаем вас на дегустацию нового меню, которая состоится 25 марта в нашем ресторане на Тверской.",
+    "content_en": "We invite you to a tasting of the new menu on March 25 at our Tverskaya restaurant.",
+    "tags": ["dinner", "winetasting"],
+    "image": "https://picsum.photos/1200/600?random=21",
+    "image_thumb": "https://picsum.photos/400/250?random=21"
+  },
+  {
+    "id": "3",
+    "title_ru": "Скидка именинникам",
+    "title_en": "Birthday Discount",
+    "date_ru": "5 марта 2024",
+    "date_en": "March 5, 2024",
+    "excerpt_ru": "В день рождения — скидка 20% на всё меню при предъявлении паспорта. Празднуйте свой день рождения в La Belle Époque!",
+    "excerpt_en": "On your birthday — 20% discount on the entire menu upon presentation of passport. Celebrate your birthday at La Belle Époque!",
+    "content_ru": "В день рождения — скидка 20% на всё меню при предъявлении паспорта.",
+    "content_en": "On your birthday — 20% discount on the entire menu upon presentation of passport.",
+    "tags": ["discount", "birthday"],
+    "image": "https://picsum.photos/1200/600?random=22",
+    "image_thumb": "https://picsum.photos/400/250?random=22"
+  },
+  {
+    "id": "4",
+    "title_ru": "Новый ресторан — открытие",
+    "title_en": "New Restaurant Opening",
+    "date_ru": "28 февраля 2024",
+    "date_en": "February 28, 2024",
+    "excerpt_ru": "В апреле открывается наш третий ресторан в центре Москвы. Следите за новостями!",
+    "excerpt_en": "In April, our third restaurant opens in the center of Moscow. Stay tuned!",
+    "content_ru": "В апреле открывается наш третий ресторан в центре Москвы.",
+    "content_en": "In April, our third restaurant opens in the center of Moscow.",
+    "tags": ["opening", "newrestaurant"],
+    "image": "https://picsum.photos/1200/600?random=23",
+    "image_thumb": "https://picsum.photos/400/250?random=23"
+  },
+  {
+    "id": "5",
+    "title_ru": "Мастер-класс от шефа",
+    "title_en": "Chef's Masterclass",
+    "date_ru": "20 февраля 2024",
+    "date_en": "February 20, 2024",
+    "excerpt_ru": "Каждую субботу проводим кулинарные мастер-классы. Научитесь готовить французские круассаны!",
+    "excerpt_en": "Every Saturday we hold culinary master classes. Learn to make French croissants!",
+    "content_ru": "Каждую субботу проводим кулинарные мастер-классы.",
+    "content_en": "Every Saturday we hold culinary master classes.",
+    "tags": ["masterclass", "cooking"],
+    "image": "https://picsum.photos/1200/600?random=24",
+    "image_thumb": "https://picsum.photos/400/250?random=24"
+  },
+  {
+    "id": "6",
+    "title_ru": "Романтический ужин на День влюблённых",
+    "title_en": "Romantic Valentine's Day Dinner",
+    "date_ru": "14 февраля 2024",
+    "date_en": "February 14, 2024",
+    "excerpt_ru": "Специальное меню и живая музыка для вашего идеального вечера.",
+    "excerpt_en": "Special menu and live music for your perfect evening.",
+    "content_ru": "Специальное меню и живая музыка для вашего идеального вечера.",
+    "content_en": "Special menu and live music for your perfect evening.",
+    "tags": ["valentine", "romantic"],
+    "image": "https://picsum.photos/1200/600?random=25",
+    "image_thumb": "https://picsum.photos/400/250?random=25"
+  }
+]
+</file>
+
+<file path="restaurants.json">
+[
+  {
+    "id": "1",
+    "name_ru": "Ресторан на Тверской",
+    "name_en": "Tverskaya Restaurant",
+    "description_ru": "Изысканный ресторан французской кухни в самом сердце Москвы. Интерьеры в стиле Belle Époque, живая музыка по вечерам.",
+    "description_en": "An exquisite French cuisine restaurant in the heart of Moscow. Belle Époque style interiors, live music in the evenings.",
+    "address_ru": "ул. Тверская, 15",
+    "address_en": "Tverskaya St., 15",
+    "phone": "+7 (495) 123-45-67",
+    "hours_ru": "Пн-Вс: 12:00 - 00:00",
+    "hours_en": "Mon-Sun: 12:00 - 00:00",
+    "image": "https://picsum.photos/500/400?random=30"
+  },
+  {
+    "id": "2",
+    "name_ru": "Ресторан на Патриарших",
+    "name_en": "Patriarshiye Ponds Restaurant",
+    "description_ru": "Уютный ресторан с видом на Патриаршие пруды. Идеальное место для романтического ужина.",
+    "description_en": "A cozy restaurant overlooking the Patriarshiye Ponds. The perfect place for a romantic dinner.",
+    "address_ru": "Малый Патриарший пер., 5",
+    "address_en": "Maly Patriarshiy Ln., 5",
+    "phone": "+7 (495) 765-43-21",
+    "hours_ru": "Пн-Вс: 12:00 - 02:00",
+    "hours_en": "Mon-Sun: 12:00 - 02:00",
+    "image": "https://picsum.photos/500/400?random=31"
+  }
+]
+</file>
+
+<file path="reviews.json">
+[
+  {
+    "id": "1",
+    "name": "Анна Иванова",
+    "rating": 5,
+    "text_ru": "Потрясающий ресторан! Обслуживание на высшем уровне, блюда — настоящие шедевры.",
+    "text_en": "Amazing restaurant! Service at the highest level, dishes are real masterpieces.",
+    "date_ru": "15 марта 2024",
+    "date_en": "March 15, 2024"
+  },
+  {
+    "id": "2",
+    "name": "Михаил Петров",
+    "rating": 4,
+    "text_ru": "Отличное место для романтического ужина. Интерьеры шикарные, музыка приятная.",
+    "text_en": "Excellent place for a romantic dinner. Gorgeous interiors, pleasant music.",
+    "date_ru": "10 марта 2024",
+    "date_en": "March 10, 2024"
+  },
+  {
+    "id": "3",
+    "name": "Елена Сидорова",
+    "rating": 5,
+    "text_ru": "Лучший ресторан в городе! Обслуживание безупречное, еда восхитительная.",
+    "text_en": "Best restaurant in the city! Impeccable service, divine food.",
+    "date_ru": "5 марта 2024",
+    "date_en": "March 5, 2024"
+  }
+]
+</file>
+
+</files>

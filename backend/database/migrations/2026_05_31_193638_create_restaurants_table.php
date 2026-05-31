@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -16,16 +17,16 @@ return new class extends Migration {
             $table->string('name_en')->nullable();
             $table->text('description_ru')->nullable();
             $table->text('description_en')->nullable();
-            $table->string('address_ru')->nullable();
+            $table->string('address_ru');
             $table->string('address_en')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('hours_ru')->nullable();
+            $table->string('phone');
+            $table->string('hours_ru');
             $table->string('hours_en')->nullable();
-            $table->string('image')->nullable();
+            $table->decimal('lat', 10, 8)->nullable();
+            $table->decimal('lng', 11, 8)->nullable();
+            $table->integer('order')->default(0);
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->integer('sort_order')->default(0);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

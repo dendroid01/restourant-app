@@ -1,0 +1,16 @@
+.env
+.env.local
+.env.*.local
+
+mysql_data/
+
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.DS_Store
+Thumbs.db
