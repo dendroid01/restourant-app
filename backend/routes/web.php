@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminNewsController;
 
 Route::prefix('api/v1')->group(function () {
 
@@ -19,6 +20,9 @@ Route::prefix('api/v1')->group(function () {
 
         Route::get('/stats', [AdminDashboardController::class, 'stats']);
         Route::get('/stats/summary', [AdminDashboardController::class, 'statsSummary']);
+
+        Route::apiResource('news', AdminNewsController::class)->except(['create', 'edit']);
+        Route::get('/news/statuses', [AdminNewsController::class, 'statuses']);
     });
 });
 

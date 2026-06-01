@@ -1,12 +1,5 @@
 import { api } from './client'
 
-export const adminNews = {
-    list:    (page = 1)        => api.get(`/admin/news?page=${page}`),
-    create:  (data)            => api.post('/admin/news', data),
-    update:  (id, data)        => api.put(`/admin/news/${id}`, data),
-    remove:  (id)              => api.delete(`/admin/news/${id}`),
-}
-
 export const adminOrders = {
     list:   (filters = {}) => {
         const q = new URLSearchParams(filters).toString()
@@ -24,4 +17,25 @@ export const adminReviews = {
 export const adminDashboard = {
     stats: () => api.get('/stats'),
     summary: () => api.get('/stats/summary'),
+}
+
+export const adminNews = {
+    list: (page = 1, filters = {}) => {
+        const params = new URLSearchParams({
+            page,
+            per_page: filters.per_page || 10,
+            ...(filters.status && { status: filters.status }),
+            ...(filters.search && { search: filters.search }),
+            ...(filters.date_from && { date_from: filters.date_from }),
+            ...(filters.date_to && { date_to: filters.date_to }),
+            ...(filters.sort_by && { sort_by: filters.sort_by }),
+            ...(filters.sort_order && { sort_order: filters.sort_order }),
+        }).toString()
+        return api.get(`/news?${params}`)
+    },
+    getById: (id) => api.get(`/news/${id}`),
+    create: (data) => api.post('/news', data),
+    update: (id, data) => api.put(`/news/${id}`, data),
+    remove: (id) => api.delete(`/news/${id}`),
+    getStatuses: () => api.get('/news/statuses'),
 }
