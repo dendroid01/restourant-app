@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminNewsController;
+use App\Http\Controllers\Admin\AdminRestaurantController;
 
 Route::prefix('api/v1')->group(function () {
 
@@ -23,6 +24,11 @@ Route::prefix('api/v1')->group(function () {
 
         Route::apiResource('news', AdminNewsController::class)->except(['create', 'edit']);
         Route::get('/news/statuses', [AdminNewsController::class, 'statuses']);
+
+        Route::get('/restaurants/all', [AdminRestaurantController::class, 'all']);
+        Route::post('/restaurants/reorder', [AdminRestaurantController::class, 'reorder']);
+        Route::get('/restaurants/statuses', [AdminRestaurantController::class, 'statuses']);
+        Route::apiResource('restaurants', AdminRestaurantController::class)->except(['create', 'edit']);
     });
 });
 

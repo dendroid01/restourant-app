@@ -39,3 +39,17 @@ export const adminNews = {
     remove: (id) => api.delete(`/news/${id}`),
     getStatuses: () => api.get('/news/statuses'),
 }
+
+export const adminRestaurants = {
+    list: (params = {}) => {
+        const q = new URLSearchParams(params).toString()
+        return api.get(`/restaurants?${q}`)
+    },
+    getById: (id) => api.get(`/restaurants/${id}`),
+    create: (data) => api.post('/restaurants', data),
+    update: (id, data) => api.put(`/restaurants/${id}`, data),
+    remove: (id) => api.delete(`/restaurants/${id}`),
+    reorder: (orders) => api.post('/restaurants/reorder', { orders }),
+    getStatuses: () => api.get('/restaurants/statuses'),
+    getAllActive: () => api.get('/restaurants/all'),
+}
