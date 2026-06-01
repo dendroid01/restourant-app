@@ -1,56 +1,110 @@
+// About.jsx - обновлённая версия
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import ReviewCard from '../../components/ReviewCard/ReviewCard'
+import { usePublicReviews } from '../../admin/hooks/usePublicReviews'
 import restaurantsData from '../../data/restaurants.json'
-import reviewsData from '../../data/reviews.json'
-import { useToast } from '../../shared/hooks/useToast'
 
 function ReviewModal({ onClose }) {
     const { t } = useTranslation()
+    const { submitReview, submitting } = usePublicReviews()
     const [form, setForm] = useState({ name: '', email: '', rating: '5', text: '' })
-    const toast = useToast()
+    const [errors, setErrors] = useState({})
 
-    const handleSubmit = e => {
-        e.preventDefault()
-
+    const validateForm = () => {
+        const newErrors = {}
         const nameWords = form.name.trim().split(/\s+/)
+
         if (nameWords.length < 2 || nameWords.some(w => w.length < 2)) {
-            toast.error(t('validation.fullName.two_words'))
-            return
+            newErrors.name = t('validation.fullName.two_words') || 'Введите имя и фамилию'
         }
 
-        console.log('Review submit:', form)
-        toast.success(t('about.review_sent') || 'Спасибо за отзыв!')
-        onClose()
+        if (form.text.trim().length < 5) {
+            newErrors.text = 'Текст отзыва должен содержать минимум 5 символов'
+        }
+
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        if (!validateForm()) return
+
+        const result = await submitReview(form)
+
+        if (result.success) {
+            onClose()
+            setForm({ name: '', email: '', rating: '5', text: '' })
+        }
     }
 
     return (
         <div className="modal active" onClick={e => e.target === e.currentTarget && onClose()}>
             <div className="modal-content">
-                <h2 className="h2-22">Оставить отзыв</h2>
+                <h2 className="h2-22">{t('about.leave_review')}</h2>
                 <form onSubmit={handleSubmit}>
-                    {['name', 'email'].map(f => (
-                        <div className="form-group" key={f}>
-                            <label className="form-label">{f === 'name' ? t('forms.your_name') : 'Email'}</label>
-                            <input type={f === 'email' ? 'email' : 'text'} className="form-control"
-                                   value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))} required />
-                        </div>
-                    ))}
                     <div className="form-group">
-                        <label className="form-label">{t('forms.rating')}</label>
-                        <select className="form-control" value={form.rating} onChange={e => setForm(p => ({ ...p, rating: e.target.value }))}>
-                            {[5, 4, 3, 2, 1].map(r => <option key={r} value={r}>{'★'.repeat(r)} ({r})</option>)}
+                        <label className="form-label">{t('forms.your_name')} *</label>
+                        <input
+                            type="text"
+                            className={`form-control ${errors.name ? 'error' : ''}`}
+                            value={form.name}
+                            onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                            required
+                        />
+                        {errors.name && <div className="form-error">{errors.name}</div>}
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">Email (необязательно)</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            value={form.email}
+                            onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">{t('forms.rating')} *</label>
+                        <select
+                            className="form-control"
+                            value={form.rating}
+                            onChange={e => setForm(p => ({ ...p, rating: e.target.value }))}
+                        >
+                            {[5, 4, 3, 2, 1].map(r => (
+                                <option key={r} value={r}>{'★'.repeat(r)} ({r})</option>
+                            ))}
                         </select>
                     </div>
+
                     <div className="form-group">
-                        <label className="form-label">{t('forms.review_text')}</label>
-                        <textarea className="form-control" rows={4} required value={form.text}
-                                  onChange={e => setForm(p => ({ ...p, text: e.target.value }))} />
+                        <label className="form-label">{t('forms.review_text')} *</label>
+                        <textarea
+                            className={`form-control ${errors.text ? 'error' : ''}`}
+                            rows={4}
+                            required
+                            value={form.text}
+                            onChange={e => setForm(p => ({ ...p, text: e.target.value }))}
+                            placeholder="Поделитесь впечатлениями о ресторане..."
+                        />
+                        {errors.text && <div className="form-error">{errors.text}</div>}
                     </div>
+
                     <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
-                        <button type="submit" className="btn btn-primary">{t('forms.send')}</button>
-                        <button type="button" className="btn btn-secondary" onClick={onClose}>{t('forms.cancel')}</button>
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={submitting}
+                        >
+                            {submitting ? 'Отправка...' : t('forms.send')}
+                        </button>
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>
+                            {t('forms.cancel')}
+                        </button>
                     </div>
                 </form>
             </div>
@@ -59,7 +113,8 @@ function ReviewModal({ onClose }) {
 }
 
 export default function About() {
-    const { t,i18n } = useTranslation()
+    const { t, i18n } = useTranslation()
+    const { reviews, loading, averageRating } = usePublicReviews()
     const [showModal, setShowModal] = useState(false)
 
     const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
@@ -85,7 +140,14 @@ export default function About() {
 
     return (
         <main>
-            <div className="breadcrumbs"><div className="container"><ul className="breadcrumbs-list"><li><a href="/">{t('breadcrumbs.home')}</a></li><li>{t('nav.about')}</li></ul></div></div>
+            <div className="breadcrumbs">
+                <div className="container">
+                    <ul className="breadcrumbs-list">
+                        <li><a href="/">{t('breadcrumbs.home')}</a></li>
+                        <li>{t('nav.about')}</li>
+                    </ul>
+                </div>
+            </div>
 
             {/* Restaurants */}
             <section id="restaurants" className="page-section">
@@ -153,10 +215,28 @@ export default function About() {
             <section id="reviews" className="page-section">
                 <div className="container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
-                        <h2 className="h1-28">{t('about.reviews_title')}</h2>
-                        <button className="btn btn-secondary" onClick={() => setShowModal(true)}>{t('about.leave_review')}</button>
+                        <div>
+                            <h2 className="h1-28">{t('about.reviews_title')}</h2>
+                            {averageRating > 0 && (
+                                <p className="small-14" style={{ marginTop: 'var(--spacing-xs)' }}>
+                                    Средний рейтинг: {averageRating} ★
+                                </p>
+                            )}
+                        </div>
+                        <button className="btn btn-secondary" onClick={() => setShowModal(true)}>
+                            {t('about.leave_review')}
+                        </button>
                     </div>
-                    {reviewsData.map(r => <ReviewCard key={r.id} review={r} />)}
+
+                    {loading && reviews.length === 0 ? (
+                        <div className="loading-spinner">Загрузка отзывов...</div>
+                    ) : reviews.length === 0 ? (
+                        <div className="empty-state">
+                            <p>Пока нет отзывов. Будьте первым!</p>
+                        </div>
+                    ) : (
+                        reviews.map(r => <ReviewCard key={r.id} review={r} />)
+                    )}
                 </div>
             </section>
 

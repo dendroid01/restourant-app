@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminRestaurantController;
 use App\Http\Controllers\Admin\AdminMenuCategoryController;
 use App\Http\Controllers\Admin\AdminMenuItemController;
+use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Public\PublicReviewController;
 
 Route::prefix('api/v1')->group(function () {
 
@@ -15,6 +17,8 @@ Route::prefix('api/v1')->group(function () {
     })->middleware('web');
     // Публичные маршруты
     Route::post('/admin/login', [AuthController::class, 'login']);
+    Route::get('/reviews', [PublicReviewController::class, 'index']);
+    Route::post('/reviews', [PublicReviewController::class, 'store']);
 
     // Защищенные маршруты
     Route::middleware('auth:sanctum')->group(function () {
@@ -45,6 +49,14 @@ Route::prefix('api/v1')->group(function () {
         Route::post('/menu/items/reorder', [AdminMenuItemController::class, 'reorder']);
         Route::get('/menu/items/stats', [AdminMenuItemController::class, 'stats']);
         Route::apiResource('menu/items', AdminMenuItemController::class)->except(['create', 'edit']);
+
+        Route::get('admin/reviews', [AdminReviewController::class, 'index']);
+        Route::get('admin/reviews/{id}', [AdminReviewController::class, 'show']);
+        Route::patch('admin/reviews/{id}/approve', [AdminReviewController::class, 'approve']);
+        Route::patch('admin/reviews/{id}/reject', [AdminReviewController::class, 'reject']);
+        Route::patch('admin/reviews/{id}/status', [AdminReviewController::class, 'updateStatus']);
+        Route::delete('admin/reviews/{id}', [AdminReviewController::class, 'destroy']);
+        Route::get('admin/reviews/stats', [AdminReviewController::class, 'stats']);
     });
 });
 
