@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 
 Route::prefix('api/v1')->group(function () {
 
@@ -15,6 +16,9 @@ Route::prefix('api/v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/admin/logout', [AuthController::class, 'logout']);
         Route::get('/admin/me', [AuthController::class, 'me']);
+
+        Route::get('/stats', [AdminDashboardController::class, 'stats']);
+        Route::get('/stats/summary', [AdminDashboardController::class, 'statsSummary']);
     });
 });
 

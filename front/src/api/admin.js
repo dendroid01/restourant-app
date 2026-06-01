@@ -20,3 +20,8 @@ export const adminReviews = {
     moderate: (id, status) => api.patch(`/admin/reviews/${id}/moderate`, { status }),
     remove:   (id)         => api.delete(`/admin/reviews/${id}`),
 }
+
+export const adminDashboard = {
+    stats: () => api.get('/stats'),
+    summary: () => api.get('/stats/summary'),
+}
