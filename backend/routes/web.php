@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminRestaurantController;
 use App\Http\Controllers\Admin\AdminMenuCategoryController;
+use App\Http\Controllers\Admin\AdminMenuItemController;
 
 Route::prefix('api/v1')->group(function () {
 
@@ -36,6 +37,14 @@ Route::prefix('api/v1')->group(function () {
         Route::post('/menu/categories/reorder', [AdminMenuCategoryController::class, 'reorder']);
         Route::get('/menu/categories/statuses', [AdminMenuCategoryController::class, 'statuses']);
         Route::apiResource('menu/categories', AdminMenuCategoryController::class)->except(['create', 'edit']);
+
+        Route::get('/menu/items/event-dishes', [AdminMenuItemController::class, 'eventDishes']);
+        Route::get('/menu/items/featured', [AdminMenuItemController::class, 'featured']);
+        Route::post('/menu/items/bulk/status', [AdminMenuItemController::class, 'bulkUpdateStatus']);
+        Route::post('/menu/items/bulk/featured', [AdminMenuItemController::class, 'bulkUpdateFeatured']);
+        Route::post('/menu/items/reorder', [AdminMenuItemController::class, 'reorder']);
+        Route::get('/menu/items/stats', [AdminMenuItemController::class, 'stats']);
+        Route::apiResource('menu/items', AdminMenuItemController::class)->except(['create', 'edit']);
     });
 });
 

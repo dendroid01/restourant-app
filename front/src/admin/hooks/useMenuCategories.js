@@ -16,10 +16,10 @@ export function useMenuCategories() {
             const response = await adminMenuCategories.getTree()
             // Ваш API клиент уже возвращает data напрямую
             if (response && response.success) {
-                setCategories(response.data)
+                setCategories(response.data || [])
             } else if (response && response.data) {
                 // Если response уже содержит данные напрямую
-                setCategories(response.data)
+                setCategories(response.data || [])
             } else {
                 setCategories(response || [])
             }
@@ -47,15 +47,22 @@ export function useMenuCategories() {
 
     // Получить плоский список всех категорий (для селектов)
     const getFlatCategories = useCallback(() => {
+        // ВАЖНО: всегда возвращаем массив, даже если categories пустые
+        if (!categories || !Array.isArray(categories) || categories.length === 0) {
+            return []
+        }
+
         const flatten = (nodes, depth = 0, result = []) => {
             for (const node of nodes) {
                 result.push({
                     id: node.id,
                     title: '—'.repeat(depth) + ' ' + node.title_ru,
                     title_ru: node.title_ru,
+                    title_en: node.title_en,
                     slug: node.slug,
                     depth: depth,
                     parent_id: node.parent_id,
+                    is_active: node.is_active,
                 })
                 if (node.children && node.children.length) {
                     flatten(node.children, depth + 1, result)
@@ -68,6 +75,10 @@ export function useMenuCategories() {
 
     // Найти категорию по ID
     const findCategoryById = useCallback((id) => {
+        if (!categories || !Array.isArray(categories) || categories.length === 0) {
+            return null
+        }
+
         const search = (nodes) => {
             for (const node of nodes) {
                 if (node.id === id) return node
@@ -83,6 +94,10 @@ export function useMenuCategories() {
 
     // Найти категорию по slug
     const findCategoryBySlug = useCallback((slug) => {
+        if (!categories || !Array.isArray(categories) || categories.length === 0) {
+            return null
+        }
+
         const search = (nodes) => {
             for (const node of nodes) {
                 if (node.slug === slug) return node

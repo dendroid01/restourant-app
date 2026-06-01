@@ -64,3 +64,20 @@ export const adminMenuCategories = {
     reorder: (orders) => api.post('/menu/categories/reorder', { orders }),
     getStatuses: () => api.get('/menu/categories/statuses'),
 }
+
+export const adminMenuItems = {
+    list: (params = {}) => {
+        const q = new URLSearchParams(params).toString()
+        return api.get(`/menu/items?${q}`)
+    },
+    getById: (id) => api.get(`/menu/items/${id}`),
+    create: (data) => api.post('/menu/items', data),
+    update: (id, data) => api.put(`/menu/items/${id}`, data),
+    remove: (id) => api.delete(`/menu/items/${id}`),
+    bulkUpdateStatus: (ids, isActive) => api.post('/menu/items/bulk/status', { ids, is_active: isActive }),
+    bulkUpdateFeatured: (ids, isFeatured) => api.post('/menu/items/bulk/featured', { ids, is_featured: isFeatured }),
+    reorder: (orders) => api.post('/menu/items/reorder', { orders }),
+    getStats: () => api.get('/menu/items/stats'),
+    getEventDishes: () => api.get('/menu/items/event-dishes'),
+    getFeatured: (limit = 10) => api.get(`/menu/items/featured?limit=${limit}`),
+}
