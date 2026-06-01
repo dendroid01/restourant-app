@@ -144,6 +144,7 @@
       <path value="$PROJECT_DIR$/backend/vendor/phpstan/phpdoc-parser" />
       <path value="$PROJECT_DIR$/backend/vendor/brianium/paratest" />
       <path value="$PROJECT_DIR$/backend/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/backend/vendor/laravel/sanctum" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3">

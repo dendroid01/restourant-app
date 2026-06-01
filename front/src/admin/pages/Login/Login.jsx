@@ -28,8 +28,7 @@ export default function Login() {
         setServerError('')
         setLoading(true)
         try {
-            await new Promise((r) => setTimeout(r, 400))
-            login(data.email, data.password)
+            await login(data.email, data.password)
             navigate(from, { replace: true })
         } catch (err) {
             setServerError(err.message)
