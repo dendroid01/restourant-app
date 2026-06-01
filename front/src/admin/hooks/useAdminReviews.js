@@ -50,8 +50,6 @@ export function useAdminReviews() {
         try {
             const response = await adminReviews.list(filters)
 
-            console.log('Admin API response:', response)
-
             // ✅ Правильная обработка response
             setReviews(response.data || [])
             setMeta(response.meta || {

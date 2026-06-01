@@ -2,11 +2,76 @@ import {api} from './client'
 
 export const adminOrders = {
     list: (filters = {}) => {
-        const q = new URLSearchParams(filters).toString()
-        return api.get(`/admin/orders?${q}`)
+        const apiFilters = {};
+
+        // Тип заказа
+        if (filters.type && filters.type !== 'all') {
+            apiFilters.type = filters.type === 'table' ? 'booking' : filters.type;
+        }
+
+        // Статус
+        if (filters.status && filters.status !== 'all') {
+            apiFilters.status = filters.status;
+        }
+
+        // Ресторан - ИСПРАВЛЕНО: используем restaurant_id
+        if (filters.restaurant_id && filters.restaurant_id !== 'all') {
+            apiFilters.restaurant_id = filters.restaurant_id;
+        }
+
+        // Даты - ИСПРАВЛЕНО: используем date_from и date_to
+        if (filters.date_from) {
+            apiFilters.date_from = filters.date_from;
+        }
+        if (filters.date_to) {
+            apiFilters.date_to = filters.date_to;
+        }
+
+        // Поиск
+        if (filters.search) {
+            apiFilters.search = filters.search;
+        }
+
+        // Сортировка - ДОБАВЛЕНО
+        if (filters.sort_by && filters.sort_by !== 'date') {
+            apiFilters.sort_by = filters.sort_by;
+        }
+        if (filters.sort_order && filters.sort_order !== 'desc') {
+            apiFilters.sort_order = filters.sort_order;
+        }
+
+        // Пагинация - ДОБАВЛЕНО
+        if (filters.page) {
+            apiFilters.page = filters.page;
+        }
+        if (filters.per_page) {
+            apiFilters.per_page = filters.per_page;
+        }
+
+        const q = new URLSearchParams(apiFilters).toString();
+        return api.get(`/admin/orders${q ? `?${q}` : ''}`);
     },
-    update: (id, data) => api.patch(`/admin/orders/${id}`, data),
-}
+
+    updateStatus: (type, id, status) => {
+        return api.patch(`/admin/orders/${type}/${id}/status`, {status});
+    },
+
+    update: (type, id, data) => {
+        return api.patch(`/admin/orders/${type}/${id}`, data);
+    },
+
+    getStats: () => api.get('/admin/orders/stats'),
+
+    // Путь правильный: /restaurants/select
+    getRestaurants: () => api.get('/restaurants/select'),
+
+    delete: (type, id) => api.delete(`/admin/orders/${type}/${id}`),
+
+    addEventItem: (eventId, data) => api.post(`/admin/orders/event/${eventId}/items`, data),
+    updateEventItem: (eventId, itemId, data) => api.put(`/admin/orders/event/${eventId}/items/${itemId}`, data),
+    deleteEventItem: (eventId, itemId) => api.delete(`/admin/orders/event/${eventId}/items/${itemId}`),
+    getAvailableDishes: (eventId) => api.get(`/admin/orders/event/${eventId}/available-dishes`),
+};
 
 export const adminDashboard = {
     stats: () => api.get('/stats'),

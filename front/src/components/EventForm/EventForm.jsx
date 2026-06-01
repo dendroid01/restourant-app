@@ -1,7 +1,9 @@
-import {useTranslation} from 'react-i18next'
-import {useForm, RULES} from '../../shared/hooks/useForm'
+// src/components/EventForm/EventForm.jsx
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useForm, RULES } from '../../shared/hooks/useForm'
 import FormField from '../../shared/components/FormField/FormField'
-import {useToast} from '../../shared/hooks/useToast'
+import { publicApi } from '../../api/client'
 
 const minDate = (() => {
     const d = new Date()
@@ -10,59 +12,80 @@ const minDate = (() => {
 })()
 
 const INITIAL = {
-    name: '', phone: '', email: '',
-    date: '', guests: '', restaurant: '', wishes: '',
+    client_name: '',
+    phone: '',
+    email: '',
+    date: '',
+    guests: '',
+    restaurant_id: '',
+    wishes: '',
 }
 
 const SCHEMA = {
-    name: [RULES.required, RULES.fullName],
+    client_name: [RULES.required, RULES.fullName],
     phone: [RULES.required, RULES.phone],
     email: [RULES.required, RULES.email],
     date: [RULES.required],
-    guests: [RULES.required, RULES.min(10)],
-    restaurant: [RULES.required],
+    guests: [RULES.required, RULES.min(10), RULES.max(500)],
+    restaurant_id: [RULES.required],
 }
 
-export default function EventForm({onGuestsChange}) {
-    const {t, i18n} = useTranslation()
+export default function EventForm({ onFormDataChange, selectedDishes, totalPerPerson }) {
+    const { t, i18n } = useTranslation()
     const isRu = i18n.language?.startsWith('ru')
-    const toast = useToast()
+    const [restaurants, setRestaurants] = useState([])
 
-    const {values, errors, touched, handleChange, handleBlur, handleSubmit, reset} =
+    const { values, errors, touched, handleChange, handleBlur, setValues } =
         useForm(INITIAL, SCHEMA)
 
-    // Пробрасываем кол-во гостей наружу (для калькулятора)
-    const handleChangeWrapped = (e) => {
-        handleChange(e)
-        if (e.target.name === 'guests') {
-            onGuestsChange?.(parseInt(e.target.value) || 0)
+    // Загрузка ресторанов
+    useEffect(() => {
+        loadRestaurants()
+    }, [])
+
+    const loadRestaurants = async () => {
+        try {
+            const response = await publicApi.getRestaurants()
+            if (response.success && response.data) {
+                const options = [
+                    { value: '', label: isRu ? 'Выберите ресторан' : 'Choose a restaurant' },
+                    ...response.data.map(r => ({
+                        value: r.id.toString(),
+                        label: r.label
+                    }))
+                ]
+                setRestaurants(options)
+            }
+        } catch (error) {
+            console.error('Failed to load restaurants:', error)
         }
     }
 
-    const onValid = (data) => {
-        console.log('EventForm ✅', data)
-        toast.success(t('events.request_sent') || 'Заявка на мероприятие отправлена!')
-    }
+    // Отправляем данные формы наверх при изменении
+    useEffect(() => {
+        if (onFormDataChange) {
+            onFormDataChange(values)
+        }
+    }, [values, onFormDataChange])
 
     const field = (name, extra = {}) => ({
         name,
         value: values[name],
         error: errors[name],
         touched: touched[name],
-        onChange: handleChangeWrapped,
+        onChange: handleChange,
         onBlur: handleBlur,
         ...extra,
     })
 
-    const restaurants = [
-        {value: '', label: isRu ? 'Выберите ресторан' : 'Choose a restaurant'},
-        {value: 'tverskaya', label: isRu ? 'Ресторан на Тверской' : 'Tverskaya Restaurant'},
-        {value: 'patriarshiye', label: isRu ? 'Ресторан на Патриарших' : 'Patriarshiye Ponds'},
-    ]
-
     return (
-        <form id="eventForm" onSubmit={handleSubmit(onValid)} noValidate>
-            <FormField {...field('name')} label={t('booking.name')} type="text" required/>
+        <form id="eventForm" noValidate>
+            <FormField
+                {...field('client_name')}
+                label={t('booking.name')}
+                type="text"
+                required
+            />
             <FormField
                 {...field('phone')}
                 label={t('booking.phone')}
@@ -70,27 +93,33 @@ export default function EventForm({onGuestsChange}) {
                 placeholder="+7 (9XX) XXX-XX-XX"
                 required
             />
-            <FormField {...field('email')} label={t('booking.email')} type="email" required/>
+            <FormField
+                {...field('email')}
+                label={t('booking.email')}
+                type="email"
+                required
+            />
             <FormField
                 {...field('date')}
                 label={t('booking.date')}
                 type="date"
                 required
-                inputProps={{min: minDate}}
+                inputProps={{ min: minDate }}
             />
             <FormField
                 {...field('guests')}
-                label={isRu ? 'Количество гостей (от 10)' : 'Number of guests (min 10)'}
+                label={isRu ? 'Количество гостей (от 10 до 500)' : 'Number of guests (10-500)'}
                 type="number"
                 required
-                inputProps={{min: 10}}
+                inputProps={{ min: 10, max: 500 }}
             />
             <FormField
-                {...field('restaurant')}
+                {...field('restaurant_id')}
                 label={t('booking.restaurant')}
                 type="select"
                 options={restaurants}
                 required
+                disabled={restaurants.length === 0}
             />
             <FormField
                 {...field('wishes')}

@@ -8,17 +8,24 @@ use App\Http\Controllers\Admin\AdminRestaurantController;
 use App\Http\Controllers\Admin\AdminMenuCategoryController;
 use App\Http\Controllers\Admin\AdminMenuItemController;
 use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Public\PublicReviewController;
+use App\Http\Controllers\Public\PublicBookingController;
+use App\Http\Controllers\Public\PublicEventController;
 
 Route::prefix('api/v1')->group(function () {
 
     Route::get('/sanctum/csrf-cookie', function () {
         return response()->json(['message' => 'CSRF cookie set']);
     })->middleware('web');
+
     // Публичные маршруты
     Route::post('/admin/login', [AuthController::class, 'login']);
     Route::get('/reviews', [PublicReviewController::class, 'index']);
     Route::post('/reviews', [PublicReviewController::class, 'store']);
+
+    Route::post('/bookings', [PublicBookingController::class, 'store']);
+    Route::post('/event-requests', [PublicEventController::class, 'store']);
 
     // Защищенные маршруты
     Route::middleware('auth:sanctum')->group(function () {
@@ -28,14 +35,13 @@ Route::prefix('api/v1')->group(function () {
         Route::get('/stats', [AdminDashboardController::class, 'stats']);
         Route::get('/stats/summary', [AdminDashboardController::class, 'statsSummary']);
 
-        Route::apiResource('news', AdminNewsController::class)->except(['create', 'edit']);
         Route::get('/news/statuses', [AdminNewsController::class, 'statuses']);
 
+        Route::get('/restaurants/select', [AdminRestaurantController::class, 'listForSelect']);
         Route::get('/restaurants/all', [AdminRestaurantController::class, 'all']);
         Route::post('/restaurants/reorder', [AdminRestaurantController::class, 'reorder']);
         Route::get('/restaurants/statuses', [AdminRestaurantController::class, 'statuses']);
         Route::apiResource('restaurants', AdminRestaurantController::class)->except(['create', 'edit']);
-
 
         Route::get('/menu/categories/flat', [AdminMenuCategoryController::class, 'flat']);
         Route::post('/menu/categories/reorder', [AdminMenuCategoryController::class, 'reorder']);
@@ -57,9 +63,19 @@ Route::prefix('api/v1')->group(function () {
         Route::patch('admin/reviews/{id}/status', [AdminReviewController::class, 'updateStatus']);
         Route::delete('admin/reviews/{id}', [AdminReviewController::class, 'destroy']);
         Route::get('admin/reviews/stats', [AdminReviewController::class, 'stats']);
-    });
-});
 
-Route::get('/test', function () {
-    return response()->json(['message' => 'API works!']);
+        Route::get('admin/orders', [AdminOrderController::class, 'index']);
+        Route::get('admin/orders/stats', [AdminOrderController::class, 'stats']);
+        Route::get('admin/orders/{type}/{id}', [AdminOrderController::class, 'show']);
+        Route::patch('admin/orders/{type}/{id}/status', [AdminOrderController::class, 'updateStatus']);
+        Route::patch('admin/orders/{type}/{id}', [AdminOrderController::class, 'update']);
+        Route::delete('admin/orders/{type}/{id}', [AdminOrderController::class, 'destroy']);
+
+        Route::post('/admin/orders/event/{id}/items', [AdminOrderController::class, 'addEventItem']);
+        Route::put('/admin/orders/event/{eventId}/items/{itemId}', [AdminOrderController::class, 'updateEventItem']);
+        Route::delete('/admin/orders/event/{eventId}/items/{itemId}', [AdminOrderController::class, 'deleteEventItem']);
+        Route::get('/admin/orders/event/{id}/available-dishes', [AdminOrderController::class, 'getAvailableDishes']);
+
+        Route::apiResource('news', AdminNewsController::class)->except(['create', 'edit']);
+    });
 });

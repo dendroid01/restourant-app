@@ -118,3 +118,17 @@ export const api = {
     put: (path, data) => request(path, { method: 'PUT', body: JSON.stringify(data) }),
     delete: (path) => request(path, { method: 'DELETE' }),
 }
+
+export const publicApi = {
+    // Рестораны
+    getRestaurants: () => api.get('/restaurants/select'),
+
+    // Бронирование
+    createBooking: (data) => api.post('/bookings', data),
+
+    // Мероприятия
+    createEvent: (data) => api.post('/event-requests', data),
+
+    // Блюда для мероприятий
+    getEventDishes: () => api.get('/menu/items/event-dishes'),
+}

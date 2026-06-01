@@ -9,6 +9,7 @@ use App\Http\Resources\RestaurantResource;
 use App\Services\RestaurantService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Restaurant;
 
 class AdminRestaurantController extends Controller
 {
@@ -156,6 +157,18 @@ class AdminRestaurantController extends Controller
         return response()->json([
             'success' => true,
             'data' => $this->restaurantService->getStatuses(),
+        ]);
+    }
+
+    public function listForSelect(): JsonResponse
+    {
+        $restaurants = Restaurant::where('status', 'active')
+            ->orderBy('order')
+            ->get(['id', 'name_ru as label']);
+
+        return response()->json([
+            'success' => true,
+            'data' => $restaurants,
         ]);
     }
 }

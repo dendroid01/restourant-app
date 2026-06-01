@@ -1,58 +1,80 @@
-import {useState, useMemo} from 'react'
-import {useTranslation} from 'react-i18next'
-import {useToast} from '../../shared/hooks/useToast'
-import menuData from '../../data/menu.json'
+// src/components/Calculator/Calculator.jsx
+import { useState, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import { publicApi } from '../../api/client'
 
-export default function Calculator({guestCount = 1, onSubmit}) {
-    const {t, i18n} = useTranslation()
+export default function Calculator({ guestCount = 1, onSelectionChange }) {
+    const { t, i18n } = useTranslation()
     const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
     const [quantities, setQuantities] = useState({})
     const [search, setSearch] = useState('')
-    const toast = useToast()
+    const [dishes, setDishes] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    // Загрузка блюд для мероприятий
+    useEffect(() => {
+        loadEventDishes()
+    }, [])
+
+    const loadEventDishes = async () => {
+        try {
+            const response = await publicApi.getEventDishes()
+            if (response.success && response.data) {
+                setDishes(response.data)
+            }
+        } catch (error) {
+            console.error('Failed to load event dishes:', error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const update = (id, delta) => {
         setQuantities(prev => {
             const cur = prev[id] || 0
             const next = Math.max(0, Math.min(100, cur + delta))
-            return {...prev, [id]: next}
+            const newQuantities = { ...prev, [id]: next }
+
+            // Удаляем если 0
+            if (next === 0) {
+                delete newQuantities[id]
+            }
+
+            // Уведомляем родителя об изменении
+            if (onSelectionChange) {
+                const items = Object.entries(newQuantities).map(([menuItemId, quantity]) => ({
+                    menu_item_id: parseInt(menuItemId),
+                    quantity
+                }))
+                onSelectionChange(items, totalPerPerson(newQuantities))
+            }
+
+            return newQuantities
         })
     }
 
-    const totalPerPerson = useMemo(() =>
-            menuData.eventDishes.reduce((sum, d) => sum + (quantities[d.id] || 0) * d.price, 0),
-        [quantities]
+    const totalPerPerson = (qtyMap = quantities) => {
+        return dishes.reduce((sum, dish) => sum + (qtyMap[dish.id] || 0) * dish.price, 0)
+    }
+
+    const filtered = dishes.filter(dish =>
+        dish[`title_${lang}`]?.toLowerCase().includes(search.toLowerCase())
     )
 
-    const filtered = menuData.eventDishes.filter(d =>
-        d[`title_${lang}`].toLowerCase().includes(search.toLowerCase())
-    )
-
-    const handleSubmit = () => {
-        if (totalPerPerson === 0) {
-            toast.error(t('events.select_dish_error') || 'Выберите хотя бы одно блюдо')
-            return
-        }
-        if (guestCount < 10) {
-            toast.error(t('events.min_guests_error') || 'Минимум 10 гостей')
-            return
-        }
-        const summary = {quantities, totalPerPerson, guestCount, grandTotal: totalPerPerson * guestCount}
-        console.log('Calculator submit:', summary)
-        toast.success(
-            `${t('events.request_sent') || 'Заявка отправлена!'}\n` +
-            `${t('events.cost_per_guest')}: ${totalPerPerson} ₽\n` +
-            `${t('events.guests')}: ${guestCount}\n` +
-            `${t('events.total')}: ${(totalPerPerson * guestCount).toLocaleString()} ₽`
+    if (loading) {
+        return (
+            <div className="calculator-block" style={{ textAlign: 'center', padding: '40px' }}>
+                <p>{t('common.loading') || 'Загрузка...'}</p>
+            </div>
         )
-        setQuantities({})
-        setSearch('')
-        onSubmit?.(summary)
     }
 
     return (
         <div className="calculator-block">
             <h2 className="h2-22">{t('events.calculator_title')}</h2>
-            <p className="caption-12" style={{marginBottom: 'var(--spacing-md)'}}>{t('events.calculator_desc')}</p>
+            <p className="caption-12" style={{marginBottom: 'var(--spacing-md)'}}>
+                {t('events.calculator_desc')}
+            </p>
 
             {/* Search */}
             <div style={{position: 'relative', marginBottom: 'var(--spacing-md)'}}>
@@ -74,18 +96,21 @@ export default function Calculator({guestCount = 1, onSubmit}) {
                     }}
                 />
                 {search && (
-                    <button onClick={() => setSearch('')}
-                            style={{
-                                position: 'absolute',
-                                right: 16,
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                background: 'none',
-                                border: 'none',
-                                cursor: 'pointer',
-                                color: '#adb5bd',
-                                fontSize: 18
-                            }}>
+                    <button
+                        type="button"
+                        onClick={() => setSearch('')}
+                        style={{
+                            position: 'absolute',
+                            right: 16,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            color: '#adb5bd',
+                            fontSize: 18
+                        }}
+                    >
                         <i className="fas fa-times-circle"/>
                     </button>
                 )}
@@ -100,8 +125,7 @@ export default function Calculator({guestCount = 1, onSubmit}) {
                     background: '#f8f9fa',
                     borderRadius: 12
                 }}>
-                    <i className="fas fa-utensils"
-                       style={{fontSize: 48, opacity: 0.5, display: 'block', marginBottom: 16}}/>
+                    <i className="fas fa-utensils" style={{fontSize: 48, opacity: 0.5, display: 'block', marginBottom: 16}}/>
                     <p>{t('events.no_results')}</p>
                     <p style={{fontSize: 14, marginTop: 8}}>{t('events.no_results_hint')}</p>
                 </div>
@@ -113,9 +137,9 @@ export default function Calculator({guestCount = 1, onSubmit}) {
                             <p className="caption-12">{dish.price.toLocaleString()} ₽ {t('menu.per_portion')}</p>
                         </div>
                         <div className="quantity-control">
-                            <button onClick={() => update(dish.id, -1)}>-</button>
+                            <button type="button" onClick={() => update(dish.id, -1)}>-</button>
                             <span>{quantities[dish.id] || 0}</span>
-                            <button onClick={() => update(dish.id, 1)}>+</button>
+                            <button type="button" onClick={() => update(dish.id, 1)}>+</button>
                         </div>
                     </div>
                 ))
@@ -128,14 +152,11 @@ export default function Calculator({guestCount = 1, onSubmit}) {
             )}
 
             <div className="total-price">
-                {t('events.total_label')} <span>{totalPerPerson.toLocaleString()}</span> ₽
+                {t('events.total_label')} <span>{totalPerPerson().toLocaleString()}</span> ₽
             </div>
-            <p className="caption-12" style={{marginTop: 'var(--spacing-sm)'}}>{t('events.total_note')}</p>
-
-            <button className="btn btn-primary" style={{width: '100%', marginTop: 'var(--spacing-lg)'}}
-                    onClick={handleSubmit}>
-                {t('events.submit')}
-            </button>
+            <p className="caption-12" style={{marginTop: 'var(--spacing-sm)'}}>
+                {t('events.total_note')}
+            </p>
         </div>
     )
 }

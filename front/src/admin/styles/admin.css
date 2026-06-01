@@ -216,7 +216,7 @@
 
 .admin-table th,
 .admin-table td {
-    padding: 14px 18px;
+    padding: 14px 16px;
     text-align: left;
     border-bottom: 1px solid var(--gray-border);
     font-size: 14px;

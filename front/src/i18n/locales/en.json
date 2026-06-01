@@ -125,7 +125,9 @@
     "request_sent": "Request sent!",
     "cost_per_guest": "Cost per guest",
     "guests": "Guests",
-    "total": "Total"
+    "total": "Total",
+    "fill_all_fields": "Please fill all required fields",
+    "submit_error": "Error submitting request"
   },
   "contacts": {
     "title": "Contacts",
@@ -166,5 +168,9 @@
   },
   "breadcrumbs": {
     "home": "Home"
+  },
+  "common": {
+    "loading": "Loading...",
+    "sending": "Sending..."
   }
 }
