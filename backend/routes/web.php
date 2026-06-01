@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminRestaurantController;
+use App\Http\Controllers\Admin\AdminMenuCategoryController;
 
 Route::prefix('api/v1')->group(function () {
 
@@ -29,6 +30,12 @@ Route::prefix('api/v1')->group(function () {
         Route::post('/restaurants/reorder', [AdminRestaurantController::class, 'reorder']);
         Route::get('/restaurants/statuses', [AdminRestaurantController::class, 'statuses']);
         Route::apiResource('restaurants', AdminRestaurantController::class)->except(['create', 'edit']);
+
+
+        Route::get('/menu/categories/flat', [AdminMenuCategoryController::class, 'flat']);
+        Route::post('/menu/categories/reorder', [AdminMenuCategoryController::class, 'reorder']);
+        Route::get('/menu/categories/statuses', [AdminMenuCategoryController::class, 'statuses']);
+        Route::apiResource('menu/categories', AdminMenuCategoryController::class)->except(['create', 'edit']);
     });
 });
 

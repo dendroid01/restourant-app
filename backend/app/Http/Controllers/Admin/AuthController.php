@@ -13,7 +13,9 @@ class AuthController extends Controller
 {
     public function __construct(
         protected AuthService $authService
-    ) {}
+    )
+    {
+    }
 
     /**
      * Вход в админку
@@ -53,11 +55,9 @@ class AuthController extends Controller
      */
     public function me(Request $request): JsonResponse
     {
-        $userData = $this->authService->getCurrentUser($request->user());
-
         return response()->json([
             'success' => true,
-            'user' => $userData,
+            'user' => new UserResource($request->user()),
         ]);
     }
 }

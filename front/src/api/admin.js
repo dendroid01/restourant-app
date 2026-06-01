@@ -53,3 +53,14 @@ export const adminRestaurants = {
     getStatuses: () => api.get('/restaurants/statuses'),
     getAllActive: () => api.get('/restaurants/all'),
 }
+
+export const adminMenuCategories = {
+    getTree: () => api.get('/menu/categories'),
+    getFlat: () => api.get('/menu/categories/flat'),
+    getById: (id) => api.get(`/menu/categories/${id}`),
+    create: (data) => api.post('/menu/categories', data),
+    update: (id, data) => api.put(`/menu/categories/${id}`, data),
+    remove: (id) => api.delete(`/menu/categories/${id}`),
+    reorder: (orders) => api.post('/menu/categories/reorder', { orders }),
+    getStatuses: () => api.get('/menu/categories/statuses'),
+}
