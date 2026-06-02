@@ -16,6 +16,7 @@ use App\Http\Controllers\Public\PublicBookingController;
 use App\Http\Controllers\Public\PublicEventController;
 use App\Http\Controllers\Public\PublicRestaurantController;
 use App\Http\Controllers\Public\PublicMenuController;
+use App\Http\Controllers\Public\PublicNewsController;
 
 ;
 
@@ -39,6 +40,11 @@ Route::get('/menu/items', [PublicMenuController::class, 'items']);
 Route::get('/menu/items/featured', [PublicMenuController::class, 'featured']);
 Route::get('/menu/items/event', [PublicMenuController::class, 'eventDishes']);
 Route::get('/menu/items/{id}', [PublicMenuController::class, 'show']);
+
+Route::get('/news', [PublicNewsController::class, 'index']);
+Route::get('/news/latest', [PublicNewsController::class, 'latest']);
+Route::get('/news/archive', [PublicNewsController::class, 'archive']);
+Route::get('/news/{id}', [PublicNewsController::class, 'show']);
 
 // ============ АДМИНСКИЕ МАРШРУТЫ (требуют авторизацию) ============
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {

@@ -1,11 +1,12 @@
 // src/components/Header/Header.jsx
-import { Link, NavLink, useNavigate } from 'react-router-dom' // Добавляем useNavigate
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useMenu } from '../../shared/context/MenuContext'
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher' // Добавляем импорт
 
 export default function Header() {
     const { t, i18n } = useTranslation()
-    const navigate = useNavigate() // Для навигации
+    const navigate = useNavigate()
     const { categories, loading } = useMenu()
     const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
 
@@ -27,11 +28,9 @@ export default function Header() {
     // Обработчик клика по "Меню"
     const handleMenuClick = (e) => {
         e.preventDefault()
-        // Если мы уже на странице меню - скроллим вверх
         if (window.location.pathname === '/menu') {
             scrollToTop()
         } else {
-            // Если на другой странице - переходим на /menu и скроллим вверх
             navigate('/menu')
             setTimeout(scrollToTop, 100)
         }
@@ -42,7 +41,6 @@ export default function Header() {
         e.preventDefault()
         const anchorId = getCategoryAnchorId({ id: categoryId })
 
-        // Если мы на странице меню - скроллим к категории
         if (window.location.pathname === '/menu') {
             const element = document.getElementById(anchorId)
             if (element) {
@@ -57,7 +55,6 @@ export default function Header() {
                 window.history.pushState(null, '', `#${anchorId}`)
             }
         } else {
-            // Если на другой странице - переходим на /menu с якорем
             navigate(`/menu#${anchorId}`)
         }
     }
@@ -90,12 +87,11 @@ export default function Header() {
                             </ul>
                         </li>
 
-                        {/* Динамическое меню категорий */}
                         <li className="nav-item">
                             <NavLink
                                 to="/menu"
                                 className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
-                                onClick={handleMenuClick} // Добавляем обработчик
+                                onClick={handleMenuClick}
                             >
                                 {t('nav.menu')}
                             </NavLink>
@@ -142,6 +138,7 @@ export default function Header() {
                 </nav>
 
                 <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <LanguageSwitcher /> {/* Возвращаем кнопку перевода */}
                     <Link to="/booking" className="btn btn-primary" style={{ padding: '8px 16px' }}>
                         {t('nav.booking')}
                     </Link>

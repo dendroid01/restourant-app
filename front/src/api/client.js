@@ -15,7 +15,10 @@ const ROUTE_CONFIG = {
             { path: '/menu/categories', methods: ['GET'] },
             { path: '/menu/items', methods: ['GET'] },
             { path: '/menu/items/featured', methods: ['GET'] },
-            { path: '/menu/items/event', methods: ['GET'] }
+            { path: '/menu/items/event', methods: ['GET'] },
+            { path: '/news', methods: ['GET'] },
+            { path: '/news/latest', methods: ['GET'] },
+            { path: '/news/archive', methods: ['GET'] },
         ],
         patterns: [
             { pattern: /^\/restaurants\/\d+$/, methods: ['GET'] },      // /restaurants/123

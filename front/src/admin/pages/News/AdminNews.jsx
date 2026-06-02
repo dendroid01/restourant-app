@@ -1,11 +1,12 @@
 import {useState, useEffect} from 'react'
 import {useNews} from '../../hooks/useNews'
-import {adminNews} from '../../../api/admin'  // <-- ДОБАВИТЬ ЭТОТ ИМПОРТ
+import {adminNews} from '../../../api/admin'
 import Modal from '../../components/Modal/Modal'
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
 import StatusBadge from '../../components/StatusBadge/StatusBadge'
 import RichTextEditor from '../../../shared/components/RichTextEditor/RichTextEditor'
 import {useToast} from '../../../shared/hooks/useToast'
+import ImageUploader from '../../components/ImageUploader/ImageUploader'
 
 const EMPTY_FORM = {
     title_ru: '',
@@ -42,9 +43,9 @@ export default function AdminNews() {
     const [editingId, setEditingId] = useState(null)
     const [form, setForm] = useState(EMPTY_FORM)
     const [confirmDelete, setConfirmDelete] = useState(null)
-    const [formLoading, setFormLoading] = useState(false)  // <-- отдельное состояние для загрузки формы
-    const [activeLang, setActiveLang] = useState('ru') // 'ru' или 'en'
-    const [activeTab, setActiveTab] = useState('main') // 'main', 'content', 'media'
+    const [formLoading, setFormLoading] = useState(false)
+    const [activeLang, setActiveLang] = useState('ru')
+    const [activeTab, setActiveTab] = useState('main')
 
     // Загрузка при монтировании
     useEffect(() => {
@@ -58,13 +59,12 @@ export default function AdminNews() {
     }
 
     const openEdit = async (item) => {
-        setFormLoading(true)  // <-- используем formLoading, а не loading
-        setModal('form')      // <-- открываем модалку ДО загрузки, чтобы показать индикатор
+        setFormLoading(true)
+        setModal('form')
 
         try {
-            // Загружаем полные данные с сервера
             const response = await adminNews.getById(item.id)
-            const fullItem = response.data  // NewsResource
+            const fullItem = response.data
 
             setForm({
                 title_ru: fullItem.title_ru || '',
@@ -83,7 +83,7 @@ export default function AdminNews() {
         } catch (error) {
             console.error('Error loading news:', error)
             toast.error('Ошибка загрузки данных новости')
-            setModal(null)  // закрываем модалку при ошибке
+            setModal(null)
         } finally {
             setFormLoading(false)
         }
@@ -101,7 +101,7 @@ export default function AdminNews() {
             content_en: form.content_en,
             published_at: form.published_at || null,
             status: form.status,
-            tags: form.tags,  // строка, например "важное, новости, событие"
+            tags: form.tags,
             image_thumb: form.image_thumb,
             image_full: form.image_full,
         }
@@ -150,7 +150,7 @@ export default function AdminNews() {
 
     return (
         <div>
-            {/* Фильтры - без изменений */}
+            {/* Фильтры */}
             <div className="admin-filters"
                  style={{marginBottom: 20, padding: 16, background: '#f5f5f5', borderRadius: 8}}>
                 <form onSubmit={handleSearchSubmit}
@@ -233,13 +233,15 @@ export default function AdminNews() {
             ) : news.length === 0 ? (
                 <div className="empty-state">
                     <div className="empty-state-icon">📰</div>
-                    <p>Новостей пока нет</p></div>
+                    <p>Новостей пока нет</p>
+                </div>
             ) : (
                 <>
                     <div className="admin-table-wrap">
                         <table className="admin-table">
                             <thead>
                             <tr>
+                                <th>Изображение</th>
                                 <th>Заголовок (RU)</th>
                                 <th>Дата публикации</th>
                                 <th>Статус</th>
@@ -249,6 +251,32 @@ export default function AdminNews() {
                             <tbody>
                             {news.map(item => (
                                 <tr key={item.id}>
+                                    <td style={{width: 60}}>
+                                        {item.image_thumb ? (
+                                            <img
+                                                src={item.image_thumb}
+                                                alt={item.title_ru}
+                                                style={{
+                                                    width: 50,
+                                                    height: 50,
+                                                    objectFit: 'cover',
+                                                    borderRadius: 6,
+                                                    background: '#f0f0f0'
+                                                }}
+                                            />
+                                        ) : (
+                                            <div style={{
+                                                width: 50,
+                                                height: 50,
+                                                background: '#f0f0f0',
+                                                borderRadius: 6,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                fontSize: 20
+                                            }}>📰</div>
+                                        )}
+                                    </td>
                                     <td style={{fontWeight: 500}}>{item.title_ru}</td>
                                     <td>{item.published_at_formatted || item.published_at || '—'}</td>
                                     <td><StatusBadge status={item.status}/></td>
@@ -291,153 +319,243 @@ export default function AdminNews() {
 
             {modal === 'form' && (
                 <Modal title={editingId ? 'Редактировать новость' : 'Новая новость'} onClose={() => setModal(null)}
-                       maxWidth={900}>
+                       maxWidth={1000}>
                     {formLoading ? (
                         <div style={{textAlign: 'center', padding: 40}}>Загрузка данных новости...</div>
                     ) : (
-                        <form onSubmit={handleSave}>
-                            {/* Переключатель языка */}
+                        <form onSubmit={handleSave} style={{maxHeight: '70vh', overflowY: 'auto', paddingRight: 8}}>
+                            {/* Вкладки */}
                             <div style={{
                                 display: 'flex',
-                                gap: 8,
+                                gap: 4,
                                 marginBottom: 24,
-                                background: '#f5f5f5',
-                                padding: 8,
-                                borderRadius: 8,
-                                width: 'fit-content'
+                                borderBottom: '1px solid #e0e0e0',
                             }}>
                                 <button
                                     type="button"
-                                    onClick={() => setActiveLang('ru')}
+                                    onClick={() => setActiveTab('main')}
                                     style={{
-                                        padding: '8px 24px',
-                                        background: activeLang === 'ru' ? '#1976d2' : 'transparent',
-                                        color: activeLang === 'ru' ? 'white' : '#666',
+                                        padding: '10px 20px',
+                                        background: 'transparent',
                                         border: 'none',
-                                        borderRadius: 6,
+                                        borderBottom: activeTab === 'main' ? '2px solid #dc2626' : '2px solid transparent',
+                                        color: activeTab === 'main' ? '#dc2626' : '#666',
                                         cursor: 'pointer',
                                         fontWeight: 500,
                                     }}
                                 >
-                                    🇷🇺 Русский
+                                    📝 Контент
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setActiveLang('en')}
+                                    onClick={() => setActiveTab('images')}
                                     style={{
-                                        padding: '8px 24px',
-                                        background: activeLang === 'en' ? '#1976d2' : 'transparent',
-                                        color: activeLang === 'en' ? 'white' : '#666',
+                                        padding: '10px 20px',
+                                        background: 'transparent',
                                         border: 'none',
-                                        borderRadius: 6,
+                                        borderBottom: activeTab === 'images' ? '2px solid #dc2626' : '2px solid transparent',
+                                        color: activeTab === 'images' ? '#dc2626' : '#666',
                                         cursor: 'pointer',
                                         fontWeight: 500,
                                     }}
                                 >
-                                    🇬🇧 English
+                                    🖼️ Изображения
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab('settings')}
+                                    style={{
+                                        padding: '10px 20px',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        borderBottom: activeTab === 'settings' ? '2px solid #dc2626' : '2px solid transparent',
+                                        color: activeTab === 'settings' ? '#dc2626' : '#666',
+                                        cursor: 'pointer',
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    ⚙️ Настройки
                                 </button>
                             </div>
 
-                            {/* Показываем поля только для выбранного языка */}
-                            {activeLang === 'ru' ? (
-                                // RU поля
+                            {/* Вкладка КОНТЕНТ */}
+                            {activeTab === 'main' && (
                                 <>
-                                    <div className="admin-form-group">
-                                        <label>Заголовок (RU) *</label>
-                                        <input {...f('title_ru')} required/>
+                                    {/* Переключатель языка */}
+                                    <div style={{
+                                        display: 'flex',
+                                        gap: 8,
+                                        marginBottom: 24,
+                                        background: '#f5f5f5',
+                                        padding: 8,
+                                        borderRadius: 8,
+                                        width: 'fit-content'
+                                    }}>
+                                        <button
+                                            type="button"
+                                            onClick={() => setActiveLang('ru')}
+                                            style={{
+                                                padding: '8px 24px',
+                                                background: activeLang === 'ru' ? '#dc2626' : 'transparent',
+                                                color: activeLang === 'ru' ? 'white' : '#666',
+                                                border: 'none',
+                                                borderRadius: 6,
+                                                cursor: 'pointer',
+                                                fontWeight: 500,
+                                            }}
+                                        >
+                                            🇷🇺 Русский
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setActiveLang('en')}
+                                            style={{
+                                                padding: '8px 24px',
+                                                background: activeLang === 'en' ? '#dc2626' : 'transparent',
+                                                color: activeLang === 'en' ? 'white' : '#666',
+                                                border: 'none',
+                                                borderRadius: 6,
+                                                cursor: 'pointer',
+                                                fontWeight: 500,
+                                            }}
+                                        >
+                                            🇬🇧 English
+                                        </button>
                                     </div>
 
-                                    <div className="admin-form-group">
-                                        <label>Анонс (RU)</label>
-                                        <RichTextEditor
-                                            value={form.excerpt_ru}
-                                            onChange={val => setForm(p => ({...p, excerpt_ru: val}))}
-                                            placeholder="Краткое описание новости..."
-                                            adminStyle
-                                            minHeight={100}
-                                        />
-                                    </div>
+                                    {activeLang === 'ru' ? (
+                                        <>
+                                            <div className="admin-form-group">
+                                                <label>Заголовок (RU) *</label>
+                                                <input {...f('title_ru')} required/>
+                                            </div>
 
-                                    <div className="admin-form-group">
-                                        <label>Текст (RU)</label>
-                                        <RichTextEditor
-                                            value={form.content_ru}
-                                            onChange={val => setForm(p => ({...p, content_ru: val}))}
-                                            placeholder="Полный текст новости..."
-                                            adminStyle
-                                            minHeight={250}
-                                        />
-                                    </div>
-                                </>
-                            ) : (
-                                // EN поля
-                                <>
-                                    <div className="admin-form-group">
-                                        <label>Title (EN)</label>
-                                        <input {...f('title_en')} />
-                                    </div>
+                                            <div className="admin-form-group">
+                                                <label>Анонс (RU)</label>
+                                                <RichTextEditor
+                                                    value={form.excerpt_ru}
+                                                    onChange={val => setForm(p => ({...p, excerpt_ru: val}))}
+                                                    placeholder="Краткое описание новости..."
+                                                    adminStyle
+                                                    minHeight={100}
+                                                />
+                                            </div>
 
-                                    <div className="admin-form-group">
-                                        <label>Excerpt (EN)</label>
-                                        <RichTextEditor
-                                            value={form.excerpt_en}
-                                            onChange={val => setForm(p => ({...p, excerpt_en: val}))}
-                                            placeholder="Short news description..."
-                                            adminStyle
-                                            minHeight={100}
-                                        />
-                                    </div>
+                                            <div className="admin-form-group">
+                                                <label>Текст (RU)</label>
+                                                <RichTextEditor
+                                                    value={form.content_ru}
+                                                    onChange={val => setForm(p => ({...p, content_ru: val}))}
+                                                    placeholder="Полный текст новости..."
+                                                    adminStyle
+                                                    minHeight={250}
+                                                />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="admin-form-group">
+                                                <label>Title (EN)</label>
+                                                <input {...f('title_en')} />
+                                            </div>
 
-                                    <div className="admin-form-group">
-                                        <label>Content (EN)</label>
-                                        <RichTextEditor
-                                            value={form.content_en}
-                                            onChange={val => setForm(p => ({...p, content_en: val}))}
-                                            placeholder="Full news content..."
-                                            adminStyle
-                                            minHeight={250}
-                                        />
-                                    </div>
+                                            <div className="admin-form-group">
+                                                <label>Excerpt (EN)</label>
+                                                <RichTextEditor
+                                                    value={form.excerpt_en}
+                                                    onChange={val => setForm(p => ({...p, excerpt_en: val}))}
+                                                    placeholder="Short news description..."
+                                                    adminStyle
+                                                    minHeight={100}
+                                                />
+                                            </div>
+
+                                            <div className="admin-form-group">
+                                                <label>Content (EN)</label>
+                                                <RichTextEditor
+                                                    value={form.content_en}
+                                                    onChange={val => setForm(p => ({...p, content_en: val}))}
+                                                    placeholder="Full news content..."
+                                                    adminStyle
+                                                    minHeight={250}
+                                                />
+                                            </div>
+                                        </>
+                                    )}
                                 </>
                             )}
 
-                            {/* Общие поля (не зависят от языка) */}
-                            <div style={{marginTop: 24, paddingTop: 24, borderTop: '1px solid #e0e0e0'}}>
-                                <h4 style={{marginBottom: 16, fontSize: 16, fontWeight: 500}}>Общие настройки</h4>
+                            {/* Вкладка ИЗОБРАЖЕНИЯ */}
+                            {activeTab === 'images' && (
+                                <div>
+                                    <h4 style={{marginBottom: 20, fontSize: 16, fontWeight: 500}}>Изображения новости</h4>
 
-                                <div className="admin-form-row-2">
-                                    <div className="admin-form-group">
-                                        <label>Дата публикации</label>
-                                        <input type="date" {...f('published_at')} />
-                                    </div>
-                                    <div className="admin-form-group">
-                                        <label>Теги (через запятую)</label>
-                                        <input {...f('tags')} placeholder="важное, новости, событие"/>
+                                    <div style={{display: 'grid', gap: 32}}>
+                                        {/* Превью (thumb) */}
+                                        <div>
+                                            <label style={{display: 'block', marginBottom: 12, fontWeight: 500}}>
+                                                🖼️ Превью изображение (thumb)
+                                                <span style={{fontSize: 12, fontWeight: 'normal', color: '#666', marginLeft: 8}}>
+                                                    - отображается в списке новостей
+                                                </span>
+                                            </label>
+                                            <ImageUploader
+                                                value={form.image_thumb}
+                                                onChange={(url) => setForm(p => ({...p, image_thumb: url}))}
+                                                directory="news"
+                                                maxSizeMB={5}
+                                                placeholder="Нажмите или перетащите превью"
+                                            />
+                                        </div>
+
+                                        {/* Полное изображение */}
+                                        <div>
+                                            <label style={{display: 'block', marginBottom: 12, fontWeight: 500}}>
+                                                🖼️ Полное изображение (full)
+                                                <span style={{fontSize: 12, fontWeight: 'normal', color: '#666', marginLeft: 8}}>
+                                                    - отображается на странице новости
+                                                </span>
+                                            </label>
+                                            <ImageUploader
+                                                value={form.image_full}
+                                                onChange={(url) => setForm(p => ({...p, image_full: url}))}
+                                                directory="news"
+                                                maxSizeMB={5}
+                                                placeholder="Нажмите или перетащите изображение"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
+                            )}
 
-                                <div className="admin-form-row-2">
-                                    <div className="admin-form-group">
-                                        <label>Превью картинка (URL)</label>
-                                        <input {...f('image_thumb')} placeholder="https://...thumb.jpg"/>
+                            {/* Вкладка НАСТРОЙКИ */}
+                            {activeTab === 'settings' && (
+                                <div>
+                                    <h4 style={{marginBottom: 16, fontSize: 16, fontWeight: 500}}>Общие настройки</h4>
+
+                                    <div className="admin-form-row-2">
+                                        <div className="admin-form-group">
+                                            <label>Дата публикации</label>
+                                            <input type="date" {...f('published_at')} />
+                                        </div>
+                                        <div className="admin-form-group">
+                                            <label>Теги (через запятую)</label>
+                                            <input {...f('tags')} placeholder="важное, новости, событие"/>
+                                        </div>
                                     </div>
+
                                     <div className="admin-form-group">
-                                        <label>Полная картинка (URL)</label>
-                                        <input {...f('image_full')} placeholder="https://...full.jpg"/>
+                                        <label>Статус</label>
+                                        <select {...f('status')} className="admin-input">
+                                            <option value="draft">Черновик</option>
+                                            <option value="published">Опубликовано</option>
+                                        </select>
                                     </div>
                                 </div>
-
-                                <div className="admin-form-group">
-                                    <label>Статус</label>
-                                    <select {...f('status')} className="admin-input">
-                                        <option value="draft">Черновик</option>
-                                        <option value="published">Опубликовано</option>
-                                    </select>
-                                </div>
-                            </div>
+                            )}
 
                             {/* Кнопки */}
-                            <div style={{display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 24}}>
+                            <div style={{display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 24, paddingTop: 16, borderTop: '1px solid #e0e0e0'}}>
                                 <button type="button" className="btn-admin btn-admin-secondary"
                                         onClick={() => setModal(null)}>
                                     Отмена
