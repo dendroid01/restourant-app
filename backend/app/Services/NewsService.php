@@ -201,14 +201,13 @@ class NewsService
     /**
      * Получить последние новости (для виджета на главной)
      */
-    public function getLatestNews(int $limit = 3): array
+    public function getLatestNews(int $limit = 3): \Illuminate\Database\Eloquent\Collection
     {
         return News::where('status', 'published')
             ->whereNotNull('published_at')
             ->orderBy('published_at', 'desc')
             ->limit($limit)
-            ->get()
-            ->toArray();
+            ->get();
     }
 
     /**

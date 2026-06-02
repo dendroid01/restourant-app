@@ -1,24 +1,30 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import HeroSlider from '../../components/HeroSlider/HeroSlider'
 import NewsCard from '../../components/NewsCard/NewsCard'
-import newsData from '../../data/news.json'
+import { publicNews } from '../../api/public'
 
 export default function Home() {
     const { t } = useTranslation()
+    const [loadingNews, setLoadingNews] = useState(true)
+    const [news, setNews] = useState([])
 
+    // Хардкод слайдов
     const slides = [
         { image: 'https://picsum.photos/1920/600?random=1', title: t('home.hero_title_1'), subtitle: t('home.hero_sub_1'), link: { href: '/menu', label: t('home.see_menu') } },
         { image: 'https://picsum.photos/1920/600?random=2', title: t('home.hero_title_2'), subtitle: t('home.hero_sub_2'), link: { href: '/booking', label: t('home.book_now') } },
         { image: 'https://picsum.photos/1920/600?random=3', title: t('home.hero_title_3'), subtitle: t('home.hero_sub_3'), link: { href: '/menu', label: t('home.see_menu') } },
     ]
 
+    // Хардкод преимуществ
     const advantages = [
         { img: 'https://picsum.photos/400/300?random=10', title: t('home.adv_1_title'), desc: t('home.adv_1_desc') },
         { img: 'https://picsum.photos/400/300?random=11', title: t('home.adv_2_title'), desc: t('home.adv_2_desc') },
         { img: 'https://picsum.photos/400/300?random=12', title: t('home.adv_3_title'), desc: t('home.adv_3_desc') },
     ]
 
+    // Хардкод категорий
     const categories = [
         { img: 'https://picsum.photos/200/200?random=50', label: t('menu.breakfast'), anchor: '#breakfast' },
         { img: 'https://picsum.photos/200/200?random=51', label: t('menu.salads'), anchor: '#salads' },
@@ -26,11 +32,30 @@ export default function Home() {
         { img: 'https://picsum.photos/200/200?random=53', label: t('menu.desserts'), anchor: '#desserts' },
     ]
 
+    useEffect(() => {
+        loadLatestNews()
+    }, [])
+
+    const loadLatestNews = async () => {
+        setLoadingNews(true)
+        try {
+            const response = await publicNews.getLatest(3)
+            // Предполагаем, что API возвращает { data: [...] } или просто массив
+            const newsData = Array.isArray(response) ? response : (response.data || [])
+            setNews(newsData)
+        } catch (err) {
+            console.error('Error loading news:', err)
+            setNews([])
+        } finally {
+            setLoadingNews(false)
+        }
+    }
+
     return (
         <main>
             <HeroSlider slides={slides} />
 
-            {/* Advantages */}
+            {/* Advantages - хардкод */}
             <section className="page-section">
                 <div className="container">
                     <h2 className="h1-28 section-title">{t('home.advantages_title')}</h2>
@@ -48,7 +73,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* News */}
+            {/* News - с бэка */}
             <section className="page-section">
                 <div className="container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
@@ -56,12 +81,18 @@ export default function Home() {
                         <Link to="/news" className="btn btn-secondary">{t('home.all_news')}</Link>
                     </div>
                     <div className="news-grid">
-                        {newsData.slice(0, 3).map(n => <NewsCard key={n.id} news={n} />)}
+                        {loadingNews ? (
+                            <p>Загрузка новостей...</p>
+                        ) : news.length > 0 ? (
+                            news.map(n => <NewsCard key={n.id} news={n} />)
+                        ) : (
+                            <p>Новостей пока нет</p>
+                        )}
                     </div>
                 </div>
             </section>
 
-            {/* About teaser */}
+            {/* About teaser - хардкод */}
             <section className="page-section">
                 <div className="container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
@@ -82,7 +113,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Categories */}
+            {/* Categories - хардкод */}
             <section className="page-section">
                 <div className="container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-lg)' }}>
@@ -100,7 +131,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* CTA */}
+            {/* CTA - хардкод */}
             <section className="page-section cta-section">
                 <div className="container" style={{ textAlign: 'center' }}>
                     <h2 className="h1-28" style={{ color: 'white' }}>{t('home.cta_title')}</h2>

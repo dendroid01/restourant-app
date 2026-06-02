@@ -100,3 +100,4 @@ export const publicContacts = {
      */
     send: (data) => api.post('/contact', data),
 }
+

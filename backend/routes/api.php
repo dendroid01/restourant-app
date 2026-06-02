@@ -19,6 +19,8 @@ use App\Http\Controllers\Public\PublicRestaurantController;
 use App\Http\Controllers\Public\PublicMenuController;
 use App\Http\Controllers\Public\PublicNewsController;
 use App\Http\Controllers\Public\PublicContactController;
+use App\Http\Controllers\Public\PublicHomeController;
+
 
 ;
 
@@ -49,6 +51,9 @@ Route::get('/news/archive', [PublicNewsController::class, 'archive']);
 Route::get('/news/{id}', [PublicNewsController::class, 'show']);
 
 Route::post('/contact', [PublicContactController::class, 'send']);
+
+Route::get('/home', [PublicHomeController::class, 'index']);
+Route::post('/home/cache/clear', [PublicHomeController::class, 'clearCache'])->middleware('auth:sanctum');
 
 // ============ АДМИНСКИЕ МАРШРУТЫ (требуют авторизацию) ============
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {

@@ -13,13 +13,12 @@ export default function NewsCard({ news }) {
                     className="card-img"
                     loading="lazy"
                     onError={(e) => {
-                        // Fallback если картинка не загрузилась
                         e.target.style.display = 'none'
                     }}
                 />
             )}
             <div className="card-content">
-                <div className="news-date">{news.published_at_formatted}</div>
+                <div className="news-date">{news.date || news.published_at_formatted}</div>
                 <h2 className="h3-16-medium">{news.title}</h2>
                 <p className="small-14">{news.excerpt}</p>
                 <Link
