@@ -5,47 +5,109 @@ const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api/v1'
 const ROUTE_CONFIG = {
     // Публичные маршруты (без токена)
     public: {
-        routes: [
+        exactRoutes: [
             { path: '/reviews', methods: ['GET', 'POST'] },
             { path: '/admin/login', methods: ['POST'] },
+            { path: '/restaurants', methods: ['GET'] },           // <-- ДОБАВЛЕНО
+            { path: '/restaurants/slides', methods: ['GET'] },
+            { path: '/bookings', methods: ['POST'] },
+            { path: '/event-requests', methods: ['POST'] },
         ],
         patterns: [
-            // /reviews/* но не /admin/reviews/*
+            { pattern: /^\/restaurants\/\d+$/, methods: ['GET'] },      // /restaurants/123
+            { pattern: /^\/news\/\d+$/, methods: ['GET'] },              // /news/123
         ]
     },
     // Админские маршруты (с токеном)
     admin: {
-        routes: [
+        exactRoutes: [
             { path: '/admin/logout', methods: ['POST'] },
             { path: '/admin/me', methods: ['GET'] },
             { path: '/stats', methods: ['GET'] },
-            { path: '/news', methods: ['GET', 'POST', 'PUT', 'DELETE'] },
-            { path: '/restaurants', methods: ['GET', 'POST', 'PUT', 'DELETE'] },
-            { path: '/menu/categories', methods: ['GET', 'POST', 'PUT', 'DELETE'] },
-            { path: '/menu/items', methods: ['GET', 'POST', 'PUT', 'DELETE'] },
             { path: '/admin/reviews', methods: ['GET', 'PATCH', 'DELETE'] },
-            { path: '/admin/upload', methods: ['POST', 'DELETE', 'GET'] }, // Добавляем upload
+            { path: '/admin/upload', methods: ['POST', 'DELETE', 'GET'] },
+            { path: '/admin/restaurants/select', methods: ['GET'] },
+            { path: '/admin/restaurants/all', methods: ['GET'] },
+            { path: '/admin/restaurants/statuses', methods: ['GET'] },
+            { path: '/admin/restaurants/reorder', methods: ['POST'] },
+            { path: '/news/statuses', methods: ['GET'] },
+            { path: '/menu/categories/flat', methods: ['GET'] },
+            { path: '/menu/categories/reorder', methods: ['POST'] },
+            { path: '/menu/categories/statuses', methods: ['GET'] },
+            { path: '/menu/items/event-dishes', methods: ['GET'] },
+            { path: '/menu/items/featured', methods: ['GET'] },
+            { path: '/menu/items/bulk/status', methods: ['POST'] },
+            { path: '/menu/items/bulk/featured', methods: ['POST'] },
+            { path: '/menu/items/reorder', methods: ['POST'] },
+            { path: '/menu/items/stats', methods: ['GET'] },
+            { path: '/admin/reviews/stats', methods: ['GET'] },
+            { path: '/admin/orders', methods: ['GET'] },
+            { path: '/admin/orders/stats', methods: ['GET'] },
+            { path: '/managers', methods: ['GET', 'POST'] },
+            { path: '/managers/stats', methods: ['GET'] },
+            { path: '/managers/sections', methods: ['GET'] },
+        ],
+        patterns: [
+            { pattern: /^\/restaurants\/\d+$/, methods: ['PUT', 'DELETE'] },  // PUT/DELETE требуют админку
+            { pattern: /^\/news\/\d+$/, methods: ['PUT', 'DELETE'] },
+            { pattern: /^\/menu\/categories\/\d+$/, methods: ['PUT', 'DELETE'] },
+            { pattern: /^\/menu\/items\/\d+$/, methods: ['PUT', 'DELETE'] },
+            { pattern: /^\/admin\/reviews\/\d+$/, methods: ['GET', 'PATCH', 'DELETE'] },
+            { pattern: /^\/admin\/orders\/[^\/]+\/\d+$/, methods: ['GET', 'PATCH', 'DELETE'] },
+            { pattern: /^\/managers\/\d+$/, methods: ['GET', 'PUT', 'DELETE', 'PATCH'] },
+            { pattern: /^\/admin\/orders\/event\/\d+\/items$/, methods: ['POST'] },
+            { pattern: /^\/admin\/orders\/event\/\d+\/items\/\d+$/, methods: ['PUT', 'DELETE'] },
+            { pattern: /^\/admin\/orders\/event\/\d+\/available-dishes$/, methods: ['GET'] },
         ]
     }
 }
 
+// Функция для проверки точного совпадения маршрута
+function matchExactRoute(path, method, routes) {
+    for (const route of routes) {
+        if (route.path === path && route.methods.includes(method)) {
+            return true
+        }
+    }
+    return false
+}
+
+// Функция для проверки по паттерну
+function matchPatternRoute(path, method, patterns) {
+    for (const item of patterns) {
+        if (item.pattern.test(path) && item.methods.includes(method)) {
+            return true
+        }
+    }
+    return false
+}
+
 // Функция для определения типа маршрута
 function getRouteType(path, method) {
-    // Проверяем публичные маршруты
-    for (const route of ROUTE_CONFIG.public.routes) {
-        if (path === route.path && route.methods.includes(method)) {
-            return 'public'
-        }
+    // Убираем query параметры
+    const cleanPath = path.split('?')[0]
+
+    // Проверяем публичные точные маршруты
+    if (matchExactRoute(cleanPath, method, ROUTE_CONFIG.public.exactRoutes)) {
+        return 'public'
     }
 
-    // Проверяем паттерны для публичных маршрутов
-    if (path === '/reviews' || path.startsWith('/reviews?')) {
-        if (method === 'GET' || method === 'POST') {
-            return 'public'
-        }
+    // Проверяем публичные паттерны
+    if (matchPatternRoute(cleanPath, method, ROUTE_CONFIG.public.patterns || [])) {
+        return 'public'
     }
 
-    // Все остальное - админские маршруты
+    // Проверяем админские точные маршруты
+    if (matchExactRoute(cleanPath, method, ROUTE_CONFIG.admin.exactRoutes)) {
+        return 'admin'
+    }
+
+    // Проверяем админские паттерны
+    if (matchPatternRoute(cleanPath, method, ROUTE_CONFIG.admin.patterns)) {
+        return 'admin'
+    }
+
+    // Если ничего не подошло - по умолчанию админский маршрут
     return 'admin'
 }
 
@@ -69,6 +131,7 @@ async function request(path, options = {}) {
 
     // Определяем, нужно ли добавлять токен
     const shouldAddToken = routeType === 'admin' && token
+
 
     // Для публичных POST запросов к /reviews получаем CSRF cookie
     if (routeType === 'public' && method === 'POST' && path === '/reviews') {
@@ -131,15 +194,8 @@ export const api = {
 }
 
 export const publicApi = {
-    // Рестораны
-    getRestaurants: () => api.get('/restaurants/select'),
-
-    // Бронирование
+    getRestaurants: () => api.get('/restaurants'),
     createBooking: (data) => api.post('/bookings', data),
-
-    // Мероприятия
     createEvent: (data) => api.post('/event-requests', data),
-
-    // Блюда для мероприятий
     getEventDishes: () => api.get('/menu/items/event-dishes'),
 }

@@ -77,7 +77,6 @@ export default function BookingForm() {
                 wishes: data.wishes || null,
             }
 
-            console.log('Sending booking data:', requestData)
             const response = await publicApi.createBooking(requestData)
 
             if (response.success) {

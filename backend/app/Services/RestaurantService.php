@@ -209,4 +209,51 @@ class RestaurantService
             ['value' => 'inactive', 'label' => 'Скрыт'],
         ];
     }
+
+    // app/Services/RestaurantService.php - добавить методы
+
+    /**
+     * Получить все активные рестораны (для публичной части)
+     */
+    public function getActiveRestaurants()
+    {
+        return Restaurant::where('status', 'active')
+            ->with('galleries')
+            ->orderBy('order')
+            ->get();
+    }
+
+
+    /**
+     * Получить активный ресторан по ID (для публичной части)
+     */
+    public function getActiveRestaurant(int $id): ?Restaurant
+    {
+        return Restaurant::where('status', 'active')
+            ->with('galleries')
+            ->find($id);
+    }
+
+    /**
+     * Получить слайды для главной страницы (активные рестораны)
+     */
+    public function getHeroSlides(): array
+    {
+        return Restaurant::where('status', 'active')
+            ->orderBy('order')
+            ->get()
+            ->map(function ($restaurant) {
+                return [
+                    'id' => $restaurant->id,
+                    'title' => $restaurant->name_ru,
+                    'subtitle' => $restaurant->description_ru,
+                    'image' => $restaurant->galleries->first()?->image_url,
+                    'link' => [
+                        'href' => '/restaurants/' . $restaurant->id,
+                        'label' => 'Подробнее',
+                    ],
+                ];
+            })
+            ->toArray();
+    }
 }

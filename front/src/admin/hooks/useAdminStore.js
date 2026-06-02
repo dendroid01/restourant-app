@@ -2,7 +2,21 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { api } from '../../api/client'
 
+// Маппинг resourceName на правильные URL
+const resourceMap = {
+    restaurants: '/admin/restaurants',
+    news: '/admin/news',
+    'menu/categories': '/admin/menu/categories',
+    'menu/items': '/admin/menu/items',
+    orders: '/admin/orders',
+    reviews: '/admin/reviews',
+    managers: '/admin/managers',
+}
+
 export function useAdminStore(resourceName, initialData = []) {
+    // Получаем правильный базовый URL
+    const baseUrl = resourceMap[resourceName] || `/${resourceName}`
+
     const [items, setItems] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -21,21 +35,22 @@ export function useAdminStore(resourceName, initialData = []) {
         setLoading(true)
         setError(null)
         try {
-            const response = await api.get(`/${resourceName}?${new URLSearchParams({ ...filters, page: 1, per_page: pagination.per_page })}`)
-            setItems(response.data || [])
+            const response = await api.get(`${baseUrl}?${new URLSearchParams({ ...filters, page: 1, per_page: pagination.per_page })}`)
+            const data = response.data || response
+            setItems(Array.isArray(data) ? data : (data.data || []))
             setPagination({
-                current_page: response.data.meta?.current_page || 1,
-                last_page: response.data.meta?.last_page || 1,
-                per_page: response.data.meta?.per_page || 10,
-                total: response.data.meta?.total || 0
+                current_page: data.meta?.current_page || 1,
+                last_page: data.meta?.last_page || 1,
+                per_page: data.meta?.per_page || 10,
+                total: data.meta?.total || 0
             })
-            hasMore.current = (response.data.meta?.current_page || 1) < (response.data.meta?.last_page || 1)
+            hasMore.current = (data.meta?.current_page || 1) < (data.meta?.last_page || 1)
         } catch (err) {
             setError(err.message)
         } finally {
             setLoading(false)
         }
-    }, [resourceName, pagination.per_page])
+    }, [baseUrl, pagination.per_page])
 
     // Загрузка следующей страницы
     const loadMore = useCallback(async (filters = {}) => {
@@ -49,58 +64,62 @@ export function useAdminStore(resourceName, initialData = []) {
 
         isLoadingMore.current = true
         try {
-            const response = await api.get(`/${resourceName}?${new URLSearchParams({ ...filters, page: nextPage, per_page: pagination.per_page })}`)
-            setItems(prev => [...prev, ...(response.data || [])])
+            const response = await api.get(`${baseUrl}?${new URLSearchParams({ ...filters, page: nextPage, per_page: pagination.per_page })}`)
+            const data = response.data || response
+            const newItems = Array.isArray(data) ? data : (data.data || [])
+            setItems(prev => [...prev, ...newItems])
             setPagination({
-                current_page: response.data.meta?.current_page || nextPage,
-                last_page: response.data.meta?.last_page || 1,
-                per_page: response.data.meta?.per_page || 10,
-                total: response.data.meta?.total || 0
+                current_page: data.meta?.current_page || nextPage,
+                last_page: data.meta?.last_page || 1,
+                per_page: data.meta?.per_page || 10,
+                total: data.meta?.total || 0
             })
-            hasMore.current = (response.data.meta?.current_page || nextPage) < (response.data.meta?.last_page || 1)
+            hasMore.current = (data.meta?.current_page || nextPage) < (data.meta?.last_page || 1)
         } catch (err) {
             setError(err.message)
         } finally {
             isLoadingMore.current = false
         }
-    }, [resourceName, pagination])
+    }, [baseUrl, pagination])
 
     // Создание
     const create = useCallback(async (data) => {
         try {
-            const response = await api.post(`/${resourceName}`, data)
-            setItems(prev => [response.data, ...prev])
-            return response.data
+            const response = await api.post(baseUrl, data)
+            const newItem = response.data || response
+            setItems(prev => [newItem, ...prev])
+            return newItem
         } catch (err) {
             throw err
         }
-    }, [resourceName])
+    }, [baseUrl])
 
     // Обновление
     const update = useCallback(async (id, data) => {
         try {
-            const response = await api.put(`/${resourceName}/${id}`, data)
-            setItems(prev => prev.map(item => item.id === id ? response.data : item))
-            return response.data
+            const response = await api.put(`${baseUrl}/${id}`, data)
+            const updatedItem = response.data || response
+            setItems(prev => prev.map(item => item.id === id ? updatedItem : item))
+            return updatedItem
         } catch (err) {
             throw err
         }
-    }, [resourceName])
+    }, [baseUrl])
 
     // Удаление
     const remove = useCallback(async (id) => {
         try {
-            await api.delete(`/${resourceName}/${id}`)
+            await api.delete(`${baseUrl}/${id}`)
             setItems(prev => prev.filter(item => item.id !== id))
         } catch (err) {
             throw err
         }
-    }, [resourceName])
+    }, [baseUrl])
 
     // Обновление порядка (для DnD)
     const reorder = useCallback(async (orders) => {
         try {
-            await api.post(`/${resourceName}/reorder`, { orders })
+            await api.post(`${baseUrl}/reorder`, { orders })
             // Обновляем локальный порядок
             setItems(prev => {
                 const updated = [...prev]
@@ -115,11 +134,11 @@ export function useAdminStore(resourceName, initialData = []) {
         } catch (err) {
             throw err
         }
-    }, [resourceName])
+    }, [baseUrl])
 
     return {
         items,
-        setItems,  // <-- ДОБАВЛЯЕМ setItems В ВОЗВРАТ
+        setItems,
         loading,
         error,
         pagination,

@@ -14,12 +14,12 @@ export const adminOrders = {
             apiFilters.status = filters.status;
         }
 
-        // Ресторан - ИСПРАВЛЕНО: используем restaurant_id
+        // Ресторан
         if (filters.restaurant_id && filters.restaurant_id !== 'all') {
             apiFilters.restaurant_id = filters.restaurant_id;
         }
 
-        // Даты - ИСПРАВЛЕНО: используем date_from и date_to
+        // Даты
         if (filters.date_from) {
             apiFilters.date_from = filters.date_from;
         }
@@ -32,7 +32,7 @@ export const adminOrders = {
             apiFilters.search = filters.search;
         }
 
-        // Сортировка - ДОБАВЛЕНО
+        // Сортировка
         if (filters.sort_by && filters.sort_by !== 'date') {
             apiFilters.sort_by = filters.sort_by;
         }
@@ -40,7 +40,7 @@ export const adminOrders = {
             apiFilters.sort_order = filters.sort_order;
         }
 
-        // Пагинация - ДОБАВЛЕНО
+        // Пагинация
         if (filters.page) {
             apiFilters.page = filters.page;
         }
@@ -62,8 +62,7 @@ export const adminOrders = {
 
     getStats: () => api.get('/admin/orders/stats'),
 
-    // Путь правильный: /restaurants/select
-    getRestaurants: () => api.get('/restaurants/select'),
+    getRestaurants: () => api.get('/admin/restaurants/select'),  // ИСПРАВЛЕНО: добавил /admin
 
     delete: (type, id) => api.delete(`/admin/orders/${type}/${id}`),
 
@@ -74,8 +73,8 @@ export const adminOrders = {
 };
 
 export const adminDashboard = {
-    stats: () => api.get('/stats'),
-    summary: () => api.get('/stats/summary'),
+    stats: () => api.get('/admin/stats'),        // ИСПРАВЛЕНО: добавил /admin
+    summary: () => api.get('/admin/stats/summary'), // ИСПРАВЛЕНО: добавил /admin
 }
 
 export const adminNews = {
@@ -90,58 +89,56 @@ export const adminNews = {
             ...(filters.sort_by && {sort_by: filters.sort_by}),
             ...(filters.sort_order && {sort_order: filters.sort_order}),
         }).toString()
-        return api.get(`/news?${params}`)
+        return api.get(`/admin/news?${params}`)  // ИСПРАВЛЕНО: добавил /admin
     },
-    getById: (id) => api.get(`/news/${id}`),
-    create: (data) => api.post('/news', data),
-    update: (id, data) => api.put(`/news/${id}`, data),
-    remove: (id) => api.delete(`/news/${id}`),
-    getStatuses: () => api.get('/news/statuses'),
+    getById: (id) => api.get(`/admin/news/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    create: (data) => api.post('/admin/news', data),  // ИСПРАВЛЕНО: добавил /admin
+    update: (id, data) => api.put(`/admin/news/${id}`, data),  // ИСПРАВЛЕНО: добавил /admin
+    remove: (id) => api.delete(`/admin/news/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    getStatuses: () => api.get('/admin/news/statuses'),  // ИСПРАВЛЕНО: добавил /admin
 }
 
 export const adminRestaurants = {
     list: (params = {}) => {
         const q = new URLSearchParams(params).toString()
-        return api.get(`/restaurants?${q}`)
+        return api.get(`/admin/restaurants?${q}`)  // ИСПРАВЛЕНО: добавил /admin
     },
-    getById: (id) => api.get(`/restaurants/${id}`),
-    create: (data) => api.post('/restaurants', data),
-    update: (id, data) => api.put(`/restaurants/${id}`, data),
-    remove: (id) => api.delete(`/restaurants/${id}`),
-    reorder: (orders) => api.post('/restaurants/reorder', {orders}),
-    getStatuses: () => api.get('/restaurants/statuses'),
-    getAllActive: () => api.get('/restaurants/all'),
+    getById: (id) => api.get(`/admin/restaurants/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    create: (data) => api.post('/admin/restaurants', data),  // ИСПРАВЛЕНО: добавил /admin
+    update: (id, data) => api.put(`/admin/restaurants/${id}`, data),  // ИСПРАВЛЕНО: добавил /admin
+    remove: (id) => api.delete(`/admin/restaurants/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    reorder: (orders) => api.post('/admin/restaurants/reorder', {orders}),  // ИСПРАВЛЕНО: добавил /admin
+    getStatuses: () => api.get('/admin/restaurants/statuses'),  // ИСПРАВЛЕНО: добавил /admin
+    getAllActive: () => api.get('/admin/restaurants/all'),  // ИСПРАВЛЕНО: добавил /admin
 }
 
 export const adminMenuCategories = {
-    getTree: () => api.get('/menu/categories'),
-    getFlat: () => api.get('/menu/categories/flat'),
-    getById: (id) => api.get(`/menu/categories/${id}`),
-    create: (data) => api.post('/menu/categories', data),
-    update: (id, data) => api.put(`/menu/categories/${id}`, data),
-    remove: (id) => api.delete(`/menu/categories/${id}`),
-    reorder: (orders) => api.post('/menu/categories/reorder', {orders}),
-    getStatuses: () => api.get('/menu/categories/statuses'),
+    getTree: () => api.get('/admin/menu/categories'),  // ИСПРАВЛЕНО: добавил /admin
+    getFlat: () => api.get('/admin/menu/categories/flat'),  // ИСПРАВЛЕНО: добавил /admin
+    getById: (id) => api.get(`/admin/menu/categories/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    create: (data) => api.post('/admin/menu/categories', data),  // ИСПРАВЛЕНО: добавил /admin
+    update: (id, data) => api.put(`/admin/menu/categories/${id}`, data),  // ИСПРАВЛЕНО: добавил /admin
+    remove: (id) => api.delete(`/admin/menu/categories/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    reorder: (orders) => api.post('/admin/menu/categories/reorder', {orders}),  // ИСПРАВЛЕНО: добавил /admin
+    getStatuses: () => api.get('/admin/menu/categories/statuses'),  // ИСПРАВЛЕНО: добавил /admin
 }
 
 export const adminMenuItems = {
     list: (params = {}) => {
         const q = new URLSearchParams(params).toString()
-        return api.get(`/menu/items?${q}`)
+        return api.get(`/admin/menu/items?${q}`)  // ИСПРАВЛЕНО: добавил /admin
     },
-    getById: (id) => api.get(`/menu/items/${id}`),
-    create: (data) => api.post('/menu/items', data),
-    update: (id, data) => api.put(`/menu/items/${id}`, data),
-    remove: (id) => api.delete(`/menu/items/${id}`),
-    bulkUpdateStatus: (ids, isActive) => api.post('/menu/items/bulk/status', {ids, is_active: isActive}),
-    bulkUpdateFeatured: (ids, isFeatured) => api.post('/menu/items/bulk/featured', {ids, is_featured: isFeatured}),
-    reorder: (orders) => api.post('/menu/items/reorder', {orders}),
-    getStats: () => api.get('/menu/items/stats'),
-    getEventDishes: () => api.get('/menu/items/event-dishes'),
-    getFeatured: (limit = 10) => api.get(`/menu/items/featured?limit=${limit}`),
+    getById: (id) => api.get(`/admin/menu/items/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    create: (data) => api.post('/admin/menu/items', data),  // ИСПРАВЛЕНО: добавил /admin
+    update: (id, data) => api.put(`/admin/menu/items/${id}`, data),  // ИСПРАВЛЕНО: добавил /admin
+    remove: (id) => api.delete(`/admin/menu/items/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    bulkUpdateStatus: (ids, isActive) => api.post('/admin/menu/items/bulk/status', {ids, is_active: isActive}),  // ИСПРАВЛЕНО: добавил /admin
+    bulkUpdateFeatured: (ids, isFeatured) => api.post('/admin/menu/items/bulk/featured', {ids, is_featured: isFeatured}),  // ИСПРАВЛЕНО: добавил /admin
+    reorder: (orders) => api.post('/admin/menu/items/reorder', {orders}),  // ИСПРАВЛЕНО: добавил /admin
+    getStats: () => api.get('/admin/menu/items/stats'),  // ИСПРАВЛЕНО: добавил /admin
+    getEventDishes: () => api.get('/admin/menu/items/event-dishes'),  // ИСПРАВЛЕНО: добавил /admin
+    getFeatured: (limit = 10) => api.get(`/admin/menu/items/featured?limit=${limit}`),  // ИСПРАВЛЕНО: добавил /admin
 }
-
-// admin.js - добавь в конец файла
 
 export const adminReviews = {
     list: (filters = {}) => {
@@ -160,7 +157,6 @@ export const adminReviews = {
         return api.get(`/admin/reviews${query ? `?${query}` : ''}`)
     },
 
-
     getById: (id) => api.get(`/admin/reviews/${id}`),
     approve: (id) => api.patch(`/admin/reviews/${id}/approve`),
     reject: (id) => api.patch(`/admin/reviews/${id}/reject`),
@@ -175,7 +171,6 @@ export const publicReviews = {
 }
 
 export const adminManagers = {
-    // Получить список менеджеров с фильтрацией и пагинацией
     list: (filters = {}) => {
         const params = new URLSearchParams()
 
@@ -188,64 +183,39 @@ export const adminManagers = {
         if (filters.per_page) params.append('per_page', filters.per_page)
 
         const query = params.toString()
-        return api.get(`/managers${query ? `?${query}` : ''}`)
+        return api.get(`/admin/managers${query ? `?${query}` : ''}`)  // ИСПРАВЛЕНО: добавил /admin
     },
 
-    getById: (id) => api.get(`/managers/${id}`),
-    create: (data) => api.post('/managers', data),
-    update: (id, data) => api.put(`/managers/${id}`, data),
-    delete: (id) => api.delete(`/managers/${id}`),
-    toggleBlock: (id) => api.patch(`/managers/${id}/block`),
-    getStats: () => api.get('/managers/stats'),
-    getSections: () => api.get('/managers/sections'),
+    getById: (id) => api.get(`/admin/managers/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    create: (data) => api.post('/admin/managers', data),  // ИСПРАВЛЕНО: добавил /admin
+    update: (id, data) => api.put(`/admin/managers/${id}`, data),  // ИСПРАВЛЕНО: добавил /admin
+    delete: (id) => api.delete(`/admin/managers/${id}`),  // ИСПРАВЛЕНО: добавил /admin
+    toggleBlock: (id) => api.patch(`/admin/managers/${id}/block`),  // ИСПРАВЛЕНО: добавил /admin
+    getStats: () => api.get('/admin/managers/stats'),  // ИСПРАВЛЕНО: добавил /admin
+    getSections: () => api.get('/admin/managers/sections'),  // ИСПРАВЛЕНО: добавил /admin
 }
 
-// admin.js - добавить в конец файла
-
 export const adminUpload = {
-    /**
-     * Загрузить один файл
-     * @param {File} file - файл для загрузки
-     * @param {string} type - 'image' или 'document'
-     * @param {string} directory - опциональная директория
-     * @returns {Promise}
-     */
     upload: async (file, type = 'image', directory = null) => {
         const formData = new FormData()
         formData.append('file', file)
         formData.append('type', type)
         if (directory) formData.append('directory', directory)
 
-        const response = await api.post('/upload', formData)
-        return response.data // Возвращаем данные загруженного файла
+        const response = await api.post('/admin/upload', formData)  // ИСПРАВЛЕНО: добавил /admin
+        return response.data
     },
 
-    /**
-     * Загрузить несколько файлов
-     * @param {File[]} files - массив файлов
-     * @param {string} directory - опциональная директория
-     * @returns {Promise}
-     */
     uploadMultiple: async (files, directory = null) => {
         const formData = new FormData()
         files.forEach(file => formData.append('files[]', file))
         if (directory) formData.append('directory', directory)
 
-        const response = await api.post('/upload/multiple', formData)
+        const response = await api.post('/admin/upload/multiple', formData)  // ИСПРАВЛЕНО: добавил /admin
         return response.data
     },
 
-    /**
-     * Удалить файл по URL
-     * @param {string} url - URL файла
-     * @returns {Promise}
-     */
-    delete: (url) => api.delete('/upload', { url }),
+    delete: (url) => api.delete('/admin/upload', { url }),  // ИСПРАВЛЕНО: добавил /admin
 
-    /**
-     * Получить информацию о файле
-     * @param {string} url - URL файла
-     * @returns {Promise}
-     */
-    info: (url) => api.get('/upload/info', { params: { url } }),
+    info: (url) => api.get('/admin/upload/info', { params: { url } }),  // ИСПРАВЛЕНО: добавил /admin
 }

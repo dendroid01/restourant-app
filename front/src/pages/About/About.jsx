@@ -1,10 +1,10 @@
-// About.jsx - обновлённая версия
+// About.jsx - обновлённая версия с API
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import RestaurantCard from '../../components/RestaurantCard/RestaurantCard'
 import ReviewCard from '../../components/ReviewCard/ReviewCard'
 import { usePublicReviews } from '../../admin/hooks/usePublicReviews'
-import restaurantsData from '../../data/restaurants.json'
+import { usePublicRestaurants } from '../../shared/hooks/usePublicRestaurants'
 
 function ReviewModal({ onClose }) {
     const { t } = useTranslation()
@@ -114,7 +114,8 @@ function ReviewModal({ onClose }) {
 
 export default function About() {
     const { t, i18n } = useTranslation()
-    const { reviews, loading, averageRating } = usePublicReviews()
+    const { reviews, loading: reviewsLoading, averageRating } = usePublicReviews()
+    const { restaurants, loading: restaurantsLoading, error: restaurantsError } = usePublicRestaurants()
     const [showModal, setShowModal] = useState(false)
 
     const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
@@ -138,6 +139,25 @@ export default function About() {
         { img: 'https://picsum.photos/300/200?random=72', title_ru: 'Лучший сомелье', title_en: 'Best Sommelier', year: '2021', desc_ru: 'Мария Соколова', desc_en: 'Maria Sokolova' },
     ]
 
+    // Состояние загрузки ресторанов
+    if (restaurantsLoading) {
+        return (
+            <main>
+                <div className="breadcrumbs">
+                    <div className="container">
+                        <ul className="breadcrumbs-list">
+                            <li><a href="/">{t('breadcrumbs.home')}</a></li>
+                            <li>{t('nav.about')}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="container" style={{ padding: '60px 0', textAlign: 'center' }}>
+                    <div className="loading-spinner">Загрузка ресторанов...</div>
+                </div>
+            </main>
+        )
+    }
+
     return (
         <main>
             <div className="breadcrumbs">
@@ -149,11 +169,26 @@ export default function About() {
                 </div>
             </div>
 
-            {/* Restaurants */}
+            {/* Restaurants - теперь с реальными данными из API */}
             <section id="restaurants" className="page-section">
                 <div className="container">
                     <h1 className="h1-28 section-title">{t('about.title')}</h1>
-                    {restaurantsData.map(r => <RestaurantCard key={r.id} restaurant={r} />)}
+
+                    {restaurantsError && (
+                        <div className="error-message" style={{ color: 'red', marginBottom: 'var(--spacing-md)' }}>
+                            Ошибка загрузки ресторанов: {restaurantsError}
+                        </div>
+                    )}
+
+                    {restaurants.length === 0 && !restaurantsLoading && !restaurantsError ? (
+                        <div className="empty-state">
+                            <p>Рестораны временно недоступны</p>
+                        </div>
+                    ) : (
+                        restaurants.map(restaurant => (
+                            <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+                        ))
+                    )}
                 </div>
             </section>
 
@@ -228,7 +263,7 @@ export default function About() {
                         </button>
                     </div>
 
-                    {loading && reviews.length === 0 ? (
+                    {reviewsLoading && reviews.length === 0 ? (
                         <div className="loading-spinner">Загрузка отзывов...</div>
                     ) : reviews.length === 0 ? (
                         <div className="empty-state">
