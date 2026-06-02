@@ -48,9 +48,11 @@ class User extends Authenticatable
     public function hasPermission($section)
     {
         if ($this->role === 'admin') return true;
+
+        if ($section === 'managers') return false;
+
         return in_array($section, $this->permissions ?? []);
     }
-
     public function isAdmin()
     {
         return $this->role === 'admin';

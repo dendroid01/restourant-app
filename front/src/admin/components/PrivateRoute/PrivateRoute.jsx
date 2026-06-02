@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
-export default function PrivateRoute({ children }) {
+export default function PrivateRoute({ children, requiredPermission }) {
     const { user, loading } = useAuth()
     const location = useLocation()
 
@@ -37,6 +37,15 @@ export default function PrivateRoute({ children }) {
 
     if (!user) {
         return <Navigate to="/admin/login" state={{ from: location }} replace />
+    }
+
+    // Проверка на конкретное право
+    if (requiredPermission) {
+        const hasAccess = user.role === 'admin' || user.permissions?.includes(requiredPermission)
+
+        if (!hasAccess) {
+            return <Navigate to="/admin" replace />
+        }
     }
 
     return children

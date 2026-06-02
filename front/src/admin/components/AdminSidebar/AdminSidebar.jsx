@@ -2,18 +2,18 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
 const NAV = [
-    { to: '/admin',             icon: '📊', label: 'Дашборд',   end: true },
-    { to: '/admin/news',        icon: '📰', label: 'Новости' },
-    { to: '/admin/restaurants', icon: '🏛️', label: 'Рестораны' },
-    { to: '/admin/menu',        icon: '🍽️', label: 'Меню' },
-    { to: '/admin/pages',       icon: '📄', label: 'Страницы' },
-    { to: '/admin/reviews',     icon: '⭐', label: 'Отзывы' },
-    { to: '/admin/orders',      icon: '📞', label: 'Заказы' },
-    { to: '/admin/managers',    icon: '👥', label: 'Менеджеры' },
+    { to: '/admin',             icon: '📊', label: 'Дашборд',   permission: null },
+    { to: '/admin/news',        icon: '📰', label: 'Новости',    permission: 'news' },
+    { to: '/admin/restaurants', icon: '🏛️', label: 'Рестораны',  permission: 'restaurants' },
+    { to: '/admin/menu',        icon: '🍽️', label: 'Меню',       permission: 'menu' },
+    { to: '/admin/pages',       icon: '📄', label: 'Страницы',    permission: 'pages' },
+    { to: '/admin/reviews',     icon: '⭐', label: 'Отзывы',      permission: 'reviews' },
+    { to: '/admin/orders',      icon: '📞', label: 'Заказы',      permission: 'orders' },
+    { to: '/admin/managers',    icon: '👥', label: 'Менеджеры',   permission: 'managers' },
 ]
 
 export default function AdminSidebar() {
-    const { logout, isAdmin } = useAuth()
+    const { user, logout, isAdmin } = useAuth()
     const navigate = useNavigate()
 
     const handleLogout = () => {
@@ -21,15 +21,26 @@ export default function AdminSidebar() {
         navigate('/admin/login')
     }
 
+    const canAccess = (item) => {
+        // Дашборд доступен всем авторизованным
+        if (!item.permission) return true
+
+        // Админ имеет доступ ко всему
+        if (isAdmin) return true
+
+        // Менеджеры проверяют свои права
+        return user?.permissions?.includes(item.permission) ?? false
+    }
+
     return (
         <aside className="admin-sidebar">
             <div className="admin-logo">✦ RESTORAN</div>
             <nav className="admin-nav">
-                {NAV.filter(n => n.to !== '/admin/managers' || isAdmin).map(item => (
+                {NAV.filter(canAccess).map((item) => (
                     <NavLink
                         key={item.to}
                         to={item.to}
-                        end={item.end}
+                        end={item.to === '/admin'}
                         className={({ isActive }) =>
                             `admin-nav-item${isActive ? ' active' : ''}`
                         }

@@ -6,12 +6,13 @@ export const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [token, setToken] = useState(() => localStorage.getItem('admin_token')) // Добавьте эту строку
 
     // Загрузка пользователя при монтировании
     useEffect(() => {
         const loadUser = async () => {
-            const token = localStorage.getItem('admin_token')
-            if (!token) {
+            const storedToken = localStorage.getItem('admin_token')
+            if (!storedToken) {
                 setLoading(false)
                 return
             }
@@ -22,6 +23,7 @@ export function AuthProvider({ children }) {
             } catch (error) {
                 console.error('Failed to load user:', error)
                 localStorage.removeItem('admin_token')
+                setToken(null) // Добавьте
                 setUser(null)
             } finally {
                 setLoading(false)
@@ -41,17 +43,15 @@ export function AuthProvider({ children }) {
                 device_name: 'web'
             })
 
-            const { token, user: userData } = response
+            const { token: newToken, user: userData } = response
 
             // Сохраняем токен
-            localStorage.setItem('admin_token', token)
-
-            // Сохраняем пользователя
+            localStorage.setItem('admin_token', newToken)
+            setToken(newToken) // Добавьте
             setUser(userData)
 
             return userData
         } catch (error) {
-            // Обработка ошибок валидации от Laravel
             if (error.body?.errors) {
                 const firstError = Object.values(error.body.errors)[0]?.[0]
                 throw new Error(firstError || 'Ошибка входа')
@@ -67,6 +67,7 @@ export function AuthProvider({ children }) {
             console.error('Logout error:', error)
         } finally {
             localStorage.removeItem('admin_token')
+            setToken(null) // Добавьте
             setUser(null)
         }
     }, [])
@@ -74,6 +75,7 @@ export function AuthProvider({ children }) {
     return (
         <AuthContext.Provider value={{
             user,
+            token, // Добавьте эту строку!
             login,
             logout,
             loading,

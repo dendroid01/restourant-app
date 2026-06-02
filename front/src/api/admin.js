@@ -173,3 +173,29 @@ export const publicReviews = {
     list: () => api.get('/reviews'),
     create: (data) => api.post('/reviews', data),
 }
+
+export const adminManagers = {
+    // Получить список менеджеров с фильтрацией и пагинацией
+    list: (filters = {}) => {
+        const params = new URLSearchParams()
+
+        if (filters.is_active !== undefined && filters.is_active !== '') {
+            params.append('is_active', filters.is_active)
+        }
+        if (filters.search) params.append('search', filters.search)
+        if (filters.sort_by) params.append('sort_by', filters.sort_by)
+        if (filters.sort_order) params.append('sort_order', filters.sort_order)
+        if (filters.per_page) params.append('per_page', filters.per_page)
+
+        const query = params.toString()
+        return api.get(`/managers${query ? `?${query}` : ''}`)
+    },
+
+    getById: (id) => api.get(`/managers/${id}`),
+    create: (data) => api.post('/managers', data),
+    update: (id, data) => api.put(`/managers/${id}`, data),
+    delete: (id) => api.delete(`/managers/${id}`),
+    toggleBlock: (id) => api.patch(`/managers/${id}/block`),
+    getStats: () => api.get('/managers/stats'),
+    getSections: () => api.get('/managers/sections'),
+}
