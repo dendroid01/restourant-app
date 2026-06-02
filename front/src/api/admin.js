@@ -199,3 +199,53 @@ export const adminManagers = {
     getStats: () => api.get('/managers/stats'),
     getSections: () => api.get('/managers/sections'),
 }
+
+// admin.js - добавить в конец файла
+
+export const adminUpload = {
+    /**
+     * Загрузить один файл
+     * @param {File} file - файл для загрузки
+     * @param {string} type - 'image' или 'document'
+     * @param {string} directory - опциональная директория
+     * @returns {Promise}
+     */
+    upload: async (file, type = 'image', directory = null) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('type', type)
+        if (directory) formData.append('directory', directory)
+
+        const response = await api.post('/upload', formData)
+        return response.data // Возвращаем данные загруженного файла
+    },
+
+    /**
+     * Загрузить несколько файлов
+     * @param {File[]} files - массив файлов
+     * @param {string} directory - опциональная директория
+     * @returns {Promise}
+     */
+    uploadMultiple: async (files, directory = null) => {
+        const formData = new FormData()
+        files.forEach(file => formData.append('files[]', file))
+        if (directory) formData.append('directory', directory)
+
+        const response = await api.post('/upload/multiple', formData)
+        return response.data
+    },
+
+    /**
+     * Удалить файл по URL
+     * @param {string} url - URL файла
+     * @returns {Promise}
+     */
+    delete: (url) => api.delete('/upload', { url }),
+
+    /**
+     * Получить информацию о файле
+     * @param {string} url - URL файла
+     * @returns {Promise}
+     */
+    info: (url) => api.get('/upload/info', { params: { url } }),
+}

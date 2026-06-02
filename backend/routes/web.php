@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminMenuItemController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminManagerController;
+use App\Http\Controllers\Admin\AdminUploadController;
 use App\Http\Controllers\Public\PublicReviewController;
 use App\Http\Controllers\Public\PublicBookingController;
 use App\Http\Controllers\Public\PublicEventController;
@@ -30,6 +31,11 @@ Route::prefix('api/v1')->group(function () {
 
     // Защищенные маршруты (требуют авторизации)
     Route::middleware('auth:sanctum')->group(function () {
+
+        Route::post('/upload', [AdminUploadController::class, 'upload']);
+        Route::post('/upload/multiple', [AdminUploadController::class, 'uploadMultiple']);
+        Route::delete('/upload', [AdminUploadController::class, 'destroy']);
+        Route::get('/upload/info', [AdminUploadController::class, 'info']);
 
         // Общие маршруты - доступ всем авторизованным
         Route::post('/admin/logout', [AuthController::class, 'logout']);

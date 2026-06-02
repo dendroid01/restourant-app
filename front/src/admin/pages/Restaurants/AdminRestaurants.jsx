@@ -4,6 +4,7 @@ import { useAdminStore } from '../../hooks/useAdminStore'
 import Modal from '../../components/Modal/Modal'
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
 import StatusBadge from '../../components/StatusBadge/StatusBadge'
+import MultiImageUploader from '../../components/MultiImageUploader/MultiImageUploader'
 
 const EMPTY = {
     name_ru: '',
@@ -42,7 +43,6 @@ export default function AdminRestaurants() {
     const [form, setForm] = useState(EMPTY)
     const [confirm, setConfirm] = useState(null)
     const [draggedItem, setDraggedItem] = useState(null)
-    const [draggedImageIndex, setDraggedImageIndex] = useState(null)
     const [activeLang, setActiveLang] = useState('ru') // 'ru' или 'en'
     const observerRef = useRef()
     const lastItemRef = useRef()
@@ -129,75 +129,16 @@ export default function AdminRestaurants() {
         setDraggedItem(null)
     }
 
-    // Drag-and-Drop для изображений в галерее
-    const handleImageDragStart = (e, index) => {
-        setDraggedImageIndex(index)
-        e.dataTransfer.effectAllowed = 'move'
-    }
-
-    const handleImageDragOver = (e, index) => {
-        e.preventDefault()
-        if (draggedImageIndex === null) return
-        if (draggedImageIndex === index) return
-
-        // Переставляем изображения в массиве
-        const reorderedGalleries = [...form.galleries]
-        const [dragged] = reorderedGalleries.splice(draggedImageIndex, 1)
-        reorderedGalleries.splice(index, 0, dragged)
-
-        // Обновляем порядок (order) для каждого изображения
-        const updatedGalleries = reorderedGalleries.map((img, idx) => ({
-            ...img,
-            order: idx
-        }))
-
-        setForm(prev => ({
-            ...prev,
-            galleries: updatedGalleries
-        }))
-        setDraggedImageIndex(index)
-    }
-
-    const handleImageDragEnd = () => {
-        setDraggedImageIndex(null)
-    }
-
-    // Работа с галереей
-    const addGalleryImage = () => {
-        const url = prompt('Введите URL изображения:')
-        if (url) {
-            setForm(prev => ({
-                ...prev,
-                galleries: [...prev.galleries, {
-                    image_url: url,
-                    order: prev.galleries.length
-                }]
-            }))
-        }
-    }
-
-    const removeGalleryImage = (index) => {
-        setForm(prev => ({
-            ...prev,
-            galleries: prev.galleries.filter((_, i) => i !== index)
-        }))
-    }
-
-    const updateGalleryImage = (index, url) => {
-        setForm(prev => ({
-            ...prev,
-            galleries: prev.galleries.map((img, i) =>
-                i === index ? { ...img, image_url: url } : img
-            )
-        }))
-    }
-
     // Получение главного изображения (первое из галереи)
     const getMainImage = (item) => {
         if (item.galleries && item.galleries.length > 0) {
             return item.galleries[0].image_url
         }
-        return item.main_image || 'https://picsum.photos/500/400?random=1'
+        if (item.main_image) {
+            return item.main_image
+        }
+        // Если нет изображений, возвращаем null
+        return null
     }
 
     const f = (field) => ({
@@ -425,89 +366,15 @@ export default function AdminRestaurants() {
                                 <input type="number" {...f('order')} />
                             </div>
 
-                            {/* Галерея изображений */}
                             <div className="admin-form-group">
-                                <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    Галерея изображений
-                                    <button type="button" className="btn-admin btn-admin-secondary" style={{ fontSize: 12 }} onClick={addGalleryImage}>
-                                        + Добавить фото
-                                    </button>
-                                </label>
-                                {form.galleries.length > 0 && (
-                                    <p style={{ fontSize: 12, color: 'var(--primary)', marginTop: 4 }}>
-                                        💡 Первое изображение будет главным • Перетаскивайте фото для изменения порядка
-                                    </p>
-                                )}
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 12, marginTop: 8 }}>
-                                    {form.galleries.map((img, idx) => (
-                                        <div
-                                            key={idx}
-                                            draggable
-                                            onDragStart={(e) => handleImageDragStart(e, idx)}
-                                            onDragOver={(e) => handleImageDragOver(e, idx)}
-                                            onDragEnd={handleImageDragEnd}
-                                            style={{
-                                                border: `2px solid ${idx === 0 ? 'var(--primary)' : draggedImageIndex === idx ? 'var(--primary)' : 'var(--gray-border)'}`,
-                                                borderRadius: 8,
-                                                overflow: 'hidden',
-                                                position: 'relative',
-                                                cursor: 'grab',
-                                                opacity: draggedImageIndex === idx ? 0.5 : 1,
-                                                transition: 'all 0.2s'
-                                            }}
-                                        >
-                                            {idx === 0 && (
-                                                <div style={{
-                                                    position: 'absolute',
-                                                    top: 4,
-                                                    left: 4,
-                                                    background: 'var(--primary)',
-                                                    color: 'white',
-                                                    fontSize: 10,
-                                                    padding: '2px 6px',
-                                                    borderRadius: 4,
-                                                    zIndex: 1
-                                                }}>
-                                                    Главное
-                                                </div>
-                                            )}
-                                            <div style={{
-                                                position: 'absolute',
-                                                top: 4,
-                                                right: 4,
-                                                background: 'rgba(0,0,0,0.6)',
-                                                color: 'white',
-                                                fontSize: 10,
-                                                padding: '2px 6px',
-                                                borderRadius: 4,
-                                                zIndex: 1
-                                            }}>
-                                                ⋮⋮
-                                            </div>
-                                            <img
-                                                src={img.image_url}
-                                                alt={`gallery-${idx}`}
-                                                style={{ width: '100%', height: 100, objectFit: 'cover' }}
-                                                draggable={false}
-                                            />
-                                            <div style={{ padding: 8 }}>
-                                                <input
-                                                    type="text"
-                                                    value={img.image_url}
-                                                    onChange={(e) => updateGalleryImage(idx, e.target.value)}
-                                                    style={{ fontSize: 11, width: '100%', marginBottom: 4 }}
-                                                    placeholder="URL"
-                                                />
-                                                <button type="button" className="btn-admin btn-admin-danger" style={{ fontSize: 11, width: '100%' }} onClick={() => removeGalleryImage(idx)}>
-                                                    Удалить
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                                {form.galleries.length === 0 && (
-                                    <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 8 }}>Нет изображений. Нажмите "+ Добавить фото"</p>
-                                )}
+                                <label>Галерея изображений</label>
+                                <MultiImageUploader
+                                    value={form.galleries || []}
+                                    onChange={(galleries) => setForm(p => ({ ...p, galleries }))}
+                                    directory="restaurants"
+                                    maxSizeMB={5}
+                                    maxFiles={20}
+                                />
                             </div>
                         </div>
 

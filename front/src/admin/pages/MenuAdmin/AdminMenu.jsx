@@ -8,6 +8,7 @@ import RichTextEditor from '../../../shared/components/RichTextEditor/RichTextEd
 import {useToast} from '../../../shared/hooks/useToast'
 import SafeHtml from '../../../shared/components/SafeHtml/SafeHtml'
 import {useTranslation} from 'react-i18next'
+import ImageUploader from '../../components/ImageUploader/ImageUploader'
 
 // Компонент для отображения дерева категорий с кнопкой удаления
 function CategoryTree({categories, activeCategoryId, onSelect, onDeleteCategory, getCategoryTitle, level = 0}) {
@@ -235,15 +236,14 @@ function DishModal({isOpen, onClose, editingId, initialForm, onSave, categories,
                     </div>
 
                     <div className="admin-form-group">
-                        <label>URL изображения</label>
-                        <input {...f('image')} placeholder="https://example.com/image.jpg"/>
-                        {form?.image && (
-                            <div style={{marginTop: 8}}>
-                                <img src={form.image} alt="Preview" style={{maxWidth: 100, borderRadius: 8}}/>
-                            </div>
-                        )}
+                        <label>Изображение</label>
+                        <ImageUploader
+                            value={form?.image || ''}
+                            onChange={(url) => setForm(p => ({ ...p, image: url }))}
+                            directory="menu"
+                            maxSizeMB={5}
+                        />
                     </div>
-
                     <div className="admin-form-group">
                         <label style={{display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8}}>
                             <input
@@ -714,9 +714,21 @@ export default function AdminMenu() {
             </div>
 
             <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 16}}>
-                <button className="btn-admin btn-admin-primary" onClick={openCreate} disabled={!activeCategory}>
-                    + Добавить блюдо
-                </button>
+                {activeCategory ? (
+                    <button className="btn-admin btn-admin-primary" onClick={openCreate}>
+                        + Добавить блюдо
+                    </button>
+                ) : (
+                    <div style={{
+                        fontSize: 13,
+                        color: 'var(--text-tertiary)',
+                        padding: '8px 16px',
+                        background: '#f5f5f5',
+                        borderRadius: 8
+                    }}>
+                        ⚡ Выберите категорию слева, чтобы добавить блюдо
+                    </div>
+                )}
             </div>
 
             <div className="menu-admin-layout">

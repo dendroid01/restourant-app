@@ -9,7 +9,6 @@ const ROUTE_CONFIG = {
             { path: '/reviews', methods: ['GET', 'POST'] },
             { path: '/admin/login', methods: ['POST'] },
         ],
-        // Можно добавить паттерны
         patterns: [
             // /reviews/* но не /admin/reviews/*
         ]
@@ -25,6 +24,7 @@ const ROUTE_CONFIG = {
             { path: '/menu/categories', methods: ['GET', 'POST', 'PUT', 'DELETE'] },
             { path: '/menu/items', methods: ['GET', 'POST', 'PUT', 'DELETE'] },
             { path: '/admin/reviews', methods: ['GET', 'PATCH', 'DELETE'] },
+            { path: '/admin/upload', methods: ['POST', 'DELETE', 'GET'] }, // Добавляем upload
         ]
     }
 }
@@ -79,14 +79,25 @@ async function request(path, options = {}) {
         }
     }
 
+    // Подготовка headers
+    const headers = {
+        'Accept': 'application/json',
+        ...(shouldAddToken ? { Authorization: `Bearer ${token}` } : {}),
+    }
+
+    // Не добавляем Content-Type для FormData (браузер сам установит boundary)
+    const isFormData = options.body instanceof FormData
+    if (!isFormData && options.body && typeof options.body === 'object') {
+        headers['Content-Type'] = 'application/json'
+    }
+
     const res = await fetch(`${BASE}${path}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            ...(shouldAddToken ? { Authorization: `Bearer ${token}` } : {}),
-        },
+        headers,
         credentials: 'include',
         ...options,
+        body: options.body && typeof options.body === 'object' && !isFormData
+            ? JSON.stringify(options.body)
+            : options.body,
     })
 
     // Обработка 401 - только для админских маршрутов
@@ -113,10 +124,10 @@ async function request(path, options = {}) {
 export const api = {
     csrf: () => getCsrfCookie(),
     get: (path) => request(path),
-    post: (path, data) => request(path, { method: 'POST', body: JSON.stringify(data) }),
-    patch: (path, data) => request(path, { method: 'PATCH', body: JSON.stringify(data) }),
-    put: (path, data) => request(path, { method: 'PUT', body: JSON.stringify(data) }),
-    delete: (path) => request(path, { method: 'DELETE' }),
+    post: (path, data, customOptions = {}) => request(path, { method: 'POST', body: data, ...customOptions }),
+    patch: (path, data) => request(path, { method: 'PATCH', body: data }),
+    put: (path, data) => request(path, { method: 'PUT', body: data }),
+    delete: (path, data) => request(path, { method: 'DELETE', body: data ? JSON.stringify(data) : undefined }),
 }
 
 export const publicApi = {
