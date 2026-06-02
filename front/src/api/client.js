@@ -12,6 +12,10 @@ const ROUTE_CONFIG = {
             { path: '/restaurants/slides', methods: ['GET'] },
             { path: '/bookings', methods: ['POST'] },
             { path: '/event-requests', methods: ['POST'] },
+            { path: '/menu/categories', methods: ['GET'] },
+            { path: '/menu/items', methods: ['GET'] },
+            { path: '/menu/items/featured', methods: ['GET'] },
+            { path: '/menu/items/event', methods: ['GET'] }
         ],
         patterns: [
             { pattern: /^\/restaurants\/\d+$/, methods: ['GET'] },      // /restaurants/123

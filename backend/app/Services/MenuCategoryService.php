@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\MenuCategory;
+use App\Models\MenuItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -228,6 +229,147 @@ class MenuCategoryService
         return [
             ['value' => 1, 'label' => 'Активна'],
             ['value' => 0, 'label' => 'Скрыта'],
+        ];
+    }
+
+    // app/Services/MenuCategoryService.php - добавить методы
+
+    /**
+     * Получить активные категории с блюдами (для публичной части)
+     */
+    public function getActiveCategoriesWithItems(): array
+    {
+        $categories = MenuCategory::where('is_active', true)
+            ->whereNull('parent_id')
+            ->with(['children' => function ($q) {
+                $q->where('is_active', true)->orderBy('order');
+            }, 'items' => function ($q) {
+                $q->where('is_active', true)->orderBy('order');
+            }])
+            ->orderBy('order')
+            ->get();
+
+        return $this->buildPublicTree($categories);
+    }
+
+    /**
+     * Построение дерева для публичной части (с блюдами)
+     */
+    private function buildPublicTree($categories): array
+    {
+        $result = [];
+        foreach ($categories as $category) {
+            $item = [
+                'id' => $category->id,
+                'slug' => $category->slug,
+                'title_ru' => $category->title_ru,
+                'title_en' => $category->title_en,
+                'items' => $this->formatItems($category->items),
+                'children' => [],
+            ];
+
+            if ($category->children->count() > 0) {
+                $item['children'] = $this->buildPublicTree($category->children);
+            }
+
+            $result[] = $item;
+        }
+        return $result;
+    }
+
+    /**
+     * Форматирование блюд для публичной части
+     */
+    private function formatItems($items): array
+    {
+        return $items->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'title_ru' => $item->title_ru,
+                'title_en' => $item->title_en,
+                'description_ru' => $item->description_ru,
+                'description_en' => $item->description_en,
+                'price' => $item->price,
+                'image' => $item->image,
+                'is_featured' => $item->is_featured,
+            ];
+        })->toArray();
+    }
+
+    /**
+     * Получить все активные блюда (для публичной части)
+     */
+    public function getActiveItems(array $filters = []): array
+    {
+        $query = MenuItem::where('is_active', true)->with('category');
+
+        // Фильтр по категории
+        if (!empty($filters['category_id'])) {
+            $query->where('category_id', $filters['category_id']);
+        }
+
+        // Фильтр по slug категории
+        if (!empty($filters['category_slug'])) {
+            $query->whereHas('category', function ($q) use ($filters) {
+                $q->where('slug', $filters['category_slug']);
+            });
+        }
+
+        // Только рекомендуемые
+        if (!empty($filters['featured'])) {
+            $query->where('is_featured', true);
+        }
+
+        // Поиск
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('title_ru', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('title_en', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+
+        $items = $query->orderBy('order')->get();
+
+        return $items->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'category_id' => $item->category_id,
+                'category_slug' => $item->category?->slug,
+                'title_ru' => $item->title_ru,
+                'title_en' => $item->title_en,
+                'description_ru' => $item->description_ru,
+                'description_en' => $item->description_en,
+                'price' => $item->price,
+                'image' => $item->image,
+                'is_featured' => $item->is_featured,
+            ];
+        })->toArray();
+    }
+
+    /**
+     * Получить блюдо по ID (для публичной части)
+     */
+    public function getActiveItem(int $id): ?array
+    {
+        $item = MenuItem::where('is_active', true)->with('category')->find($id);
+
+        if (!$item) {
+            return null;
+        }
+
+        return [
+            'id' => $item->id,
+            'category_id' => $item->category_id,
+            'category_slug' => $item->category?->slug,
+            'category_title_ru' => $item->category?->title_ru,
+            'category_title_en' => $item->category?->title_en,
+            'title_ru' => $item->title_ru,
+            'title_en' => $item->title_en,
+            'description_ru' => $item->description_ru,
+            'description_en' => $item->description_en,
+            'price' => $item->price,
+            'image' => $item->image,
+            'is_featured' => $item->is_featured,
         ];
     }
 }

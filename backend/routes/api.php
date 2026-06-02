@@ -15,6 +15,9 @@ use App\Http\Controllers\Public\PublicReviewController;
 use App\Http\Controllers\Public\PublicBookingController;
 use App\Http\Controllers\Public\PublicEventController;
 use App\Http\Controllers\Public\PublicRestaurantController;
+use App\Http\Controllers\Public\PublicMenuController;
+
+;
 
 Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['message' => 'CSRF cookie set']);
@@ -30,6 +33,12 @@ Route::get('/restaurants', [PublicRestaurantController::class, 'index']);
 Route::get('/restaurants/{id}', [PublicRestaurantController::class, 'show']);
 Route::get('/restaurants/slides', [PublicRestaurantController::class, 'slides']);
 Route::get('/menu/items/event-dishes', [AdminMenuItemController::class, 'eventDishes']);
+
+Route::get('/menu/categories', [PublicMenuController::class, 'categories']);
+Route::get('/menu/items', [PublicMenuController::class, 'items']);
+Route::get('/menu/items/featured', [PublicMenuController::class, 'featured']);
+Route::get('/menu/items/event', [PublicMenuController::class, 'eventDishes']);
+Route::get('/menu/items/{id}', [PublicMenuController::class, 'show']);
 
 // ============ АДМИНСКИЕ МАРШРУТЫ (требуют авторизацию) ============
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {

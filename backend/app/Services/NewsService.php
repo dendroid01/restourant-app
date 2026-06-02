@@ -148,4 +148,113 @@ class NewsService
             'draft' => News::where('status', 'draft')->count(),
         ];
     }
+    /**
+     * Получить опубликованные новости с пагинацией (для публичной части)
+     */
+    public function getPublishedNews(int $perPage = 9, array $filters = []): array
+    {
+        $query = News::where('status', 'published')
+            ->whereNotNull('published_at')
+            ->with('author');
+
+        // Фильтр по году/месяцу
+        if (!empty($filters['year'])) {
+            $query->whereYear('published_at', $filters['year']);
+        }
+        if (!empty($filters['month'])) {
+            $query->whereMonth('published_at', $filters['month']);
+        }
+
+        // Поиск по заголовку
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('title_ru', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('title_en', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+
+        $news = $query->orderBy('published_at', 'desc')
+            ->paginate($perPage);
+
+        return [
+            'data' => $news->items(),
+            'meta' => [
+                'current_page' => $news->currentPage(),
+                'last_page' => $news->lastPage(),
+                'per_page' => $news->perPage(),
+                'total' => $news->total(),
+            ],
+        ];
+    }
+
+    /**
+     * Получить опубликованную новость по ID (для публичной части)
+     */
+    public function getPublishedNewsById(int $id): ?News
+    {
+        return News::where('status', 'published')
+            ->whereNotNull('published_at')
+            ->with('author')
+            ->find($id);
+    }
+
+    /**
+     * Получить последние новости (для виджета на главной)
+     */
+    public function getLatestNews(int $limit = 3): array
+    {
+        return News::where('status', 'published')
+            ->whereNotNull('published_at')
+            ->orderBy('published_at', 'desc')
+            ->limit($limit)
+            ->get()
+            ->toArray();
+    }
+
+    /**
+     * Получить архив по годам и месяцам
+     */
+    public function getArchive(): array
+    {
+        $results = News::where('status', 'published')
+            ->whereNotNull('published_at')
+            ->selectRaw('YEAR(published_at) as year, MONTH(published_at) as month, COUNT(*) as count')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        $archive = [];
+        foreach ($results as $item) {
+            $archive[] = [
+                'year' => $item->year,
+                'month' => $item->month,
+                'month_name_ru' => $this->getMonthNameRu($item->month),
+                'month_name_en' => $this->getMonthNameEn($item->month),
+                'count' => $item->count,
+            ];
+        }
+
+        return $archive;
+    }
+
+    private function getMonthNameRu(int $month): string
+    {
+        $months = [
+            1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель',
+            5 => 'Май', 6 => 'Июнь', 7 => 'Июль', 8 => 'Август',
+            9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь',
+        ];
+        return $months[$month] ?? '';
+    }
+
+    private function getMonthNameEn(int $month): string
+    {
+        $months = [
+            1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
+            5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
+            9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December',
+        ];
+        return $months[$month] ?? '';
+    }
 }

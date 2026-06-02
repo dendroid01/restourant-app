@@ -1,9 +1,66 @@
-import { Link, NavLink } from 'react-router-dom'
+// src/components/Header/Header.jsx
+import { Link, NavLink, useNavigate } from 'react-router-dom' // Добавляем useNavigate
 import { useTranslation } from 'react-i18next'
-import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'
+import { useMenu } from '../../shared/context/MenuContext'
 
 export default function Header() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
+    const navigate = useNavigate() // Для навигации
+    const { categories, loading } = useMenu()
+    const lang = i18n.language?.startsWith('ru') ? 'ru' : 'en'
+
+    const getCategoryAnchorId = (category) => {
+        return `category-${category.id}`
+    }
+
+    const getCategoryTitle = (category) => {
+        return category[`title_${lang}`] || category.title_ru || category.title
+    }
+
+    const rootCategories = categories.filter(cat => !cat.parent_id)
+
+    // Функция для скролла вверх
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    // Обработчик клика по "Меню"
+    const handleMenuClick = (e) => {
+        e.preventDefault()
+        // Если мы уже на странице меню - скроллим вверх
+        if (window.location.pathname === '/menu') {
+            scrollToTop()
+        } else {
+            // Если на другой странице - переходим на /menu и скроллим вверх
+            navigate('/menu')
+            setTimeout(scrollToTop, 100)
+        }
+    }
+
+    // Обработчик клика по категории
+    const handleCategoryClick = (e, categoryId) => {
+        e.preventDefault()
+        const anchorId = getCategoryAnchorId({ id: categoryId })
+
+        // Если мы на странице меню - скроллим к категории
+        if (window.location.pathname === '/menu') {
+            const element = document.getElementById(anchorId)
+            if (element) {
+                const headerHeight = 100
+                const elementPosition = element.getBoundingClientRect().top
+                const offsetPosition = elementPosition + window.scrollY - headerHeight
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                })
+                window.history.pushState(null, '', `#${anchorId}`)
+            }
+        } else {
+            // Если на другой странице - переходим на /menu с якорем
+            navigate(`/menu#${anchorId}`)
+        }
+    }
 
     return (
         <header className="main-header">
@@ -18,6 +75,7 @@ export default function Header() {
                                 {t('nav.home')}
                             </NavLink>
                         </li>
+
                         <li className="nav-item">
                             <NavLink to="/about" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
                                 {t('nav.about')}
@@ -31,27 +89,50 @@ export default function Header() {
                                 <li><Link to="/about#reviews">{t('nav.reviews')}</Link></li>
                             </ul>
                         </li>
+
+                        {/* Динамическое меню категорий */}
                         <li className="nav-item">
-                            <NavLink to="/menu" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+                            <NavLink
+                                to="/menu"
+                                className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                                onClick={handleMenuClick} // Добавляем обработчик
+                            >
                                 {t('nav.menu')}
                             </NavLink>
-                            <ul className="dropdown-menu">
-                                <li><Link to="/menu#breakfast">{t('nav.breakfast')}</Link></li>
-                                <li><Link to="/menu#lunch">{t('nav.lunch')}</Link></li>
-                                <li><Link to="/menu#dinner">{t('nav.dinner')}</Link></li>
-                                <li><Link to="/menu#wine">{t('nav.wine')}</Link></li>
-                            </ul>
+                            {!loading && rootCategories.length > 0 && (
+                                <ul className="dropdown-menu">
+                                    {rootCategories.map(category => (
+                                        <li key={category.id}>
+                                            <a
+                                                href={`/menu#${getCategoryAnchorId(category)}`}
+                                                onClick={(e) => handleCategoryClick(e, category.id)}
+                                                style={{ cursor: 'pointer' }}
+                                            >
+                                                {getCategoryTitle(category)}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                            {loading && (
+                                <ul className="dropdown-menu">
+                                    <li><Link to="/menu">{t('nav.loading')}</Link></li>
+                                </ul>
+                            )}
                         </li>
+
                         <li className="nav-item">
                             <NavLink to="/news" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
                                 {t('nav.news')}
                             </NavLink>
                         </li>
+
                         <li className="nav-item">
                             <NavLink to="/events" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
                                 {t('nav.events')}
                             </NavLink>
                         </li>
+
                         <li className="nav-item">
                             <NavLink to="/contacts" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
                                 {t('nav.contacts')}
@@ -59,8 +140,8 @@ export default function Header() {
                         </li>
                     </ul>
                 </nav>
+
                 <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <LanguageSwitcher />
                     <Link to="/booking" className="btn btn-primary" style={{ padding: '8px 16px' }}>
                         {t('nav.booking')}
                     </Link>

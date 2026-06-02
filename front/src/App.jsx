@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './admin/context/AuthContext'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {AuthProvider} from './admin/context/AuthContext'
 import PrivateRoute from './admin/components/PrivateRoute/PrivateRoute'
 import AdminLayout from './admin/components/AdminLayout/AdminLayout'
+import {MenuProvider} from './shared/context/MenuContext'
 
 import Layout from './components/Layout/Layout'
 import Home from './pages/Home/Home'
@@ -26,75 +27,77 @@ import AdminManagers from './admin/pages/Managers/AdminManagers'
 function App() {
     return (
         <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    {/* Публичные маршруты */}
-                    <Route path="/" element={<Layout/>}>
-                        <Route index element={<Home/>}/>
-                        <Route path="about" element={<About/>}/>
-                        <Route path="menu" element={<Menu/>}/>
-                        <Route path="news" element={<News/>}/>
-                        <Route path="news/:id" element={<NewsDetail/>}/>
-                        <Route path="events" element={<Events/>}/>
-                        <Route path="contacts" element={<Contacts/>}/>
-                        <Route path="booking" element={<Booking/>}/>
-                    </Route>
+            <MenuProvider>
+                <BrowserRouter>
+                    <Routes>
+                        {/* Публичные маршруты */}
+                        <Route path="/" element={<Layout/>}>
+                            <Route index element={<Home/>}/>
+                            <Route path="about" element={<About/>}/>
+                            <Route path="menu" element={<Menu/>}/>
+                            <Route path="news" element={<News/>}/>
+                            <Route path="news/:id" element={<NewsDetail/>}/>
+                            <Route path="events" element={<Events/>}/>
+                            <Route path="contacts" element={<Contacts/>}/>
+                            <Route path="booking" element={<Booking/>}/>
+                        </Route>
 
-                    {/* Логин */}
-                    <Route path="/admin/login" element={<Login/>}/>
+                        {/* Логин */}
+                        <Route path="/admin/login" element={<Login/>}/>
 
-                    {/* Защищённые маршруты админки */}
-                    <Route path="/admin" element={
-                        <PrivateRoute>
-                            <AdminLayout/>
-                        </PrivateRoute>
-                    }>
-                        <Route index element={<Dashboard/>}/>
-
-                        <Route path="news" element={
-                            <PrivateRoute requiredPermission="news">
-                                <AdminNews/>
+                        {/* Защищённые маршруты админки */}
+                        <Route path="/admin" element={
+                            <PrivateRoute>
+                                <AdminLayout/>
                             </PrivateRoute>
-                        }/>
+                        }>
+                            <Route index element={<Dashboard/>}/>
 
-                        <Route path="restaurants" element={
-                            <PrivateRoute requiredPermission="restaurants">
-                                <AdminRestaurants/>
-                            </PrivateRoute>
-                        }/>
+                            <Route path="news" element={
+                                <PrivateRoute requiredPermission="news">
+                                    <AdminNews/>
+                                </PrivateRoute>
+                            }/>
 
-                        <Route path="menu" element={
-                            <PrivateRoute requiredPermission="menu">
-                                <AdminMenu/>
-                            </PrivateRoute>
-                        }/>
+                            <Route path="restaurants" element={
+                                <PrivateRoute requiredPermission="restaurants">
+                                    <AdminRestaurants/>
+                                </PrivateRoute>
+                            }/>
 
-                        <Route path="reviews" element={
-                            <PrivateRoute requiredPermission="reviews">
-                                <AdminReviews/>
-                            </PrivateRoute>
-                        }/>
+                            <Route path="menu" element={
+                                <PrivateRoute requiredPermission="menu">
+                                    <AdminMenu/>
+                                </PrivateRoute>
+                            }/>
 
-                        <Route path="orders" element={
-                            <PrivateRoute requiredPermission="orders">
-                                <AdminOrders/>
-                            </PrivateRoute>
-                        }/>
+                            <Route path="reviews" element={
+                                <PrivateRoute requiredPermission="reviews">
+                                    <AdminReviews/>
+                                </PrivateRoute>
+                            }/>
 
-                        <Route path="pages" element={
-                            <PrivateRoute requiredPermission="pages">
-                                <AdminPages/>
-                            </PrivateRoute>
-                        }/>
+                            <Route path="orders" element={
+                                <PrivateRoute requiredPermission="orders">
+                                    <AdminOrders/>
+                                </PrivateRoute>
+                            }/>
 
-                        <Route path="managers" element={
-                            <PrivateRoute requiredPermission="managers">
-                                <AdminManagers/>
-                            </PrivateRoute>
-                        }/>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+                            <Route path="pages" element={
+                                <PrivateRoute requiredPermission="pages">
+                                    <AdminPages/>
+                                </PrivateRoute>
+                            }/>
+
+                            <Route path="managers" element={
+                                <PrivateRoute requiredPermission="managers">
+                                    <AdminManagers/>
+                                </PrivateRoute>
+                            }/>
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </MenuProvider>
         </AuthProvider>
     )
 }
