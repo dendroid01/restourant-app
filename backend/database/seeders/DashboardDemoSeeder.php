@@ -29,7 +29,7 @@ class DashboardDemoSeeder extends Seeder
                 'password' => bcrypt('qwerty123!'),
                 'role' => 'admin',
                 'is_active' => true,
-                'permissions' => ['news', 'menu', 'reviews', 'orders', 'restaurants', 'messages', 'pages']
+                'permissions' => ['news', 'menu', 'reviews', 'orders', 'restaurants', 'messages', 'pages','contacts']
             ]
         );
 

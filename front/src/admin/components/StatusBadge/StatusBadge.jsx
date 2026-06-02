@@ -11,6 +11,8 @@ const MAP = {
     pending:     { cls: 'badge-info',    label: 'На проверке' },
     rejected:    { cls: 'badge-error',   label: 'Отклонён' },
     blocked:     { cls: 'badge-error',   label: 'Заблокирован' },
+    read:   { cls: 'badge-success', label: 'Прочитано' },
+    unread: { cls: 'badge-info',    label: 'Новое' },
 }
 
 export default function StatusBadge({ status, customLabel }) {

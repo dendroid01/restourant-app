@@ -23,6 +23,7 @@ import AdminReviews from './admin/pages/Reviews/AdminReviews'
 import AdminOrders from './admin/pages/Orders/AdminOrders'
 import AdminPages from './admin/pages/Pages/AdminPages'
 import AdminManagers from './admin/pages/Managers/AdminManagers'
+import AdminContacts from './admin/pages/Contacts/AdminContacts'
 
 function App() {
     return (
@@ -94,6 +95,12 @@ function App() {
                                     <AdminManagers/>
                                 </PrivateRoute>
                             }/>
+
+                            <Route path="contacts" element={
+                                <PrivateRoute requiredPermission="managers">
+                                    <AdminContacts />
+                                </PrivateRoute>
+                            } />
                         </Route>
                     </Routes>
                 </BrowserRouter>

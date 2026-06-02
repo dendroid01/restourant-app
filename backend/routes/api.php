@@ -11,12 +11,14 @@ use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminManagerController;
 use App\Http\Controllers\Admin\AdminUploadController;
+use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Public\PublicReviewController;
 use App\Http\Controllers\Public\PublicBookingController;
 use App\Http\Controllers\Public\PublicEventController;
 use App\Http\Controllers\Public\PublicRestaurantController;
 use App\Http\Controllers\Public\PublicMenuController;
 use App\Http\Controllers\Public\PublicNewsController;
+use App\Http\Controllers\Public\PublicContactController;
 
 ;
 
@@ -45,6 +47,8 @@ Route::get('/news', [PublicNewsController::class, 'index']);
 Route::get('/news/latest', [PublicNewsController::class, 'latest']);
 Route::get('/news/archive', [PublicNewsController::class, 'archive']);
 Route::get('/news/{id}', [PublicNewsController::class, 'show']);
+
+Route::post('/contact', [PublicContactController::class, 'send']);
 
 // ============ АДМИНСКИЕ МАРШРУТЫ (требуют авторизацию) ============
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
@@ -127,5 +131,13 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
         Route::patch('/managers/{id}/block', [AdminManagerController::class, 'toggleBlock']);
         Route::get('/managers/stats', [AdminManagerController::class, 'stats']);
         Route::get('/managers/sections', [AdminManagerController::class, 'sections']);
+    });
+
+    Route::middleware('permission:сontacts')->group(function () {
+        Route::get('/contact', [AdminContactController::class, 'index']);
+        Route::get('/contact/{id}', [AdminContactController::class, 'show']);
+        Route::patch('/contact/{id}/read', [AdminContactController::class, 'markAsRead']);
+        Route::delete('/contact/{id}', [AdminContactController::class, 'destroy']);
+        Route::get('/contact/stats', [AdminContactController::class, 'stats']);
     });
 });

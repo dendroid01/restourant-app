@@ -171,6 +171,7 @@
   },
   "common": {
     "loading": "Loading...",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "error": "An error occurred. Please try again later."
   }
 }

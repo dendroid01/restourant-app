@@ -92,3 +92,11 @@ export const publicNews = {
      */
     getById: (id) => api.get(`/news/${id}`),
 }
+
+export const publicContacts = {
+    /**
+     * Отправить сообщение из формы обратной связи
+     * @param {Object} data - { name, email, phone, message }
+     */
+    send: (data) => api.post('/contact', data),
+}

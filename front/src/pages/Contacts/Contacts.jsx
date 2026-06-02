@@ -1,16 +1,18 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useForm, RULES } from '../../shared/hooks/useForm'
 import FormField from '../../shared/components/FormField/FormField'
 import { useToast } from '../../shared/hooks/useToast'
+import { publicContacts } from '../../api/public'
 
 const INITIAL = { name: '', email: '', phone: '', message: '' }
 
 const SCHEMA = {
     name:    [RULES.required, RULES.fullName],
     email:   [RULES.required, RULES.email],
-    phone:   [RULES.phone],            // телефон необязателен, но если введён — валидируем
-    message: [RULES.required, RULES.minLength(10)],
+    phone:   [RULES.phone],
+    message: [RULES.required, RULES.minLength(10), RULES.maxLength(5000)],
 }
 
 export default function Contacts() {
@@ -18,11 +20,21 @@ export default function Contacts() {
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, reset } =
         useForm(INITIAL, SCHEMA)
     const toast = useToast()
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const onValid = (data) => {
-        console.log('ContactForm ✅', data)
-        toast.success(t('contacts.message_sent') || 'Сообщение отправлено!')  // заменить alert
-        reset()
+    const onValid = async (data) => {
+        setIsSubmitting(true)
+        try {
+            await publicContacts.send(data)
+            toast.success(t('contacts.message_sent'))
+            reset()
+        } catch (err) {
+            console.error('Contact form error:', err)
+            const message = err.body?.message || err.message || t('common.error')
+            toast.error(message)
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     const field = (name, extra = {}) => ({
@@ -50,7 +62,6 @@ export default function Contacts() {
                 <div className="container">
                     <h1 className="h1-28 section-title">{t('contacts.title')}</h1>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-xl)' }}>
-
                         {/* Контактная информация */}
                         <div>
                             <h2 className="h2-22" style={{ marginBottom: 'var(--spacing-md)' }}>
@@ -88,7 +99,7 @@ export default function Contacts() {
                             <form onSubmit={handleSubmit(onValid)} noValidate>
                                 <FormField
                                     {...field('name')}
-                                    label="Имя"
+                                    label={t('forms.your_name')}
                                     type="text"
                                     placeholder={t('forms.name_placeholder')}
                                     required
@@ -102,20 +113,25 @@ export default function Contacts() {
                                 />
                                 <FormField
                                     {...field('phone')}
-                                    label="Телефон"
+                                    label={t('booking.phone')}
                                     type="tel"
-                                    placeholder="+7 (9XX) XXX-XX-XX"
+                                    placeholder={t('forms.phone_placeholder')}
                                 />
                                 <FormField
                                     {...field('message')}
-                                    label="Сообщение"
+                                    label={t('forms.review_text')}
                                     type="textarea"
                                     placeholder={t('forms.message_placeholder')}
                                     rows={5}
                                     required
                                 />
-                                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-                                    {t('contacts.send')}
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    style={{ width: '100%' }}
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? t('common.sending') : t('contacts.send')}
                                 </button>
                             </form>
                         </div>

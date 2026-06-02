@@ -20,6 +20,7 @@ class ManagerService
         'pages' => 'Страницы',
         'reviews' => 'Отзывы',
         'orders' => 'Заказы',
+        'contacts' => 'Сообщения',
     ];
 
     /**

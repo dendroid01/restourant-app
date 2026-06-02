@@ -9,9 +9,9 @@ const NAV = [
     { to: '/admin/pages',       icon: '📄', label: 'Страницы',    permission: 'pages' },
     { to: '/admin/reviews',     icon: '⭐', label: 'Отзывы',      permission: 'reviews' },
     { to: '/admin/orders',      icon: '📞', label: 'Заказы',      permission: 'orders' },
+    { to: '/admin/contacts',    icon: '✉️', label: 'Сообщения',  permission: 'contacts' },
     { to: '/admin/managers',    icon: '👥', label: 'Менеджеры',   permission: 'managers' },
 ]
-
 export default function AdminSidebar() {
     const { user, logout, isAdmin } = useAuth()
     const navigate = useNavigate()

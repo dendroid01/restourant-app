@@ -219,3 +219,45 @@ export const adminUpload = {
 
     info: (url) => api.get('/admin/upload/info', { params: { url } }),  // ИСПРАВЛЕНО: добавил /admin
 }
+
+export const adminContacts = {
+    /**
+     * Получить список сообщений
+     * @param {Object} filters - { is_read, search, sort_by, sort_order, per_page, page }
+     */
+    list: (filters = {}) => {
+        const params = new URLSearchParams()
+
+        if (filters.is_read !== undefined && filters.is_read !== '') {
+            params.append('is_read', filters.is_read)
+        }
+        if (filters.search) params.append('search', filters.search)
+        if (filters.sort_by) params.append('sort_by', filters.sort_by)
+        if (filters.sort_order) params.append('sort_order', filters.sort_order)
+        if (filters.per_page) params.append('per_page', filters.per_page)
+        if (filters.page) params.append('page', filters.page)
+
+        const query = params.toString()
+        return api.get(`/admin/contact${query ? `?${query}` : ''}`)
+    },
+
+    /**
+     * Получить детали сообщения
+     */
+    getById: (id) => api.get(`/admin/contact/${id}`),
+
+    /**
+     * Отметить как прочитанное
+     */
+    markAsRead: (id) => api.patch(`/admin/contact/${id}/read`),
+
+    /**
+     * Удалить сообщение
+     */
+    delete: (id) => api.delete(`/admin/contact/${id}`),
+
+    /**
+     * Получить статистику
+     */
+    getStats: () => api.get('/admin/contact/stats'),
+}
